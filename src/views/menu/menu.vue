@@ -32,8 +32,7 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
-import MenuTable from './components/menu-table.vue';
+import MenuTable from './components/menu-table.vue'
 
 export default {
     name: 'access_index',
@@ -44,17 +43,17 @@ export default {
         return {
             columnsList: [],
             tableData: []
-        };
+        }
     },
     methods: {
         handleUse (val, index) {
             this.$Message.success('使用了第' + (index + 1) + '号菜单')
         },
         handleEdit (val, index) {
-            this.$Message.success('编辑了第' + (index + 1) + '行数据');
+            this.$Message.success('编辑了第' + (index + 1) + '行数据')
         },
         handleDel (val, index) {
-            this.$Message.success('删除了第' + (index + 1) + '行数据');
+            this.$Message.success('删除了第' + (index + 1) + '行数据')
         },
         getData () {
             this.columnsList = [
@@ -72,7 +71,7 @@ export default {
                     title: '上次编辑时间',
                     key: 'lastEditTime'
                 }
-            ];
+            ]
             this.tableData = [
                 {
                     menuItem: '春季菜单',
@@ -90,14 +89,14 @@ export default {
                     menuItem: '冬季菜单',
                     lastEditTime: '2018年05月29日11:15:54'
                 }
-            ];
+            ]
         }
     },
     created () {
         // 可在此从服务端获取表格数据
-        this.getData();
+        this.getData()
     }
-};
+}
 </script>
 
 <style>

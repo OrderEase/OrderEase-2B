@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import KitchenTable from './components/kitchen-table.vue';
+import KitchenTable from './components/kitchen-table.vue'
 
 export default {
     name: 'kitchen-table',
