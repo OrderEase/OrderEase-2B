@@ -13,7 +13,9 @@
                 </h2>
                 <promotion-grid
                     :promotions-list="validPromotionsList"
+                    :show-create-item="true"
                     @request-edit="requestEdit"
+                    @request-add="requestAdd"
                 ></promotion-grid>
             </i-col>
         </Row>
@@ -25,6 +27,7 @@
                 </h2>
                 <promotion-grid
                     :promotions-list="invalidPromotionsList"
+                    :show-create-item="false"
                     @request-edit="requestEdit"
                 ></promotion-grid>
             </i-col>
@@ -33,6 +36,7 @@
             :editting="editting"
             :promotion="editingPromotion"
             @on-editting-change="syncEditting"
+            @add-promotion="addPromotion"
         ></promotion-editor>
     </div>
 </template>
@@ -64,6 +68,27 @@ export default {
         },
         syncEditting (val) {
             this.editting = val
+        },
+        requestAdd() {
+            this.requestEdit({
+                new: true,
+                name: '',
+                type: '',
+                start: {
+                    date: '',
+                    time: ''
+                },
+                end: {
+                    date: '',
+                    time: ''
+                },
+                mutiply: false,
+                contentList: []
+            })
+        },
+        addPromotion (promotion) {
+            // 判断时间划分 =》换成过滤器划分是否过期
+            this.validPromotionsList.push(promotion)
         },
         getPromotions () {
             this.validPromotionsList = [

@@ -6,8 +6,8 @@
                 @request-edit="requestEdit"
             ></promotion-item>
         </i-col>
-        <i-col span="8" class="margin-bottom-10">
-            <create-promotion-item></create-promotion-item>
+        <i-col span="8" class="margin-bottom-10" v-if="showCreateItem">
+            <create-promotion-item @on-click="onClick"></create-promotion-item>
         </i-col>
     </Row>
 </template>
@@ -22,15 +22,16 @@ export default {
         CreatePromotionItem
     },
     props: {
+        showCreateItem: Boolean,
         promotionsList: Array
     },
     methods: {
         requestEdit (promotion) {
             this.$emit('request-edit', promotion)
+        },
+        onClick () {
+            this.$emit('request-add')
         }
-    },
-    created () {
-        console.log(this.promotionsList)
     }
 }
 </script>

@@ -6,15 +6,15 @@
 <template>
     <div class="menu">
         <Row>
-            <Col span="24">
+            <i-col span="24">
                 <Card>
-                    <Row type="flex" justify="end">
-                        <Col span="3">
+                    <Row type="flex" justify="start">
+                        <i-col span="3">
                             <Button type="primary" shape="circle" icon="plus">新建菜单</Button>
-                        </Col>
+                        </i-col>
                     </Row>
                     <Row class="margin-top-20">
-                        <Col>
+                        <i-col>
                             <MenuTable
                                 class="menu-list-table"
                                 v-model="tableData" 
@@ -23,10 +23,10 @@
                                 @on-edit="handleEdit"
                                 @on-delete="handleDel"
                             ></MenuTable>
-                        </Col>
+                        </i-col>
                     </Row>
                 </Card>
-            </Col>
+            </i-col>
         </Row>
     </div>
 </template>

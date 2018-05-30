@@ -5,16 +5,24 @@
 </style>
 
 <template>
-    <Card class="height-150px create-promotion-item">
+    <Button class="height-150px create-promotion-item" long @click="onClick">
         <Row justify="center" align="middle">
-            <Col span="24">
+            <i-col span="24">
                 <p class="title">
                     <Icon type="plus" size="20" color="#9ea7b4"></Icon>
                     添加新任务
                 </p>
-            </Col>
+            </i-col>
         </Row>
-    </Card>
+    </Button>
 </template>
 
-
+<script>
+export default {
+    methods: {
+        onClick () {
+            this.$emit('on-click')
+        }
+    }
+}
+</script>
