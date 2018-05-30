@@ -142,10 +142,10 @@ export default {
             vm.saveLoading = true
 
             setTimeout(() => {
-                vm.saveResolve(vm)
+                vm.saveSuccess(vm)
             }, 1000)
         },
-        saveResolve (vm) {
+        saveSuccess (vm) {
             util.deepCopyFromTo(vm.edittingPromotion, vm.promotion)
             vm.saveLoading = false
             vm.$Message.success('保存成功')
@@ -156,7 +156,7 @@ export default {
                 vm.$emit('add-promotion', vm.promotion)
             }
         },
-        saveReject (vm) {
+        saveFailure (vm) {
             vm.saveLoading = false
             vm.$Message.error('保存失败')
         }

@@ -54,12 +54,33 @@ export default {
     },
     data () {
         return {
-            validPromotionsList: [],
-            invalidPromotionsList: [],
+            promotionsList: [],
 
             editingPromotion: {},
             editting: false
         };
+    },
+    computed: {
+        validPromotionsList () {
+            let now = new Date()
+
+            return this.promotionsList.filter(promotion => {
+                let start = new Date(promotion.start)
+                let end = new Date(promotion.end)
+
+                return now >= start && now <= end
+            })
+        },
+        invalidPromotionsList () {
+            let now = new Date()
+
+            return this.promotionsList.filter(promotion => {
+                let start = new Date(promotion.start)
+                let end = new Date(promotion.end)
+
+                return now < start || now > end
+            })
+        }
     },
     methods: {
         requestEdit (promotion) {
@@ -81,69 +102,15 @@ export default {
             })
         },
         addPromotion (promotion) {
-            // 判断时间划分 =》换成过滤器划分是否过期
-            this.validPromotionsList.push(promotion)
+            this.promotionsList.push(promotion)
         },
         getPromotions () {
-            this.validPromotionsList = [
+            this.promotionsList = [
                 {
                     name: '1',
-                    type: '1',
-                    start: '',
-                    end: '',
-                    mutiply: false,
-                    contentList: [
-                        {
-                            each: 11,
-                            payback: 3
-                        },
-                        {
-                            each: 33,
-                            payback: 1
-                        }
-                    ]
-                },
-                {
-                    name: '2',
                     type: '满减',
-                    start: '',
-                    end: '',
-                    mutiply: false,
-                    contentList: [
-                        {
-                            each: 11,
-                            payback: 3
-                        },
-                        {
-                            each: 33,
-                            payback: 1
-                        }
-                    ]
-                }
-            ],
-            this.invalidPromotionsList = [
-                {
-                    name: '1',
-                    type: '1',
-                    start: '',
-                    end: '',
-                    mutiply: false,
-                    contentList: [
-                        {
-                            each: 11,
-                            payback: 3
-                        },
-                        {
-                            each: 33,
-                            payback: 1
-                        }
-                    ]
-                },
-                {
-                    name: '2',
-                    type: '满减',
-                    start: '',
-                    end: '',
+                    start: '2008-11-22 03:22',
+                    end: '2009-01-11 11:11',
                     mutiply: false,
                     contentList: [
                         {
@@ -164,7 +131,3 @@ export default {
     }
 };
 </script>
-
-<style>
-
-</style>
