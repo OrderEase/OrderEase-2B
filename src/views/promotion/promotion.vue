@@ -74,14 +74,8 @@ export default {
                 new: true,
                 name: '',
                 type: '',
-                start: {
-                    date: '',
-                    time: ''
-                },
-                end: {
-                    date: '',
-                    time: ''
-                },
+                start: '',
+                end: '',
                 mutiply: false,
                 contentList: []
             })
@@ -95,14 +89,8 @@ export default {
                 {
                     name: '1',
                     type: '1',
-                    start: {
-                        date: '',
-                        time: ''
-                    },
-                    end: {
-                        date: '',
-                        time: ''
-                    },
+                    start: '',
+                    end: '',
                     mutiply: false,
                     contentList: [
                         {
@@ -118,14 +106,8 @@ export default {
                 {
                     name: '2',
                     type: '满减',
-                    start: {
-                        date: '',
-                        time: ''
-                    },
-                    end: {
-                        date: '',
-                        time: ''
-                    },
+                    start: '',
+                    end: '',
                     mutiply: false,
                     contentList: [
                         {
@@ -143,14 +125,8 @@ export default {
                 {
                     name: '1',
                     type: '1',
-                    start: {
-                        date: '',
-                        time: ''
-                    },
-                    end: {
-                        date: '',
-                        time: ''
-                    },
+                    start: '',
+                    end: '',
                     mutiply: false,
                     contentList: [
                         {
@@ -166,14 +142,8 @@ export default {
                 {
                     name: '2',
                     type: '满减',
-                    start: {
-                        date: '',
-                        time: ''
-                    },
-                    end: {
-                        date: '',
-                        time: ''
-                    },
+                    start: '',
+                    end: '',
                     mutiply: false,
                     contentList: [
                         {

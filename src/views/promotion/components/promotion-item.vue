@@ -13,10 +13,10 @@
                     <p>类型: {{ promotion.type }}</p>
                 </Row>
                 <Row>
-                    <p>起始时间: {{ promotion.start | formatDateTime }}</p>
+                    <p>起始时间: {{ promotion.start }}</p>
                 </Row>
                 <Row>
-                    <p>终止时间: {{ promotion.end | formatDateTime }}</p>
+                    <p>终止时间: {{ promotion.end }}</p>
                 </Row>
             </i-col>
             <i-col span="2">
@@ -31,21 +31,6 @@
 export default {
     props: {
         promotion: Object
-    },
-    filters: {
-        formatDateTime(dateTime) {
-            if (!dateTime) return '';
-
-            let fillZero = (val) => val < 10 ? '0' + val : val
-
-            let date = new Date(dateTime.date);
-            let time = new Date(dateTime.time);
-            
-            let dateString = date.getFullYear() + '-' + fillZero(date.getMonth() + 1) + '-' + fillZero(date.getDate());
-            let timeString = fillZero(time.getHours()) + ':' + fillZero(time.getMinutes());
-            
-            return dateString + ' ' + timeString;
-        }
     },
     methods: {
         requestEdit () {
