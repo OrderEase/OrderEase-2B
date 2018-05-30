@@ -6,7 +6,7 @@
 <template>
     <div>
         <Row>
-            <Col span="24">
+            <i-col span="24">
                 <Card>
                     <KitchenTable 
                         v-model="tableData" 
@@ -17,7 +17,7 @@
                         @on-finish="handleFinish"
                     ></KitchenTable>
                 </Card>
-            </Col>
+            </i-col>
         </Row>
     </div>
 </template>
@@ -41,26 +41,26 @@ export default {
                 newIndex: 0,
                 draggingRecord: []
             }
-        };
+        }
     },
     methods: {
         handleOnstart1 (from) {
-            this.table1.oldIndex = from;
-            this.table1.hasDragged = true;
-            this.table1.isDragging = true;
+            this.table1.oldIndex = from
+            this.table1.hasDragged = true
+            this.table1.isDragging = true
         },
         handleOnend1 (e) {
-            this.table1.isDragging = false;
+            this.table1.isDragging = false
             this.table1.draggingRecord.unshift({
                 from: e.from + 1,
                 to: e.to + 1
-            });
+            })
         },
         handleDel (val, index) {
-            this.$Message.success('删除了第' + (index + 1) + '行数据');
+            this.$Message.success('删除了第' + (index + 1) + '行数据')
         },
         handleFinish (val, index) {
-            this.$Message.success('完成了第' + (index + 1) + '行数据');
+            this.$Message.success('完成了第' + (index + 1) + '行数据')
         },
         getData () {
             this.columnsList = [
@@ -90,7 +90,7 @@ export default {
                     title: '已点时间',
                     key: 'time'
                 }
-            ];
+            ]
             this.tableData = [
                 {
                     dishItem: '西湖醋鱼',
@@ -148,12 +148,12 @@ export default {
                     tableId: 8,
                     time: '11:33'
                 }
-            ];
+            ]
         }
     },
     created () {
         // 可在此从服务端获取表格数据
-        this.getData();
+        this.getData()
     }
-};
+}
 </script>

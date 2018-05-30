@@ -42,9 +42,8 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
-import PromotionGrid from './components/promotion-grid.vue';
-import PromotionEditor from './components/promotion-editor.vue';
+import PromotionGrid from './components/promotion-grid.vue'
+import PromotionEditor from './components/promotion-editor.vue'
 
 export default {
     name: 'promition_index',
@@ -58,7 +57,7 @@ export default {
 
             editingPromotion: {},
             editting: false
-        };
+        }
     },
     computed: {
         validPromotionsList () {
@@ -90,7 +89,7 @@ export default {
         syncEditting (val) {
             this.editting = val
         },
-        requestAdd() {
+        requestAdd () {
             this.requestEdit({
                 new: true,
                 name: '',
@@ -129,5 +128,5 @@ export default {
     created () {
         this.getPromotions()
     }
-};
+}
 </script>

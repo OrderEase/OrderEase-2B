@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import PromotionItem from './promotion-item.vue';
-import CreatePromotionItem from './create-promotion-item.vue';
+import PromotionItem from './promotion-item.vue'
+import CreatePromotionItem from './create-promotion-item.vue'
 
 export default {
     components: {

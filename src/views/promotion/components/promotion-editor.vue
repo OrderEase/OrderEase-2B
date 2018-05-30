@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import util from '@/libs/util.js';
+import util from '@/libs/util.js'
 
 export default {
     props: {
@@ -149,7 +149,7 @@ export default {
             util.deepCopyFromTo(vm.edittingPromotion, vm.promotion)
             vm.saveLoading = false
             vm.$Message.success('保存成功')
-            
+
             if (vm.promotion.new) {
                 vm.promotion.new = false
                 vm.edittingPromotion.new = false

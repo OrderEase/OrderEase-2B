@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Sortable from 'sortablejs';
+import Sortable from 'sortablejs'
 
 const finishButton = (vm, h, currentRow, index) => {
     return h('Button', {
@@ -22,11 +22,11 @@ const finishButton = (vm, h, currentRow, index) => {
         },
         on: {
             'click': () => {
-                vm.$emit('on-finish', vm.value, index);
+                vm.$emit('on-finish', vm.value, index)
             }
         }
-    }, '完成');
-};
+    }, '完成')
+}
 
 const deleteButton = (vm, h, currentRow, index) => {
     return h('Poptip', {
@@ -37,8 +37,8 @@ const deleteButton = (vm, h, currentRow, index) => {
         },
         on: {
             'on-ok': () => {
-                vm.value.splice(index, 1);
-                vm.$emit('on-delete', vm.value, index);
+                vm.value.splice(index, 1)
+                vm.$emit('on-delete', vm.value, index)
             }
         }
     }, [
@@ -51,8 +51,8 @@ const deleteButton = (vm, h, currentRow, index) => {
                 placement: 'top'
             }
         }, '删除')
-    ]);
-};
+    ])
+}
 
 export default {
     name: 'KitchenTable',
@@ -62,36 +62,34 @@ export default {
     },
     methods: {
         startFunc (e) {
-            this.$emit('on-start', e.oldIndex);
+            this.$emit('on-start', e.oldIndex)
         },
         endFunc (e) {
-            let movedRow = this.value[e.oldIndex];
-            this.value.splice(e.oldIndex, 1);
-            this.value.splice(e.newIndex, 0, movedRow);
+            let movedRow = this.value[e.oldIndex]
+            this.value.splice(e.oldIndex, 1)
+            this.value.splice(e.newIndex, 0, movedRow)
             this.$emit('on-end', {
                 value: this.value,
                 from: e.oldIndex,
                 to: e.newIndex
-            });
+            })
         },
         chooseFunc (e) {
-            this.$emit('on-choose', e.oldIndex);
+            this.$emit('on-choose', e.oldIndex)
         },
         init () {
-            let vm = this;
-
             let handle = {
                 title: '操作',
                 align: 'center',
                 width: 200,
                 key: 'handle',
                 render: (h, param) => {
-                    let currentRowData = this.value[param.index];
-                    let children = [];
-                    children.push(finishButton(this, h, currentRowData, param.index));
-                    children.push(deleteButton(this, h, currentRowData, param.index));
-                    
-                    return h('div', children);
+                    let currentRowData = this.value[param.index]
+                    let children = []
+                    children.push(finishButton(this, h, currentRowData, param.index))
+                    children.push(deleteButton(this, h, currentRowData, param.index))
+
+                    return h('div', children)
                 }
             }
 
@@ -99,16 +97,16 @@ export default {
         }
     },
     created () {
-        this.init();
+        this.init()
     },
     mounted () {
-        var el = this.$refs.dragable.$children[1].$el.children[1];
-        let vm = this;
+        var el = this.$refs.dragable.$children[1].$el.children[1]
+        let vm = this
         Sortable.create(el, {
             onStart: vm.startFunc,
             onEnd: vm.endFunc,
             onChoose: vm.chooseFunc
-        });
+        })
     }
-};
+}
 </script>

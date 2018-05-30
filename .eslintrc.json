@@ -13,7 +13,6 @@
     "rules": {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": ["error", "single"],
-        "semi": ["error", "always"],
         "no-console": ["error"],
         "no-empty": 2,
         "no-eq-null": 2,

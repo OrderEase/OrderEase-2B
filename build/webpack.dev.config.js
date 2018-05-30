@@ -1,16 +1,16 @@
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const merge = require('webpack-merge');
-const webpackBaseConfig = require('./webpack.base.config.js');
-const fs = require('fs');
-const package = require('../package.json');
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const merge = require('webpack-merge')
+const webpackBaseConfig = require('./webpack.base.config.js')
+const fs = require('fs')
+const packageJson = require('../package.json')
 
-fs.open('./build/env.js', 'w', function(err, fd) {
-    const buf = 'export default "development";';
-    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
-});
+fs.open('./build/env.js', 'w', function (err, fd) {
+    const buf = 'export default "development";'
+    fs.write(fd, buf, 0, buf.length, 0, function (err, written, buffer) {})
+})
 
 module.exports = merge(webpackBaseConfig, {
     devtool: '#source-map',
@@ -29,7 +29,7 @@ module.exports = merge(webpackBaseConfig, {
             minChunks: Infinity
         }),
         new HtmlWebpackPlugin({
-            title: 'iView admin v' + package.version,
+            title: 'iView admin v' + packageJson.version,
             filename: '../index.html',
             inject: false
         }),
@@ -46,4 +46,4 @@ module.exports = merge(webpackBaseConfig, {
             ]
         })
     ]
-});
+})

@@ -9,7 +9,7 @@
         data () {
             return {
                 theme: this.$store.state.app.themeColor
-            };
+            }
         },
         mounted () {
 
@@ -20,7 +20,7 @@
         methods: {
 
         }
-    };
+    }
 </script>
 
 <style>

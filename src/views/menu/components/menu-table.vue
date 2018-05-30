@@ -21,11 +21,11 @@ const useButton = (vm, h, currentRow, index) => {
         },
         on: {
             'click': () => {
-                vm.$emit('on-use', vm.value, index);
+                vm.$emit('on-use', vm.value, index)
             }
         }
-    }, '使用');
-};
+    }, '使用')
+}
 
 const editButton = (vm, h, currentRow, index) => {
     return h('Button', {
@@ -37,11 +37,11 @@ const editButton = (vm, h, currentRow, index) => {
         },
         on: {
             'click': () => {
-                vm.$emit('on-edit', vm.value, index);
+                vm.$emit('on-edit', vm.value, index)
             }
         }
-    }, '编辑');
-};
+    }, '编辑')
+}
 
 const deleteButton = (vm, h, currentRow, index) => {
     return h('Poptip', {
@@ -52,8 +52,8 @@ const deleteButton = (vm, h, currentRow, index) => {
         },
         on: {
             'on-ok': () => {
-                vm.value.splice(index, 1);
-                vm.$emit('on-delete', vm.value, index);
+                vm.value.splice(index, 1)
+                vm.$emit('on-delete', vm.value, index)
             }
         }
     }, [
@@ -66,8 +66,8 @@ const deleteButton = (vm, h, currentRow, index) => {
                 placement: 'top'
             }
         }, '删除')
-    ]);
-};
+    ])
+}
 
 export default {
     name: 'MenuTable',
@@ -77,21 +77,19 @@ export default {
     },
     methods: {
         init () {
-            let vm = this;
-
             let handle = {
                 title: '操作',
                 align: 'center',
                 width: 300,
                 key: 'handle',
                 render: (h, param) => {
-                    let currentRowData = this.value[param.index];
-                    let children = [];
-                    children.push(useButton(this, h, currentRowData, param.index));
-                    children.push(editButton(this, h, currentRowData, param.index));
-                    children.push(deleteButton(this, h, currentRowData, param.index));
-                    
-                    return h('div', children);
+                    let currentRowData = this.value[param.index]
+                    let children = []
+                    children.push(useButton(this, h, currentRowData, param.index))
+                    children.push(editButton(this, h, currentRowData, param.index))
+                    children.push(deleteButton(this, h, currentRowData, param.index))
+
+                    return h('div', children)
                 }
             }
 
@@ -99,7 +97,7 @@ export default {
         }
     },
     created () {
-        this.init();
+        this.init()
     }
-};
+}
 </script>

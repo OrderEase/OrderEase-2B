@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Row :gutter="10">
-			<Col span="6">
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar
@@ -11,8 +11,8 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
-			<Col span="6">
+			</i-col>
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar>
@@ -20,8 +20,8 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
-			<Col span="6">
+			</i-col>
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar show-all>
@@ -29,8 +29,8 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
-			<Col span="6">
+			</i-col>
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar show-all>
@@ -38,10 +38,10 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
+			</i-col>
 		</Row>
 		<Row :style="{marginTop: '10px'}" :gutter="10">
-			<Col span="6">
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar show-all dis-scroll-x>
@@ -49,8 +49,8 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
-			<Col span="6">
+			</i-col>
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar show-all dis-scroll-y>
@@ -58,8 +58,8 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
-			<Col span="6">
+			</i-col>
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar show-all scroll-x="none">
@@ -67,8 +67,8 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
-			<Col span="6">
+			</i-col>
+			<i-col span="6">
 				<Card :padding="4">
 					<div class="scroll-container">
 						<scroll-bar>
@@ -76,7 +76,7 @@
 						</scroll-bar>
 					</div>
 				</Card>
-			</Col>
+			</i-col>
 		</Row>
 	</div>
 </template>
