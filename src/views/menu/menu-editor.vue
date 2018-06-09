@@ -22,9 +22,8 @@
                                 </FormItem>
                             </Form>
                         </i-col>
-                        <i-col span="8">
+                        <i-col span="4">
                             <Button type="info">使用</Button>
-                            <Button type="warning">管理类别</Button>
                             <Button type="error">删除菜单</Button>
                         </i-col>
                     </Row>
@@ -33,9 +32,14 @@
         </Row>
 
         <Row class="margin-top-20">
-            <Collapse
+            <draggable
+                element="Collapse"
                 class="menu-collapse"
-                v-model="menuCollapse">
+                :options="{ filter: '.ivu-collapse-content' }"
+                :list="menuItem.content"
+                :component-data="getCategoryComponentData()"
+                @start="categoryStartDrag"
+                @end="categoryEndDrag">
                 <Panel
                     v-for="(content, index) in menuItem.content"
                     :key="index"
@@ -43,34 +47,31 @@
 
                     {{ content.category }}
                     
-                    <a class="move-down"
-                        v-if="index !== menuItem.content.length - 1"
-                        @click.stop="moveDown(index)">
-                        <Icon type="arrow-down-a" size="16"></Icon>
+                    <a class="category-delete"
+                        @click.stop="categoryDelete(index)">
+                        <Icon type="trash-a" size="18"></Icon>
                     </a>
-                    <a class="move-up"
-                        v-if="index !== 0"
-                        @click.stop="moveUp(index)">
-                        <Icon type="arrow-up-a" size="16"></Icon>
-                    </a>
+
+                    <Icon class="category-move" type="arrow-move" size="18"></Icon>
 
                     <dish-grid
                         slot="content"
                         :menu-content="content"
                     ></dish-grid>
                 </Panel>
-            </Collapse>
+            </draggable>
         </Row>
     </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import DishGrid from './components/dish-grid.vue'
-import Util from '@/libs/util'
 
 export default {
     name: 'menu_editor',
     components: {
+        draggable,
         DishGrid
     },
     data () {
@@ -80,25 +81,31 @@ export default {
         }
     },
     methods: {
-        moveUp (index) {
-            if (index !== 0) {
-                this.menuCollapse = []
-
-                let prevContent = this.menuItem.content[index - 1]
-                let curContent = this.menuItem.content[index]
-
-                Util.exchangeObject(prevContent, curContent)
+        handleChange (value) {
+            this.$Message.info('open ' + value.toString())
+        },
+        inputChanged (value) {
+            this.value1 = value
+        },
+        getCategoryComponentData () {
+            return {
+                on: {
+                    'on-change': this.handleChange,
+                    input: this.inputChanged
+                },
+                props: {
+                    value: this.menuCollapse
+                }
             }
         },
-        moveDown (index) {
-            if (index !== this.menuItem.content.length - 1) {
-                this.menuCollapse = []
-
-                let curContent = this.menuItem.content[index]
-                let nextContent = this.menuItem.content[index + 1]
-
-                Util.exchangeObject(nextContent, curContent)
-            }
+        categoryStartDrag () {
+            this.menuCollapse = []
+        },
+        categoryEndDrag () {
+            this.$Message.success('move category')
+        },
+        categoryDelete (index) {
+            this.$Message.warning('delete ' + index)
         },
         getData () {
             this.menuItem = {
