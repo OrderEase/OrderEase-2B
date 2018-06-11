@@ -30,7 +30,7 @@
                                 </FormItem>
                             </Form>
                         </i-col>
-                        <i-col span="6">
+                        <i-col span="8" class="menu-editor-con">
                             <Button
                                 type="info"
                                 :disabled="saving || !menuItem.id || menuItem.used === 1"
@@ -54,7 +54,7 @@
 
         <category-editor
             :editting="isEdittingCategory"
-            @on-editting-change="syncEditting"
+            @on-editting-change="syncEdittingCategory"
         ></category-editor>
 
         <Row class="margin-top-20">
@@ -67,11 +67,11 @@
                 @start="categoryStartDrag"
                 @end="categoryEndDrag">
                 <Panel
-                    v-for="(content, index) in menuItem.content"
+                    v-for="(category, index) in menuItem.content"
                     :key="index"
-                    :name="content.category">
+                    :name="category.name">
 
-                    {{ content.category }}
+                    {{ category.name }}
                     
                     <a class="category-delete"
                         @click.stop="requestDeleteCategory(index)">
@@ -82,13 +82,22 @@
 
                     <dish-grid
                         slot="content"
-                        :menu-content="content"
+                        :category="category"
                         @dish-moved="saveMenu"
                         @request-delete="deleteDish"
+                        @request-add="createDish"
+                        @request-edit="editDish"
                     ></dish-grid>
                 </Panel>
             </draggable>
         </Row>
+
+        <dish-editor
+            :category="edittingDishCategory"
+            :dish="edittingDish"
+            :editting="isEdittingDish"
+            @on-editting-change="syncEdittingDish"
+        ></dish-editor>
     </div>
 </template>
 
@@ -96,6 +105,7 @@
 import draggable from 'vuedraggable'
 import DishGrid from './components/dish-grid.vue'
 import CategoryEditor from './components/category-editor.vue'
+import DishEditor from './components/dish-editor.vue'
 import { mapState } from 'vuex'
 
 export default {
@@ -103,13 +113,17 @@ export default {
     components: {
         draggable,
         DishGrid,
-        CategoryEditor
+        CategoryEditor,
+        DishEditor
     },
     data () {
         return {
             menuCollapse: [],
             saving: false,
-            isEdittingCategory: false
+            isEdittingCategory: false,
+            isEdittingDish: false,
+            edittingDish: {},
+            edittingDishCategory: {}
         }
     },
     computed: {
@@ -157,10 +171,10 @@ export default {
                 if (this.$route.params.id) {
                     await this.$store.dispatch('menu/updateMenu')
                 } else {
-                    let menu = await this.$store.dispatch('menu/createMenu')
+                    let menuId = await this.$store.dispatch('menu/createMenu')
                     this.$router.push({
                         replace: true,
-                        path: '/menu/' + menu.id
+                        path: '/menu/' + menuId
                     })
                 }
                 this.saving = false
@@ -171,12 +185,14 @@ export default {
             }
         },
         async changeMenu () {
+            this.saving = true
             try {
                 await this.$store.dispatch('menu/changeMenu', this.$route.params.id)
                 this.$Message.success('更换成功')
             } catch (err) {
                 this.$Message.error('更换失败')
             }
+            this.saving = false
         },
         requestCreateCategory () {
             this.isEdittingCategory = true
@@ -199,7 +215,7 @@ export default {
                 }
             })
         },
-        syncEditting (value) {
+        syncEdittingCategory (value) {
             this.isEdittingCategory = value
         },
         deleteMenu () {
@@ -243,6 +259,28 @@ export default {
                     }
                 }
             })
+        },
+        syncEdittingDish (value) {
+            this.isEdittingDish = value
+        },
+        createDish (category) {
+            this.isEdittingDish = true
+            this.edittingDishCategory = category
+            this.edittingDish = {
+                name: '',
+                img: '',
+                price: 0,
+                stock: 0,
+                avaliable: 1,
+                likes: 0,
+                description: '',
+                rank: -1
+            }
+        },
+        editDish ({ dish, category }) {
+            this.isEdittingDish = true
+            this.edittingDish = dish
+            this.edittingDishCategory = category
         }
     },
     beforeRouteUpdate (to, from, next) {

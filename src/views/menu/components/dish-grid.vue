@@ -1,11 +1,11 @@
 <template>
     <draggable
         element="Row"
-        :list="menuContent.dishes"
+        :list="category.dishes"
         :options="dishGridOptions"
         :component-data="getComponent()"
         @end="dishEndDrag">
-        <i-col span="8" class="margin-bottom-10" v-for="(dish, index) in menuContent.dishes" :key="index">
+        <i-col span="8" class="margin-bottom-10" v-for="(dish, index) in category.dishes" :key="index">
             <dish-item
                 :dish="dish"
                 @request-edit="requestEdit"
@@ -14,7 +14,7 @@
         </i-col>
         <i-col span="8" class="margin-bottom-10 create-dish-wrap">
             <create-dish-item
-                :category="menuContent.category"
+                :category="category"
                 @on-click="requestAdd"
             ></create-dish-item>
         </i-col>
@@ -33,7 +33,7 @@ export default {
         CreateDishItem
     },
     props: {
-        menuContent: Object
+        category: Object
     },
     data () {
         return {
@@ -51,14 +51,17 @@ export default {
             }
         },
         dishEndDrag () {
-            let info = this.menuContent.dishes.reduce((total, dish, index) => {
+            let info = this.category.dishes.reduce((total, dish, index) => {
                 return total + '[' + index + '] ' + dish.name + ','
             }, '')
             this.$Message.info(info)
             this.$emit('dish-moved')
         },
         requestEdit (dish) {
-            this.$emit('request-edit', dish)
+            this.$emit('request-edit', {
+                dish,
+                category: this.category
+            })
         },
         requestAdd (category) {
             this.$emit('request-add', category)

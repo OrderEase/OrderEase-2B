@@ -3,11 +3,7 @@ import Util from '@/libs/util.js'
 
 const state = {
     menuList: [],
-    edittingMenu: {
-        name: '',
-        used: 0,
-        content: []
-    }
+    edittingMenu: {}
 }
 
 const getters = {
@@ -23,14 +19,15 @@ const actions = {
         commit('setMenuList', await Menu.getAll())
     },
     async createMenu ({ state, dispatch }) {
-        let newMenu = await Menu.create(state.edittingMenu)
-        state.menuList.push(newMenu)
-
+        let menuId = await Menu.create(state.edittingMenu)
         await dispatch('app/getDishMenuAndUpdateMenuList', null, { root: true })
-        return newMenu
+
+        return menuId
     },
     async updateMenu ({ state, dispatch }) {
-        let updatedMenu = await Menu.update(state.edittingMenu)
+        await Menu.update(state.edittingMenu)
+        let updatedMenu = await Menu.get(state.edittingMenu.id)
+
         let menuInList = state.menuList.find(menu => menu.id === updatedMenu.id)
         Util.deepCopyFromTo(updatedMenu, menuInList)
 
@@ -52,20 +49,46 @@ const actions = {
         state.edittingMenu = {}
     },
     async createCategory ({ dispatch, state }, category) {
+        let categoryId = ''
+
         try {
-            state.edittingMenu.content.push(category)
-            await dispatch('updateMenu')
+            categoryId = await Menu.createCategory(state.edittingMenu.id, category)
+            let newCategory = await Menu.getCategory(state.edittingMenu.id, categoryId)
+
+            state.edittingMenu.content.push(newCategory)
         } catch (err) {
             state.edittingMenu.content.pop()
             throw err
         }
     },
-    async deleteCategory ({ dispatch, state }, categoryIndex) {
-        let removed = state.edittingMenu.content.splice(categoryIndex, 1)
+    async deleteCategory ({ dispatch, state }, categoryId) {
         try {
-            await dispatch('updateMenu')
+            await Menu.deleteCategory(state.edittingMenu.id, categoryId)
+
+            let categoryIndex = state.edittingMenu.content.findIndex(category => category.id === categoryId)
+            state.edittingMenu.content.splice(categoryIndex, 1)
         } catch (err) {
-            state.edittingMenu.content.splice(categoryIndex, 0, removed[0])
+            throw err
+        }
+    },
+    async createDish ({ dispatch, state }, { categoryId, dish }) {
+        try {
+            let dishId = await Menu.createDish(state.edittingMenu.id, categoryId, dish)
+            let newDish = await Menu.getDish(state.edittingMenu.id, categoryId, dishId)
+
+            let category = state.edittingMenu.content.find(category => category.id === categoryId)
+            category.dishes.push(newDish)
+        } catch (err) {
+            throw err
+        }
+    },
+    async updateDish ({ dispatch, state }, { categoryId, dish }) {
+        try {
+            await Menu.updateDish(state.edittingMenu.id, categoryId, dish)
+            let category = state.edittingMenu.content.find(category => category.id === categoryId)
+            let dishIndex = category.dishes.findIndex(value => value.id === dish.id)
+            Object.assign(category.dishes[dishIndex], dish)
+        } catch (err) {
             throw err
         }
     }
@@ -82,6 +105,7 @@ const mutations = {
         state.edittingMenu = {
             name: '',
             used: 0,
+            rank: -1,
             content: []
         }
     }

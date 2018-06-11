@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="syncEditting" width="260">
+    <Modal v-model="syncEditting" width="300">
         <p slot="header">
             <Icon type="edit"></Icon>
             <span>编辑类别</span>
@@ -8,7 +8,7 @@
         <Form :model="edittingCategory" :label-width="80">
             <FormItem label="类别名称">
                 <Input
-                    v-model="edittingCategory.category"
+                    v-model="edittingCategory.name"
                     placeholder="输入..."
                     :disabled="saveLoading"
                 />
@@ -45,7 +45,8 @@ export default {
     methods: {
         createEmptyCategory () {
             return {
-                category: '',
+                name: '',
+                rank: -1,
                 dishes: []
             }
         },
