@@ -68,18 +68,24 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'sprint',
-                title: '春季菜单',
-                name: 'sprint_menu',
-                component: () => import('@/views/menu/menu.vue')
-            },
-            {
-                path: 'init-editor',
+                path: 'add',
                 icon: 'plus',
-                name: 'text-editor',
+                name: 'menu-add',
                 title: '添加菜单',
                 component: () => import('@/views/menu/menu-editor.vue')
+            },
+            {
+                path: ':id',
+                name: 'menu-editor',
+                title: '编辑菜单',
+                component: () => import('@/views/menu/menu-editor.vue')
             }
+            // {
+            //     path: 'sprint',
+            //     title: '春季菜单',
+            //     name: 'sprint_menu',
+            //     component: () => import('@/views/menu/menu.vue')
+            // },
         ]
     },
     {

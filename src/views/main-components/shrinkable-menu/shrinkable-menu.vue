@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import sidebarMenu from './components/sidebarMenu.vue';
-import sidebarMenuShrink from './components/sidebarMenuShrink.vue';
-import util from '@/libs/util';
+import sidebarMenu from './components/sidebarMenu.vue'
+import sidebarMenuShrink from './components/sidebarMenuShrink.vue'
+import util from '@/libs/util'
 export default {
     name: 'shrinkableMenu',
     components: {
@@ -45,7 +45,7 @@ export default {
             type: String,
             default: 'dark',
             validator (val) {
-                return util.oneOf(val, ['dark', 'light']);
+                return util.oneOf(val, ['dark', 'light'])
             }
         },
         beforePush: {
@@ -57,27 +57,40 @@ export default {
     },
     computed: {
         bgColor () {
-            return this.theme === 'dark' ? '#495060' : '#fff';
+            return this.theme === 'dark' ? '#495060' : '#fff'
         },
         shrinkIconColor () {
-            return this.theme === 'dark' ? '#fff' : '#495060';
+            return this.theme === 'dark' ? '#fff' : '#495060'
         }
     },
     methods: {
         handleChange (name) {
-            let willpush = true;
+            let willpush = true
+
             if (this.beforePush !== undefined) {
                 if (!this.beforePush(name)) {
-                    willpush = false;
+                    willpush = false
                 }
             }
-            if (willpush) {
-                this.$router.push({
-                    name: name
-                });
+
+            if (util.isDishMenu(name)) {
+                let { routerName, id } = util.getDishMenuIDFromName(name)
+                if (willpush) {
+                    this.$router.push({
+                        name: routerName,
+                        params: { id }
+                    })
+                }
+            } else {
+                if (willpush) {
+                    this.$router.push({
+                        name: name
+                    })
+                }
             }
-            this.$emit('on-change', name);
+
+            this.$emit('on-change', name)
         }
     }
-};
+}
 </script>

@@ -74,10 +74,10 @@ export default {
             let mainTheme = themeFile.substr(-1, 1);
             if (menuTheme === 'b') {
                 // 黑色菜单
-                this.$store.commit('changeMenuTheme', 'dark');
+                this.$store.commit('app/changeMenuTheme', 'dark');
                 menuTheme = 'dark';
             } else {
-                this.$store.commit('changeMenuTheme', 'light');
+                this.$store.commit('app/changeMenuTheme', 'light');
                 menuTheme = 'light';
             }
             let path = '';
@@ -137,20 +137,20 @@ export default {
         if (localStorage.theme) {
             let hasThisUser = JSON.parse(localStorage.theme).some(item => {
                 if (item.userName === name) {
-                    this.$store.commit('changeMenuTheme', item.menuTheme);
-                    this.$store.commit('changeMainTheme', item.mainTheme);
+                    this.$store.commit('app/changeMenuTheme', item.menuTheme);
+                    this.$store.commit('app/changeMainTheme', item.mainTheme);
                     return true;
                 } else {
                     return false;
                 }
             });
             if (!hasThisUser) {
-                this.$store.commit('changeMenuTheme', 'dark');
-                this.$store.commit('changeMainTheme', 'b');
+                this.$store.commit('app/changeMenuTheme', 'dark');
+                this.$store.commit('app/changeMainTheme', 'b');
             }
         } else {
-            this.$store.commit('changeMenuTheme', 'dark');
-            this.$store.commit('changeMainTheme', 'b');
+            this.$store.commit('app/changeMenuTheme', 'dark');
+            this.$store.commit('app/changeMainTheme', 'b');
         }
         // 根据用户设置主题
         if (this.$store.state.app.themeColor !== 'b') {

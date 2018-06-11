@@ -53,9 +53,9 @@
                     </div>
                 </div>
             </div>
-            <div class="tags-con">
+            <!-- <div class="tags-con">
                 <tags-page-opened :pageTagsList="pageTagsList"></tags-page-opened>
-            </div>
+            </div> -->
         </div>
         <div class="single-page-con" :style="{left: shrink?'60px':'200px'}">
             <div class="single-page">
@@ -124,15 +124,14 @@
         methods: {
             init () {
                 let pathArr = util.setCurrentPath(this, this.$route.name)
-                this.$store.commit('updateMenulist')
                 if (pathArr.length >= 2) {
-                    this.$store.commit('addOpenSubmenu', pathArr[1].name)
+                    this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
                 }
                 this.userName = Cookies.get('user')
                 let messageCount = 3
                 this.messageCount = messageCount.toString()
                 this.checkTag(this.$route.name)
-                this.$store.commit('setMessageCount', 3)
+                this.$store.commit('app/setMessageCount', 3)
             },
             toggleClick () {
                 this.shrink = !this.shrink
@@ -145,8 +144,8 @@
                     })
                 } else if (name === 'loginout') {
                     // 退出登录
-                    this.$store.commit('logout', this)
-                    this.$store.commit('clearOpenedSubmenu')
+                    this.$store.commit('user/logout', this)
+                    this.$store.commit('app/clearOpenedSubmenu')
                     this.$router.push({
                         name: 'login'
                     })
@@ -182,10 +181,10 @@
         },
         watch: {
             '$route' (to) {
-                this.$store.commit('setCurrentPageName', to.name)
+                this.$store.commit('app/setCurrentPageName', to.name)
                 let pathArr = util.setCurrentPath(this, to.name)
                 if (pathArr.length > 2) {
-                    this.$store.commit('addOpenSubmenu', pathArr[1].name)
+                    this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
                 }
                 this.checkTag(to.name)
                 localStorage.currentPageName = to.name
@@ -205,7 +204,8 @@
         },
         created () {
             // 显示打开的页面的列表
-            this.$store.commit('setOpenedList')
+            this.$store.dispatch('app/getDishMenuAndUpdateMenuList')
+            this.$store.commit('app/setOpenedList')
         },
         dispatch () {
             window.removeEventListener('resize', this.scrollBarResize)

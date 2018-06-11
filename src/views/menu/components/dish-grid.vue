@@ -54,6 +54,7 @@ export default {
                 return total + '[' + index + '] ' + dish.name + ','
             }, '')
             this.$Message.info(info)
+            this.$emit('dish-moved')
         },
         requestEdit (dish) {
             this.$emit('request-edit', dish)

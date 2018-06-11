@@ -139,21 +139,22 @@ export default {
         },
         save () {
             let vm = this
-            vm.saveLoading = true
+
+            this.saveLoading = true
 
             setTimeout(() => {
-                vm.saveSuccess(vm)
+                vm.saveSuccess()
             }, 1000)
         },
-        saveSuccess (vm) {
-            util.deepCopyFromTo(vm.edittingPromotion, vm.promotion)
-            vm.saveLoading = false
-            vm.$Message.success('保存成功')
+        saveSuccess () {
+            util.deepCopyFromTo(this.edittingPromotion, this.promotion)
+            this.saveLoading = false
+            this.$Message.success('保存成功')
 
-            if (vm.promotion.new) {
-                vm.promotion.new = false
-                vm.edittingPromotion.new = false
-                vm.$emit('add-promotion', vm.promotion)
+            if (this.promotion.new) {
+                this.promotion.new = false
+                this.edittingPromotion.new = false
+                this.$emit('add-promotion', this.promotion)
             }
         },
         saveFailure (vm) {

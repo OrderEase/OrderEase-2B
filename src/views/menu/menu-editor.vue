@@ -14,17 +14,35 @@
                                 <FormItem label="菜单名称">
                                     <Row>
                                         <i-col span="18">
-                                            <Input v-model="menuItem.name" placeholder="输入..." />                                        </i-col>
+                                            <Input
+                                                v-model="menuItem.name"
+                                                placeholder="输入..."
+                                            />
+                                        </i-col>
                                         <i-col span="4" offset="1">
-                                            <Button type="success">保存</Button>
+                                            <Button
+                                                type="success"
+                                                @click="saveMenu"
+                                            >保存</Button>
                                         </i-col>
                                     </Row>
                                 </FormItem>
                             </Form>
                         </i-col>
                         <i-col span="4">
-                            <Button type="info">使用</Button>
-                            <Button type="error">删除菜单</Button>
+                            <Button
+                                type="info"
+                                :disabled="menuItem.used === 1"
+                                @click="changeMenu"
+                            >使用</Button>
+                            <Button
+                                type="primary"
+                                @click="addCategory"
+                            >添加类别</Button>
+                            <Button
+                                type="error"
+                                @click="deleteMenu"
+                            >删除菜单</Button>
                         </i-col>
                     </Row>
                 </Card>
@@ -57,6 +75,7 @@
                     <dish-grid
                         slot="content"
                         :menu-content="content"
+                        @dish-moved="saveMenu"
                     ></dish-grid>
                 </Panel>
             </draggable>
@@ -67,6 +86,7 @@
 <script>
 import draggable from 'vuedraggable'
 import DishGrid from './components/dish-grid.vue'
+import { mapState } from 'vuex'
 
 export default {
     name: 'menu_editor',
@@ -76,21 +96,27 @@ export default {
     },
     data () {
         return {
-            menuCollapse: [],
-            menuItem: {}
+            menuCollapse: []
         }
     },
+    computed: {
+        ...mapState ({
+            menuItem: state => state.menu.edittingMenu
+        })
+    },
+    watch: {
+        '$route': 'setEdittingMenu'
+    },
+    created () {
+        this.setEdittingMenu()
+    },
     methods: {
-        handleChange (value) {
-            this.$Message.info('open ' + value.toString())
-        },
         inputChanged (value) {
-            this.value1 = value
+            this.menuCollapse = value
         },
         getCategoryComponentData () {
             return {
                 on: {
-                    'on-change': this.handleChange,
                     input: this.inputChanged
                 },
                 props: {
@@ -101,114 +127,68 @@ export default {
         categoryStartDrag () {
             this.menuCollapse = []
         },
-        categoryEndDrag () {
-            this.$Message.success('move category')
+        async categoryEndDrag () {
+            await this.saveMenu()
         },
         categoryDelete (index) {
             this.$Message.warning('delete ' + index)
         },
-        getData () {
-            this.menuItem = {
-                name: '春季菜单',
-                content: [
-                    {
-                        category: '荤菜',
-                        dishes: [
-                            {
-                                id: 3910,
-                                name: '毛血旺',
-                                category: '荤菜',
-                                img: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2935073924,174907110&fm=58&bpow=680&bpoh=680',
-                                price: 28.5,
-                                stock: 99,
-                                avaliable: 1,
-                                likes: 4,
-                                description: 'Hello 毛血旺'
-                            },
-                            {
-                                id: 3920,
-                                name: '鸡公煲',
-                                category: '荤菜',
-                                img: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1739138823,1624312733&fm=27&gp=0.jpg',
-                                price: 2.5,
-                                stock: 99,
-                                avaliable: 1,
-                                likes: 10,
-                                description: 'Hello 鸡公煲'
-                            },
-                            {
-                                id: 1111,
-                                name: '夫妻肺片',
-                                category: '荤菜',
-                                img: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1905164004,1143377481&fm=27&gp=0.jpg',
-                                price: 2.5,
-                                stock: 99,
-                                avaliable: 1,
-                                likes: 10,
-                                description: 'Hello 夫妻肺片'
-                            },
-                            {
-                                id: 1121,
-                                name: '爆肚',
-                                category: '荤菜',
-                                img: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4012425942,166764615&fm=27&gp=0.jpg',
-                                price: 2.5,
-                                stock: 99,
-                                avaliable: 1,
-                                likes: 10,
-                                description: 'Hello 爆肚'
-                            }
-                        ]
-                    },
-                    {
-                        category: '素菜',
-                        dishes: [
-                            {
-                                id: 3910,
-                                name: '西洋菜',
-                                category: '素菜',
-                                img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=562147887,3241256955&fm=27&gp=0.jpg',
-                                price: 28.5,
-                                stock: 99,
-                                avaliable: 1,
-                                likes: 4,
-                                description: 'Hello 西洋菜'
-                            },
-                            {
-                                id: 3920,
-                                name: '娃娃菜',
-                                category: '素菜',
-                                img: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1161728142,2680973728&fm=27&gp=0.jpg',
-                                price: 2.5,
-                                stock: 99,
-                                avaliable: 1,
-                                likes: 10,
-                                description: 'Hello 娃娃菜'
-                            }
-                        ]
-                    },
-                    {
-                        category: '豆制品',
-                        dishes: [
-                            {
-                                id: 1111,
-                                name: '豆腐串',
-                                category: '豆制品',
-                                img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2026208039,824549144&fm=27&gp=0.jpg',
-                                price: 2.5,
-                                stock: 99,
-                                avaliable: 1,
-                                likes: 10,
-                                description: 'Hello 豆腐串'
-                            }
-                        ]
-                    }
-                ]
+        setEdittingMenu () {
+            this.menuCollapse = []
+            if (this.$route.params.id) {
+                this.$store.commit('menu/editMenuById', this.$route.params.id)
+            } else {
+                this.$store.commit('menu/editEmptyMenu')
+            }
+        },
+        async saveMenu () {
+            try {
+                if (this.$route.params.id) {
+                    await this.$store.dispatch('menu/updateMenu')
+                } else {
+                    let menu = await this.$store.dispatch('menu/createMenu')
+                    this.$router.push({
+                        replace: true,
+                        path: '/menu/' + menu.id
+                    })
+                }
+                this.$Message.success('保存成功')
+            } catch (err) {
+                this.$Message.error('保存失败')
+            }
+        },
+        async changeMenu () {
+            try {
+                await this.$store.dispatch('menu/changeMenu', this.$route.params.id)
+                this.$Message.success('更换成功')
+            } catch (err) {
+                this.$Message.error('更换失败')
+            }
+        },
+        addCategory () {
+            this.$store.commit('menu/addCategory')
+        },
+        async deleteMenu () {
+            try {
+                await this.$store.dispatch('menu/deleteMenu', this.$route.params.id)
+                this.$Message.success('成功删除')
+                this.$router.push({
+                    replace: true,
+                    path: '/menu/add'
+                })
+            } catch (err) {
+                this.$Message.error('删除失败')
             }
         }
     },
-    created () {
-        this.getData()
+    beforeRouteUpdate (to, from, next) {
+        if (to.params.id && !this.$store.getters['menu/getMenuById'](to.params.id)) {
+            next({
+                replace: true,
+                path: '/menu/add'
+            })
+        }
+        next()
     }
 }
 </script>

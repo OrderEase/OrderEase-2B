@@ -178,7 +178,7 @@ util.setCurrentPath = function (vm, name) {
             ]
         }
     }
-    vm.$store.commit('setCurrentPath', currentPathArr)
+    vm.$store.commit('app/setCurrentPath', currentPathArr)
 
     return currentPathArr
 }
@@ -190,7 +190,7 @@ util.openNewPage = function (vm, name, argu, query) {
     let tagHasOpened = false
     while (i < openedPageLen) {
         if (name === pageOpenedList[i].name) { // 页面已经打开
-            vm.$store.commit('pageOpenedList', {
+            vm.$store.commit('app/pageOpenedList', {
                 index: i,
                 argu: argu,
                 query: query
@@ -217,10 +217,10 @@ util.openNewPage = function (vm, name, argu, query) {
             if (query) {
                 tag.query = query
             }
-            vm.$store.commit('increateTag', tag)
+            vm.$store.commit('app/increateTag', tag)
         }
     }
-    vm.$store.commit('setCurrentPageName', name)
+    vm.$store.commit('app/setCurrentPageName', name)
 }
 
 util.toDefaultPage = function (routers, name, route, next) {
@@ -244,10 +244,14 @@ util.toDefaultPage = function (routers, name, route, next) {
 }
 
 util.fullscreenEvent = function (vm) {
-    vm.$store.commit('initCachepage')
+    vm.$store.commit('app/initCachepage')
     // 权限菜单过滤相关
-    vm.$store.commit('updateMenulist')
+    vm.$store.dispatch('getDishMenuAndUpdateMenuList')
     // 全屏相关
+}
+
+util.deepCopy = function (data) {
+    return JSON.parse(JSON.stringify(data))
 }
 
 util.deepCopyFromTo = function (from, to) {
@@ -262,6 +266,36 @@ util.exchangeObject = function (left, right) {
 
         left[key] = right[key]
         right[key] = temp
+    }
+}
+
+util.routerAddDishMenuList = function (router, dishMenuList) {
+    router.map(item => {
+        if (item.name === 'menu') {
+            item.children.pop()
+
+            dishMenuList.map(dishMenu => {
+                item.children.splice(item.children.length - 1, 0, {
+                    title: dishMenu.name,
+                    id: dishMenu.id,
+                    name: 'menu-editor-' + dishMenu.id
+                })
+            })
+        }
+    })
+
+    return router
+}
+
+util.isDishMenu = name => {
+    return /menu-editor-(\d+)/.test(name)
+}
+
+util.getDishMenuIDFromName = name => {
+    let match = /(menu-editor)-(\d+)/.exec(name)
+    return {
+        routerName: match[1],
+        id: match[2]
     }
 }
 

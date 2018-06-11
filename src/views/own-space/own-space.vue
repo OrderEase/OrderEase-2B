@@ -173,7 +173,7 @@ export default {
             this.editPasswordModal = true;
         },
         cancelEditUserInfor () {
-            this.$store.commit('removeTag', 'ownspace_index');
+            this.$store.commit('app/removeTag', 'ownspace_index');
             localStorage.pageOpenedList = JSON.stringify(this.$store.state.app.pageOpenedList);
             let lastPageName = '';
             if (this.$store.state.app.pageOpenedList.length > 1) {
