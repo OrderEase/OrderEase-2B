@@ -50,6 +50,24 @@ const actions = {
         let index = state.menuList.findIndex(menu => menu.id === menuId)
         state.menuList.splice(index, 0)
         state.edittingMenu = {}
+    },
+    async createCategory ({ dispatch, state }, category) {
+        try {
+            state.edittingMenu.content.push(category)
+            await dispatch('updateMenu')
+        } catch (err) {
+            state.edittingMenu.content.pop()
+            throw err
+        }
+    },
+    async deleteCategory ({ dispatch, state }, categoryIndex) {
+        let removed = state.edittingMenu.content.splice(categoryIndex, 1)
+        try {
+            await dispatch('updateMenu')
+        } catch (err) {
+            state.edittingMenu.content.splice(categoryIndex, 0, removed[0])
+            throw err
+        }
     }
 }
 

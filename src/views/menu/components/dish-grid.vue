@@ -9,6 +9,7 @@
             <dish-item
                 :dish="dish"
                 @request-edit="requestEdit"
+                @request-delete="requestDelete"
             ></dish-item>
         </i-col>
         <i-col span="8" class="margin-bottom-10 create-dish-wrap">
@@ -61,6 +62,9 @@ export default {
         },
         requestAdd (category) {
             this.$emit('request-add', category)
+        },
+        requestDelete (dish) {
+            this.$emit('request-delete', dish)
         }
     }
 }

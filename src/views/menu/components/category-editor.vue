@@ -8,7 +8,7 @@
         <Form :model="edittingCategory" :label-width="80">
             <FormItem label="类别名称">
                 <Input
-                    v-model="edittingCategory.name"
+                    v-model="edittingCategory.category"
                     placeholder="输入..."
                     :disabled="saveLoading"
                 />
@@ -33,8 +33,7 @@ import Menu from '@/api/menu.js'
 
 export default {
     props: {
-        editting: Boolean,
-        category: Object
+        editting: Boolean
     },
     data () {
         return {
@@ -46,31 +45,23 @@ export default {
     methods: {
         createEmptyCategory () {
             return {
-                name: ''
+                category: '',
+                dishes: []
             }
         },
         async save () {
             this.saveLoading = true
+            try {
+                await this.$store.dispatch('menu/createCategory', this.edittingCategory)
 
-            await Menu.
-            setTimeout(() => {
-                vm.saveSuccess()
-            }, 1000)
-        },
-        saveSuccess () {
-            util.deepCopyFromTo(this.edittingCategory, this.promotion)
-            this.saveLoading = false
-            this.$Message.success('保存成功')
-
-            if (this.category.new) {
-                this.category.new = false
-                this.edittingCategory.new = false
-                this.$emit('add-promotion', vm.promotion)
+                this.saveLoading = false
+                this.$Message.success('保存成功')
+                this.syncEditting = false
+            } catch (err) {
+                this.saveLoading = false
+                this.$Message.error('保存失败')
             }
-        },
-        saveFailure () {
-            this.saveLoading = false
-            this.$Message.error('保存失败')
+
         }
     },
     watch: {
@@ -79,9 +70,6 @@ export default {
         },
         syncEditting (val) {
             this.$emit('on-editting-change', val)
-        },
-        category (val) {
-            this.edittingCategory = JSON.parse(JSON.stringify(this.category))
         }
     }
 }

@@ -22,7 +22,7 @@
             </i-col>
             <i-col span="2">
                 <a @click="requestEdit"><Icon type="edit" size="16"></Icon></a>
-                <a><Icon type="trash-a" size="20"></Icon></a>
+                <a @click="requestDelete"><Icon type="trash-a" size="20"></Icon></a>
             </i-col>
         </Row>
     </Card>
@@ -36,6 +36,9 @@ export default {
     methods: {
         requestEdit () {
             this.$emit('request-edit', this.dish)
+        },
+        requestDelete () {
+            this.$emit('request-delete', this.dish)
         }
     }
 }

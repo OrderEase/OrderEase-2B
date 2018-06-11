@@ -22,6 +22,7 @@
                                         <i-col span="4" offset="1">
                                             <Button
                                                 type="success"
+                                                :disabled="saving"
                                                 @click="saveMenu"
                                             >保存</Button>
                                         </i-col>
@@ -29,18 +30,20 @@
                                 </FormItem>
                             </Form>
                         </i-col>
-                        <i-col span="4">
+                        <i-col span="6">
                             <Button
                                 type="info"
-                                :disabled="menuItem.used === 1"
+                                :disabled="saving || !menuItem.id || menuItem.used === 1"
                                 @click="changeMenu"
                             >使用</Button>
                             <Button
                                 type="primary"
-                                @click="addCategory"
+                                :disabled="saving || !menuItem.id"
+                                @click="requestCreateCategory"
                             >添加类别</Button>
                             <Button
                                 type="error"
+                                :disabled="saving || !menuItem.id"
                                 @click="deleteMenu"
                             >删除菜单</Button>
                         </i-col>
@@ -48,6 +51,11 @@
                 </Card>
             </i-col>
         </Row>
+
+        <category-editor
+            :editting="isEdittingCategory"
+            @on-editting-change="syncEditting"
+        ></category-editor>
 
         <Row class="margin-top-20">
             <draggable
@@ -66,7 +74,7 @@
                     {{ content.category }}
                     
                     <a class="category-delete"
-                        @click.stop="categoryDelete(index)">
+                        @click.stop="requestDeleteCategory(index)">
                         <Icon type="trash-a" size="18"></Icon>
                     </a>
 
@@ -76,6 +84,7 @@
                         slot="content"
                         :menu-content="content"
                         @dish-moved="saveMenu"
+                        @request-delete="deleteDish"
                     ></dish-grid>
                 </Panel>
             </draggable>
@@ -86,17 +95,21 @@
 <script>
 import draggable from 'vuedraggable'
 import DishGrid from './components/dish-grid.vue'
+import CategoryEditor from './components/category-editor.vue'
 import { mapState } from 'vuex'
 
 export default {
     name: 'menu_editor',
     components: {
         draggable,
-        DishGrid
+        DishGrid,
+        CategoryEditor
     },
     data () {
         return {
-            menuCollapse: []
+            menuCollapse: [],
+            saving: false,
+            isEdittingCategory: false
         }
     },
     computed: {
@@ -130,9 +143,6 @@ export default {
         async categoryEndDrag () {
             await this.saveMenu()
         },
-        categoryDelete (index) {
-            this.$Message.warning('delete ' + index)
-        },
         setEdittingMenu () {
             this.menuCollapse = []
             if (this.$route.params.id) {
@@ -143,6 +153,7 @@ export default {
         },
         async saveMenu () {
             try {
+                this.saving = true
                 if (this.$route.params.id) {
                     await this.$store.dispatch('menu/updateMenu')
                 } else {
@@ -152,8 +163,10 @@ export default {
                         path: '/menu/' + menu.id
                     })
                 }
+                this.saving = false
                 this.$Message.success('保存成功')
             } catch (err) {
+                this.saving = false
                 this.$Message.error('保存失败')
             }
         },
@@ -165,20 +178,71 @@ export default {
                 this.$Message.error('更换失败')
             }
         },
-        addCategory () {
-            this.$store.commit('menu/addCategory')
+        requestCreateCategory () {
+            this.isEdittingCategory = true
         },
-        async deleteMenu () {
-            try {
-                await this.$store.dispatch('menu/deleteMenu', this.$route.params.id)
-                this.$Message.success('成功删除')
-                this.$router.push({
-                    replace: true,
-                    path: '/menu/add'
-                })
-            } catch (err) {
-                this.$Message.error('删除失败')
-            }
+        requestDeleteCategory (index) {
+            this.$Modal.confirm({
+                title: '删除类别',
+                content: '<p>确定删除该类别么？</p>',
+                loading: true,
+                onOk: async () => {
+                    try {
+                        await this.$store.dispatch('menu/deleteCategory', index)
+                        
+                        this.$Message.success('成功删除')
+                        this.$Modal.remove()
+                    } catch (err) {
+                        this.$Message.error('删除失败')
+                        this.$Modal.remove()
+                    }
+                }
+            })
+        },
+        syncEditting (value) {
+            this.isEdittingCategory = value
+        },
+        deleteMenu () {
+            this.$Modal.confirm({
+                title: '删除菜单',
+                content: '<p>确定删除该菜单么？</p>',
+                loading: true,
+                onOk: async () => {
+                    try {
+                        await this.$store.dispatch('menu/deleteMenu', this.$route.params.id)
+                        this.$Message.success('成功删除')
+                        this.$Modal.remove()
+                        this.$router.push({
+                            replace: true,
+                            path: '/menu/add'
+                        })
+                    } catch (err) {
+                        this.$Modal.remove()
+                        this.$Message.error('删除失败')
+                    }
+                }
+            })
+        },
+        deleteDish (dish) {
+            this.$Modal.confirm({
+                title: '删除菜品',
+                content: '<p>确定删除该菜品么？</p>',
+                loading: true,
+                onOk: async () => {
+                    try {
+                        await this.$store.dispatch('menu/deleteDish', this.$route.params.id)
+                        this.$Message.success('成功删除')
+                        this.$Modal.remove()
+                        this.$router.push({
+                            replace: true,
+                            path: '/menu/add'
+                        })
+                    } catch (err) {
+                        this.$Modal.remove()
+                        this.$Message.error('删除失败')
+                    }
+                }
+            })
         }
     },
     beforeRouteUpdate (to, from, next) {
