@@ -33,27 +33,36 @@ import Menu from '@/api/menu.js'
 
 export default {
     props: {
-        editting: Boolean
+        editting: Boolean,
+        category: Object
     },
     data () {
         return {
             syncEditting: this.editting,
-            edittingCategory: this.createEmptyCategory(),
+            edittingCategory: {},
             saveLoading: false
         }
     },
-    methods: {
-        createEmptyCategory () {
-            return {
-                name: '',
-                rank: -1,
-                dishes: []
-            }
+    watch: {
+        editting (val) {
+            this.syncEditting = val
         },
+        syncEditting (val) {
+            this.$emit('on-editting-change', val)
+        },
+        category (val) {
+            this.edittingCategory = util.deepCopy(val)
+        }
+    },
+    methods: {
         async save () {
             this.saveLoading = true
             try {
-                await this.$store.dispatch('menu/createCategory', this.edittingCategory)
+                if (this.edittingCategory.id) {
+                    await this.$store.dispatch('menu/updateCategory', this.edittingCategory)
+                } else {
+                    await this.$store.dispatch('menu/createCategory', this.edittingCategory)
+                }
 
                 this.saveLoading = false
                 this.$Message.success('保存成功')
@@ -65,14 +74,6 @@ export default {
 
         }
     },
-    watch: {
-        editting (val) {
-            this.syncEditting = val
-        },
-        syncEditting (val) {
-            this.$emit('on-editting-change', val)
-        }
-    }
 }
 </script>
 

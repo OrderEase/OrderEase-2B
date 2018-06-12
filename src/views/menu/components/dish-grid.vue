@@ -67,7 +67,10 @@ export default {
             this.$emit('request-add', category)
         },
         requestDelete (dish) {
-            this.$emit('request-delete', dish)
+            this.$emit('request-delete', {
+                dish,
+                category: this.category
+            })
         }
     }
 }

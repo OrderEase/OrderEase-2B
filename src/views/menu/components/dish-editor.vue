@@ -93,6 +93,18 @@ export default {
             saveLoading: false
         }
     },
+    watch: {
+        editting (val) {
+            this.syncEditting = val
+        },
+        syncEditting (val) {
+            this.$emit('on-editting-change', val)
+        },
+        dish (val) {
+            this.edittingDish = util.deepCopy(val)
+            this.edittingDish.avaliable = this.edittingDish.avaliable === 1
+        }
+    },
     methods: {
         async save () {
             this.saveLoading = true
@@ -120,18 +132,6 @@ export default {
                 this.$Message.error('保存失败')
             }
 
-        }
-    },
-    watch: {
-        editting (val) {
-            this.syncEditting = val
-        },
-        syncEditting (val) {
-            this.$emit('on-editting-change', val)
-        },
-        dish (val) {
-            this.edittingDish = util.deepCopy(val)
-            this.edittingDish.avaliable = this.edittingDish.avaliable === 1
         }
     }
 }

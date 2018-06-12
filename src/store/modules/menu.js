@@ -50,10 +50,8 @@ const actions = {
         state.edittingMenu = {}
     },
     async createCategory ({ dispatch, state }, category) {
-        let categoryId = ''
-
         try {
-            categoryId = await Menu.createCategory(state.edittingMenu.id, category)
+            let categoryId = await Menu.createCategory(state.edittingMenu.id, category)
             let newCategory = await Menu.getCategory(state.edittingMenu.id, categoryId)
 
             state.edittingMenu.content.push(newCategory)
@@ -62,36 +60,39 @@ const actions = {
             throw err
         }
     },
-    async deleteCategory ({ dispatch, state }, categoryId) {
-        try {
-            await Menu.deleteCategory(state.edittingMenu.id, categoryId)
+    async updateCategory ({ dispatch, state }, category) {
+        await Menu.updateCategory(state.edittingMenu.id, category)
+        let updatedCategory = await Menu.getCategory(state.edittingMenu.id, category.id)
 
-            let categoryIndex = state.edittingMenu.content.findIndex(category => category.id === categoryId)
-            state.edittingMenu.content.splice(categoryIndex, 1)
-        } catch (err) {
-            throw err
-        }
+        let categoryIndex = state.edittingMenu.content.findIndex(value => value.id === category.id)
+        Object.assign(state.edittingMenu.content[categoryIndex], updatedCategory)
+    },
+    async deleteCategory ({ dispatch, state }, categoryId) {
+        await Menu.deleteCategory(state.edittingMenu.id, categoryId)
+
+        let categoryIndex = state.edittingMenu.content.findIndex(category => category.id === categoryId)
+        state.edittingMenu.content.splice(categoryIndex, 1)
     },
     async createDish ({ dispatch, state }, { categoryId, dish }) {
-        try {
-            let dishId = await Menu.createDish(state.edittingMenu.id, categoryId, dish)
-            let newDish = await Menu.getDish(state.edittingMenu.id, categoryId, dishId)
+        let dishId = await Menu.createDish(state.edittingMenu.id, categoryId, dish)
+        let newDish = await Menu.getDish(state.edittingMenu.id, categoryId, dishId)
 
-            let category = state.edittingMenu.content.find(category => category.id === categoryId)
-            category.dishes.push(newDish)
-        } catch (err) {
-            throw err
-        }
+        let category = state.edittingMenu.content.find(category => category.id === categoryId)
+        category.dishes.push(newDish)
     },
     async updateDish ({ dispatch, state }, { categoryId, dish }) {
-        try {
-            await Menu.updateDish(state.edittingMenu.id, categoryId, dish)
-            let category = state.edittingMenu.content.find(category => category.id === categoryId)
-            let dishIndex = category.dishes.findIndex(value => value.id === dish.id)
-            Object.assign(category.dishes[dishIndex], dish)
-        } catch (err) {
-            throw err
-        }
+        await Menu.updateDish(state.edittingMenu.id, categoryId, dish)
+
+        let category = state.edittingMenu.content.find(category => category.id === categoryId)
+        let dishIndex = category.dishes.findIndex(value => value.id === dish.id)
+        Object.assign(category.dishes[dishIndex], dish)
+    },
+    async deleteDish ({ dispatch, state }, { categoryId, dishId }) {
+        await Menu.deleteDish(state.edittingMenu.id, categoryId, dishId)
+
+        let category = state.edittingMenu.content.find(category => category.id === categoryId)
+        let dishIndex = category.dishes.findIndex(dish => dish.id === dishId)
+        category.dishes.splice(dishIndex, 1)
     },
     async saveSort ({ dispatch, state }) {
         let promises = []
@@ -112,11 +113,7 @@ const actions = {
             })
         })
 
-        try {
-            await Promise.all(promises)
-        } catch (err) {
-            throw err
-        }
+        await Promise.all(promises)
     }
 }
 

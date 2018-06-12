@@ -39,7 +39,7 @@
                             <Button
                                 type="primary"
                                 :disabled="saving || !menuItem.id"
-                                @click="requestCreateCategory"
+                                @click="createCategory"
                             >添加类别</Button>
                             <Button
                                 v-if="!isSorting"
@@ -66,6 +66,7 @@
 
         <category-editor
             :editting="isEdittingCategory"
+            :category="edittingCategory"
             @on-editting-change="syncEdittingCategory"
         ></category-editor>
 
@@ -84,8 +85,13 @@
 
                     {{ category.name }}
                     
+                    <a class="category-edit"
+                        @click.stop="editCategory(category)">
+                        <Icon type="edit" size="18"></Icon>
+                    </a>
+
                     <a class="category-delete"
-                        @click.stop="requestDeleteCategory(index)">
+                        @click.stop="deleteCategory(category)">
                         <Icon type="trash-a" size="18"></Icon>
                     </a>
 
@@ -135,10 +141,13 @@ export default {
         return {
             menuCollapse: [],
             saving: false,
+
+            edittingCategory: {},
             isEdittingCategory: false,
-            isEdittingDish: false,
+
             edittingDish: {},
-            edittingDishCategory: {}
+            edittingDishCategory: {},
+            isEdittingDish: false
         }
     },
     computed: {
@@ -213,30 +222,6 @@ export default {
             }
             this.saving = false
         },
-        requestCreateCategory () {
-            this.isEdittingCategory = true
-        },
-        requestDeleteCategory (index) {
-            this.$Modal.confirm({
-                title: '删除类别',
-                content: '<p>确定删除该类别么？</p>',
-                loading: true,
-                onOk: async () => {
-                    try {
-                        await this.$store.dispatch('menu/deleteCategory', index)
-                        
-                        this.$Message.success('成功删除')
-                        this.$Modal.remove()
-                    } catch (err) {
-                        this.$Message.error('删除失败')
-                        this.$Modal.remove()
-                    }
-                }
-            })
-        },
-        syncEdittingCategory (value) {
-            this.isEdittingCategory = value
-        },
         deleteMenu () {
             this.$Modal.confirm({
                 title: '删除菜单',
@@ -258,23 +243,35 @@ export default {
                 }
             })
         },
-        deleteDish (dish) {
+        syncEdittingCategory (value) {
+            this.isEdittingCategory = value
+        },
+        createCategory () {
+            this.isEdittingCategory = true
+            this.edittingCategory = {
+                name: '',
+                rank: -1,
+                dishes: []
+            }
+        },
+        editCategory (category) {
+            this.isEdittingCategory = true
+            this.edittingCategory = category
+        },
+        deleteCategory (category) {
             this.$Modal.confirm({
-                title: '删除菜品',
-                content: '<p>确定删除该菜品么？</p>',
+                title: '删除类别',
+                content: '<p>确定删除该类别么？</p>',
                 loading: true,
                 onOk: async () => {
                     try {
-                        await this.$store.dispatch('menu/deleteDish', this.$route.params.id)
+                        await this.$store.dispatch('menu/deleteCategory', category.id)
+
                         this.$Message.success('成功删除')
                         this.$Modal.remove()
-                        this.$router.push({
-                            replace: true,
-                            path: '/menu/add'
-                        })
                     } catch (err) {
-                        this.$Modal.remove()
                         this.$Message.error('删除失败')
+                        this.$Modal.remove()
                     }
                 }
             })
@@ -300,6 +297,26 @@ export default {
             this.isEdittingDish = true
             this.edittingDish = dish
             this.edittingDishCategory = category
+        },
+        deleteDish ({ dish, category }) {
+            this.$Modal.confirm({
+                title: '删除菜品',
+                content: '<p>确定删除该菜品么？</p>',
+                loading: true,
+                onOk: async () => {
+                    try {
+                        await this.$store.dispatch('menu/deleteDish', {
+                            categoryId: category.id,
+                            dishId: dish.id
+                        })
+                        this.$Message.success('成功删除')
+                        this.$Modal.remove()
+                    } catch (err) {
+                        this.$Modal.remove()
+                        this.$Message.error('删除失败')
+                    }
+                }
+            })
         },
         requestSort () {
             this.$store.commit('menu/startSort')
