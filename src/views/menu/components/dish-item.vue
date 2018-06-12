@@ -20,18 +20,31 @@
                     <p>价格: {{ dish.price }}</p>
                 </Row>
             </i-col>
-            <i-col span="2">
+            <i-col span="2" class="dish-item-con">
                 <a @click="requestEdit"><Icon type="edit" size="16"></Icon></a>
                 <a @click="requestDelete"><Icon type="trash-a" size="20"></Icon></a>
+                <Icon
+                    v-if="isSorting"
+                    class="dish-item-con-move"
+                    type="arrow-move"
+                    size="18"
+                ></Icon>
             </i-col>
         </Row>
     </Card>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     props: {
         dish: Object
+    },
+    computed: {
+        ...mapState({
+            isSorting: state => state.menu.isSorting
+        })
     },
     methods: {
         requestEdit () {

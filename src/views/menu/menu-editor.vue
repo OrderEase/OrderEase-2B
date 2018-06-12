@@ -42,6 +42,18 @@
                                 @click="requestCreateCategory"
                             >添加类别</Button>
                             <Button
+                                v-if="!isSorting"
+                                type="warning"
+                                :disabled="saving || !menuItem.id"
+                                @click="requestSort"
+                            >排序</Button>
+                            <Button
+                                v-if="isSorting"
+                                type="success"
+                                :disabled="saving || !menuItem.id"
+                                @click="completeSort"
+                            >完成</Button>
+                            <Button
                                 type="error"
                                 :disabled="saving || !menuItem.id"
                                 @click="deleteMenu"
@@ -61,11 +73,10 @@
             <draggable
                 element="Collapse"
                 class="menu-collapse"
-                :options="{ filter: '.ivu-collapse-content' }"
+                :options="categoryOptions"
                 :list="menuItem.content"
                 :component-data="getCategoryComponentData()"
-                @start="categoryStartDrag"
-                @end="categoryEndDrag">
+                @start="categoryStartDrag">
                 <Panel
                     v-for="(category, index) in menuItem.content"
                     :key="index"
@@ -78,12 +89,16 @@
                         <Icon type="trash-a" size="18"></Icon>
                     </a>
 
-                    <Icon class="category-move" type="arrow-move" size="18"></Icon>
+                    <Icon
+                        v-if="isSorting"
+                        class="category-move"
+                        type="arrow-move"
+                        size="18"
+                    ></Icon>
 
                     <dish-grid
                         slot="content"
                         :category="category"
-                        @dish-moved="saveMenu"
                         @request-delete="deleteDish"
                         @request-add="createDish"
                         @request-edit="editDish"
@@ -128,6 +143,13 @@ export default {
     },
     computed: {
         ...mapState ({
+            categoryOptions (state) {
+                return {
+                    filter: '.ivu-collapse-content',
+                    disabled: !state.menu.isSorting
+                }
+            },
+            isSorting: state => state.menu.isSorting,
             menuItem: state => state.menu.edittingMenu
         })
     },
@@ -153,9 +175,6 @@ export default {
         },
         categoryStartDrag () {
             this.menuCollapse = []
-        },
-        async categoryEndDrag () {
-            await this.saveMenu()
         },
         setEdittingMenu () {
             this.menuCollapse = []
@@ -281,6 +300,23 @@ export default {
             this.isEdittingDish = true
             this.edittingDish = dish
             this.edittingDishCategory = category
+        },
+        requestSort () {
+            this.$store.commit('menu/startSort')
+            this.categoryOptions.disabled = false
+        },
+        async completeSort () {
+            this.$store.commit('menu/endSort')
+            this.categoryOptions.disabled = true
+
+            this.saving = true
+            try {
+                await this.$store.dispatch('menu/saveSort')
+                this.$Message.success('保存顺序成功')
+            } catch (err) {
+                this.$Message.error('保存顺序失败')
+            }
+            this.saving = false
         }
     },
     beforeRouteUpdate (to, from, next) {

@@ -3,7 +3,8 @@ import Util from '@/libs/util.js'
 
 const state = {
     menuList: [],
-    edittingMenu: {}
+    edittingMenu: {},
+    isSorting: false
 }
 
 const getters = {
@@ -91,6 +92,31 @@ const actions = {
         } catch (err) {
             throw err
         }
+    },
+    async saveSort ({ dispatch, state }) {
+        let promises = []
+
+        let menuId = state.edittingMenu.id
+        state.edittingMenu.content.forEach((category, cidx) => {
+            if (category.rank !== cidx) {
+                category.rank = cidx
+                promises.push(Menu.updateCategory(menuId, category))
+            }
+
+            let categoryId = category.id
+            category.dishes.forEach((dish, didx) => {
+                if (dish.rank !== didx) {
+                    dish.rank = didx
+                    promises.push(Menu.updateDish(menuId, categoryId, dish))
+                }
+            })
+        })
+
+        try {
+            await Promise.all(promises)
+        } catch (err) {
+            throw err
+        }
     }
 }
 
@@ -108,6 +134,12 @@ const mutations = {
             rank: -1,
             content: []
         }
+    },
+    startSort (state) {
+        state.isSorting = true
+    },
+    endSort (state) {
+        state.isSorting = false
     }
 }
 

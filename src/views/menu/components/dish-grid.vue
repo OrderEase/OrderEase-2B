@@ -3,9 +3,12 @@
         element="Row"
         :list="category.dishes"
         :options="dishGridOptions"
-        :component-data="getComponent()"
-        @end="dishEndDrag">
-        <i-col span="8" class="margin-bottom-10" v-for="(dish, index) in category.dishes" :key="index">
+        :component-data="getComponent()">
+        <i-col
+            v-for="(dish, index) in category.dishes"
+            :key="index"
+            span="8"
+            class="margin-bottom-10">
             <dish-item
                 :dish="dish"
                 @request-edit="requestEdit"
@@ -25,6 +28,7 @@
 import draggable from 'vuedraggable'
 import DishItem from './dish-item.vue'
 import CreateDishItem from './create-dish-item.vue'
+import { mapState } from 'vuex'
 
 export default {
     components: {
@@ -35,12 +39,15 @@ export default {
     props: {
         category: Object
     },
-    data () {
-        return {
-            dishGridOptions: {
-                filter: '.create-dish-wrap'
+    computed: {
+        ...mapState({
+            dishGridOptions (state) {
+                return {
+                    filter: '.create-dish-wrap',
+                    disabled: !state.menu.isSorting
+                }
             }
-        }
+        })
     },
     methods: {
         getComponent () {
@@ -49,13 +56,6 @@ export default {
                     gutter: 24
                 }
             }
-        },
-        dishEndDrag () {
-            let info = this.category.dishes.reduce((total, dish, index) => {
-                return total + '[' + index + '] ' + dish.name + ','
-            }, '')
-            this.$Message.info(info)
-            this.$emit('dish-moved')
         },
         requestEdit (dish) {
             this.$emit('request-edit', {
