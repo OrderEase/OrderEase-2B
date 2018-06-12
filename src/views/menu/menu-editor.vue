@@ -215,7 +215,7 @@ export default {
         async changeMenu () {
             this.saving = true
             try {
-                await this.$store.dispatch('menu/changeMenu', this.$route.params.id)
+                await this.$store.dispatch('menu/changeMenu')
                 this.$Message.success('更换成功')
             } catch (err) {
                 this.$Message.error('更换失败')
@@ -229,7 +229,8 @@ export default {
                 loading: true,
                 onOk: async () => {
                     try {
-                        await this.$store.dispatch('menu/deleteMenu', this.$route.params.id)
+                        await this.$store.dispatch('menu/deleteMenu')
+
                         this.$Message.success('成功删除')
                         this.$Modal.remove()
                         this.$router.push({
@@ -250,7 +251,7 @@ export default {
             this.isEdittingCategory = true
             this.edittingCategory = {
                 name: '',
-                rank: -1,
+                rank: menuItem.content.length,
                 dishes: []
             }
         },
@@ -266,6 +267,7 @@ export default {
                 onOk: async () => {
                     try {
                         await this.$store.dispatch('menu/deleteCategory', category.id)
+                        await this.$store.dispatch('menu/saveSort')
 
                         this.$Message.success('成功删除')
                         this.$Modal.remove()
@@ -290,7 +292,7 @@ export default {
                 avaliable: 1,
                 likes: 0,
                 description: '',
-                rank: -1
+                rank: category.dishes.length
             }
         },
         editDish ({ dish, category }) {
@@ -309,6 +311,8 @@ export default {
                             categoryId: category.id,
                             dishId: dish.id
                         })
+                        await this.$store.dispatch('menu/saveSort')
+
                         this.$Message.success('成功删除')
                         this.$Modal.remove()
                     } catch (err) {

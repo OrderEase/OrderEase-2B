@@ -114,7 +114,7 @@ let menuList = [
             {
                 id: '11',
                 name: '荤菜',
-                rank: 0,
+                rank: 1,
                 dishes: [
                     {
                         id: '3910',
@@ -125,7 +125,7 @@ let menuList = [
                         avaliable: 1,
                         likes: 4,
                         description: 'Hello 毛血旺',
-                        rank: 0
+                        rank: 1
                     },
                     {
                         id: '3920',
@@ -136,7 +136,7 @@ let menuList = [
                         avaliable: 1,
                         likes: 10,
                         description: 'Hello 鸡公煲',
-                        rank: 1
+                        rank: 0
                     },
                     {
                         id: '1111',
@@ -165,7 +165,7 @@ let menuList = [
             {
                 id: '12',
                 name: '素菜',
-                rank: 1,
+                rank: 0,
                 dishes: [
                     {
                         id: '3910',

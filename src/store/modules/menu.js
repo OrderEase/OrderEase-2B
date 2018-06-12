@@ -18,6 +18,7 @@ const getters = {
 const actions = {
     async getMenuList ({ commit }) {
         commit('setMenuList', await Menu.getAll())
+        commit('resetMenuRank')
     },
     async createMenu ({ state, dispatch }) {
         let menuId = await Menu.create(state.edittingMenu)
@@ -34,18 +35,18 @@ const actions = {
 
         await dispatch('app/getDishMenuAndUpdateMenuList', null, { root: true })
     },
-    async changeMenu ({ state, dispatch }, menuId) {
-        await Menu.change(menuId)
+    async changeMenu ({ state, dispatch }) {
+        await Menu.change(state.edittingMenu.id)
         state.menuList.forEach(menu => {
-            menu.used = menu.id === menuId ? 1 : 0
+            menu.used = menu.id === state.edittingMenu.id ? 1 : 0
         })
         state.edittingMenu.used = 1
     },
-    async deleteMenu ({ dispatch, state }, menuId) {
-        await Menu.delete(menuId)
+    async deleteMenu ({ dispatch, state }) {
+        await Menu.delete(state.edittingMenu.id)
         await dispatch('app/getDishMenuAndUpdateMenuList', null, { root: true })
 
-        let index = state.menuList.findIndex(menu => menu.id === menuId)
+        let index = state.menuList.findIndex(menu => menu.id === state.edittingMenu.id)
         state.menuList.splice(index, 0)
         state.edittingMenu = {}
     },
@@ -120,6 +121,24 @@ const actions = {
 const mutations = {
     setMenuList (state, dishMenuList) {
         state.menuList = dishMenuList
+    },
+    resetMenuRank (state) {
+        let sortFunc = (left, right) => {
+            if (left.rank < right.rank) {
+                return -1
+            } else if (left.rank > right.rank) {
+                return 1
+            } else {
+                return 0
+            }
+        }
+
+        state.menuList.forEach(menu => {
+            menu.content.sort(sortFunc)
+            menu.content.forEach(category => {
+                category.dishes.sort(sortFunc)
+            })
+        })
     },
     editMenuById (state, id) {
         state.edittingMenu = state.menuList.find(menu => menu.id === id)
