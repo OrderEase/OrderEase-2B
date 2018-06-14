@@ -242,18 +242,6 @@ menu.update = (updatedMenu) => {
     })
 }
 
-menu.change = (menuId) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            menuList.forEach(menu => {
-                menu.used = menu.id === menuId ? 1 : 0
-            })
-
-            resolve()
-        }, 1000)
-    })
-}
-
 menu.delete = (menuId) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {

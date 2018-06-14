@@ -10,12 +10,17 @@
                 <Card>
                     <Row type="flex" justify="space-between">
                         <i-col span="8">
-                            <Form :model="menuItem" :label-width="80">
-                                <FormItem label="菜单名称">
+                            <Form
+                                ref="menuForm"
+                                :model="menuItem"
+                                :label-width="80"
+                                :rules="ruleValidate">
+                                <FormItem label="菜单名称" prop="name">
                                     <Row>
                                         <i-col span="18">
                                             <Input
                                                 v-model="menuItem.name"
+                                                :disabled="saving"
                                                 placeholder="输入..."
                                             />
                                         </i-col>
@@ -33,12 +38,12 @@
                         <i-col span="8" class="menu-editor-con">
                             <Button
                                 type="info"
-                                :disabled="saving || !menuItem.id || menuItem.used === 1"
+                                :disabled="saving || !menuItem.id || menuItem.used === 1 || isSorting"
                                 @click="changeMenu"
                             >使用</Button>
                             <Button
                                 type="primary"
-                                :disabled="saving || !menuItem.id"
+                                :disabled="saving || !menuItem.id || isSorting"
                                 @click="createCategory"
                             >添加类别</Button>
                             <Button
@@ -55,7 +60,7 @@
                             >完成</Button>
                             <Button
                                 type="error"
-                                :disabled="saving || !menuItem.id"
+                                :disabled="saving || !menuItem.id || isSorting"
                                 @click="deleteMenu"
                             >删除菜单</Button>
                         </i-col>
@@ -87,7 +92,7 @@
                     
                     <a class="category-edit"
                         @click.stop="editCategory(category)">
-                        <Icon type="edit" size="18"></Icon>
+                        <Icon type="edit" size="16"></Icon>
                     </a>
 
                     <a class="category-delete"
@@ -147,7 +152,17 @@ export default {
 
             edittingDish: {},
             edittingDishCategory: {},
-            isEdittingDish: false
+            isEdittingDish: false,
+
+            ruleValidate: {
+                name: [
+                    {
+                        required: true,
+                        message: '菜单名称不能为空',
+                        trigger: 'blur'
+                    }
+                ]
+            }
         }
     },
     computed: {
@@ -194,23 +209,27 @@ export default {
             }
         },
         async saveMenu () {
-            try {
-                this.saving = true
-                if (this.$route.params.id) {
-                    await this.$store.dispatch('menu/updateMenu')
-                } else {
-                    let menuId = await this.$store.dispatch('menu/createMenu')
-                    this.$router.push({
-                        replace: true,
-                        path: '/menu/' + menuId
-                    })
+            this.$refs['menuForm'].validate(async valid => {
+                if (valid) {
+                    try {
+                        this.saving = true
+                        if (this.$route.params.id) {
+                            await this.$store.dispatch('menu/updateMenu')
+                        } else {
+                            let menuId = await this.$store.dispatch('menu/createMenu')
+                            this.$router.push({
+                                replace: true,
+                                path: '/menu/' + menuId
+                            })
+                        }
+                        this.saving = false
+                        this.$Message.success('保存成功')
+                    } catch (err) {
+                        this.saving = false
+                        this.$Message.error('保存失败')
+                    }
                 }
-                this.saving = false
-                this.$Message.success('保存成功')
-            } catch (err) {
-                this.saving = false
-                this.$Message.error('保存失败')
-            }
+            })
         },
         async changeMenu () {
             this.saving = true
@@ -251,7 +270,7 @@ export default {
             this.isEdittingCategory = true
             this.edittingCategory = {
                 name: '',
-                rank: menuItem.content.length,
+                rank: this.menuItem.content.length,
                 dishes: []
             }
         },

@@ -5,8 +5,12 @@
             <span>编辑类别</span>
         </p>
 
-        <Form :model="edittingCategory" :label-width="80">
-            <FormItem label="类别名称">
+        <Form
+            ref="categoryForm"
+            :model="edittingCategory"
+            :rules="ruleValidate"
+            :label-width="80">
+            <FormItem label="类别名称" prop="name">
                 <Input
                     v-model="edittingCategory.name"
                     placeholder="输入..."
@@ -40,7 +44,17 @@ export default {
         return {
             syncEditting: this.editting,
             edittingCategory: {},
-            saveLoading: false
+            saveLoading: false,
+
+            ruleValidate: {
+                name: [
+                    {
+                        required: true,
+                        message: '类别名称不能为空',
+                        trigger: 'blur'
+                    }
+                ]
+            }
         }
     },
     watch: {
@@ -56,22 +70,25 @@ export default {
     },
     methods: {
         async save () {
-            this.saveLoading = true
-            try {
-                if (this.edittingCategory.id) {
-                    await this.$store.dispatch('menu/updateCategory', this.edittingCategory)
-                } else {
-                    await this.$store.dispatch('menu/createCategory', this.edittingCategory)
+            this.$refs['categoryForm'].validate(async valid => {
+                if (valid) {
+                    this.saveLoading = true
+                    try {
+                        if (this.edittingCategory.id) {
+                            await this.$store.dispatch('menu/updateCategory', this.edittingCategory)
+                        } else {
+                            await this.$store.dispatch('menu/createCategory', this.edittingCategory)
+                        }
+
+                        this.saveLoading = false
+                        this.$Message.success('保存成功')
+                        this.syncEditting = false
+                    } catch (err) {
+                        this.saveLoading = false
+                        this.$Message.error('保存失败')
+                    }
                 }
-
-                this.saveLoading = false
-                this.$Message.success('保存成功')
-                this.syncEditting = false
-            } catch (err) {
-                this.saveLoading = false
-                this.$Message.error('保存失败')
-            }
-
+            })
         }
     },
 }

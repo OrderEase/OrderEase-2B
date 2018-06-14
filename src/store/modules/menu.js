@@ -36,11 +36,18 @@ const actions = {
         await dispatch('app/getDishMenuAndUpdateMenuList', null, { root: true })
     },
     async changeMenu ({ state, dispatch }) {
-        await Menu.change(state.edittingMenu.id)
+        let promises = []
+
         state.menuList.forEach(menu => {
-            menu.used = menu.id === state.edittingMenu.id ? 1 : 0
+            if (menu.used === 1) {
+                menu.used = 0
+                promises.push(Menu.update(menu))
+            }
         })
         state.edittingMenu.used = 1
+        promises.push(Menu.update(state.edittingMenu))
+
+        await Promise.all(promises)
     },
     async deleteMenu ({ dispatch, state }) {
         await Menu.delete(state.edittingMenu.id)

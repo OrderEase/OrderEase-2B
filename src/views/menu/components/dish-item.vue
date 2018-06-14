@@ -14,6 +14,9 @@
                     <h3>{{ dish.name }}</h3>
                 </Row>
                 <Row class="margin-top-40">
+                    <p class="dish-avaliable" :class="stockClass">{{ stockInfo }}</p>
+                </Row>
+                <Row>
                     <p>库存: {{ dish.stock }}</p>
                 </Row>
                 <Row>
@@ -44,7 +47,13 @@ export default {
     computed: {
         ...mapState({
             isSorting: state => state.menu.isSorting
-        })
+        }),
+        stockInfo () {
+            return this.dish.avaliable === 1 ? '已上架' : '未上架'
+        },
+        stockClass () {
+            return this.dish.avaliable === 1 ? 'dish-avaliable-yes' : 'dish-avaliable-no'
+        }
     },
     methods: {
         requestEdit () {
