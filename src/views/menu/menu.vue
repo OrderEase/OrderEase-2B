@@ -45,6 +45,10 @@ export default {
             tableData: []
         }
     },
+    created () {
+        // 可在此从服务端获取表格数据
+        this.getData()
+    },
     methods: {
         handleUse (val, index) {
             this.$Message.success('使用了第' + (index + 1) + '号菜单')
@@ -91,10 +95,6 @@ export default {
                 }
             ]
         }
-    },
-    created () {
-        // 可在此从服务端获取表格数据
-        this.getData()
     }
 }
 </script>

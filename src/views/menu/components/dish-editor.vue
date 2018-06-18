@@ -119,14 +119,14 @@ export default {
                 ],
                 price: [
                     {
-                        validator(rule, value, callback, source, options) {
-                            var errors = [];
+                        validator (rule, value, callback, source, options) {
+                            var errors = []
                             let valueString = String(value)
                             let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
                             if (!reg.test(valueString)) {
                                 errors.push(new Error('请输入正确金额'))
                             }
-                            callback(errors);
+                            callback(errors)
                         }
                     }
                 ]

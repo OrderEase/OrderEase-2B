@@ -14,8 +14,9 @@
                 <promotion-grid
                     :promotions-list="validPromotionsList"
                     :show-create-item="true"
-                    @request-edit="requestEdit"
-                    @request-add="requestAdd"
+                    @request-edit="editPromotion"
+                    @request-add="addPromotion"
+                    @request-delete="deletePromotion"
                 ></promotion-grid>
             </i-col>
         </Row>
@@ -23,20 +24,20 @@
             <i-col span="24">
                 <h2 class="status-title margin-bottom-15">
                     <Icon type="close" color="red"></Icon>
-                    已过期
+                    已失效
                 </h2>
                 <promotion-grid
                     :promotions-list="invalidPromotionsList"
                     :show-create-item="false"
-                    @request-edit="requestEdit"
+                    @request-edit="editPromotion"
+                    @request-delete="deletePromotion"
                 ></promotion-grid>
             </i-col>
         </Row>
         <promotion-editor
-            :editting="editting"
-            :promotion="editingPromotion"
+            :editting="isEditting"
+            :promotion="edittingPromotion"
             @on-editting-change="syncEditting"
-            @add-promotion="addPromotion"
         ></promotion-editor>
     </div>
 </template>
@@ -44,6 +45,8 @@
 <script>
 import PromotionGrid from './components/promotion-grid.vue'
 import PromotionEditor from './components/promotion-editor.vue'
+import { mapState } from 'vuex'
+import Util from '@/libs/util.js'
 
 export default {
     name: 'promition_index',
@@ -53,80 +56,83 @@ export default {
     },
     data () {
         return {
-            promotionsList: [],
-
-            editingPromotion: {},
-            editting: false
+            isEditting: false,
+            edittingPromotion: {}
         }
     },
     computed: {
-        validPromotionsList () {
-            let now = new Date()
+        ...mapState({
+            validPromotionsList (state) {
+                let now = new Date()
 
-            return this.promotionsList.filter(promotion => {
-                let start = new Date(promotion.start)
-                let end = new Date(promotion.end)
+                return state.promotion.promotionsList.filter(promotion => {
+                    let begin = new Date(promotion.begin)
+                    let end = new Date(promotion.end)
 
-                return now >= start && now <= end
-            })
-        },
-        invalidPromotionsList () {
-            let now = new Date()
+                    return promotion.isend === 0 && now >= begin && now <= end
+                })
+            },
+            invalidPromotionsList (state) {
+                let now = new Date()
 
-            return this.promotionsList.filter(promotion => {
-                let start = new Date(promotion.start)
-                let end = new Date(promotion.end)
+                return state.promotion.promotionsList.filter(promotion => {
+                    let begin = new Date(promotion.begin)
+                    let end = new Date(promotion.end)
 
-                return now < start || now > end
-            })
-        }
-    },
-    methods: {
-        requestEdit (promotion) {
-            this.editingPromotion = promotion
-            this.editting = true
-        },
-        syncEditting (val) {
-            this.editting = val
-        },
-        requestAdd () {
-            this.requestEdit({
-                new: true,
-                name: '',
-                type: '',
-                start: '',
-                end: '',
-                mutiply: false,
-                contentList: []
-            })
-        },
-        addPromotion (promotion) {
-            this.promotionsList.push(promotion)
-        },
-        getPromotions () {
-            this.promotionsList = [
-                {
-                    name: '1',
-                    type: '满减',
-                    start: '2008-11-22 03:22',
-                    end: '2009-01-11 11:11',
-                    mutiply: false,
-                    contentList: [
-                        {
-                            each: 11,
-                            payback: 3
-                        },
-                        {
-                            each: 33,
-                            payback: 1
-                        }
-                    ]
-                }
-            ]
-        }
+                    return promotion.isend === 1 || now < begin || now > end
+                })
+            }
+        })
     },
     created () {
         this.getPromotions()
+    },
+    methods: {
+        async getPromotions () {
+            await this.$store.dispatch('promotion/getPromotionsList')
+        },
+        syncEditting (value) {
+            this.isEditting = value
+        },
+        addPromotion () {
+            this.isEditting = true
+            this.edittingPromotion = {
+                theme: '',
+                begin: '',
+                end: '',
+                isend: false,
+                mode: 1,
+                rules: [
+                    {
+                        mode: 1,
+                        requirement: 0,
+                        discount: 0
+                    }
+                ]
+            }
+        },
+        editPromotion (promotion) {
+            this.isEditting = true
+            this.edittingPromotion = Util.deepCopy(promotion)
+        },
+        async deletePromotion (promotion) {
+            this.$Modal.confirm({
+                title: '删除活动',
+                content: '<p>确定删除该活动么？</p>',
+                loading: true,
+                onOk: async () => {
+                    try {
+                        await this.$store.dispatch('promotion/deletePromotion', promotion)
+
+                        this.$Message.success('成功删除')
+                        this.$Modal.remove()
+                    } catch (err) {
+                        this.$Modal.remove()
+                        this.$Message.error('删除失败')
+                    }
+                }
+            })
+        }
     }
 }
 </script>

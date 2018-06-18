@@ -4,10 +4,11 @@
             <promotion-item
                 :promotion="promotion"
                 @request-edit="requestEdit"
+                @request-delete="requestDelete"
             ></promotion-item>
         </i-col>
         <i-col span="8" class="margin-bottom-10" v-if="showCreateItem">
-            <create-promotion-item @on-click="onClick"></create-promotion-item>
+            <create-promotion-item @on-click="requestAdd"></create-promotion-item>
         </i-col>
     </Row>
 </template>
@@ -29,7 +30,10 @@ export default {
         requestEdit (promotion) {
             this.$emit('request-edit', promotion)
         },
-        onClick () {
+        requestDelete (promotion) {
+            this.$emit('request-delete', promotion)
+        },
+        requestAdd () {
             this.$emit('request-add')
         }
     }

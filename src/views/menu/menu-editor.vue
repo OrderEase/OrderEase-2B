@@ -166,7 +166,7 @@ export default {
         }
     },
     computed: {
-        ...mapState ({
+        ...mapState({
             categoryOptions (state) {
                 return {
                     filter: '.ivu-collapse-content',

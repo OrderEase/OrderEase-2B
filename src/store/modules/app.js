@@ -37,15 +37,6 @@ const mutations = {
     setTagsList (state, list) {
         state.tagsList.push(...list)
     },
-    addDishMenuIntoMenuList (state, dishMenu) {
-        // state.menuList.each((item, index) => {
-        //     if (item.menu === 'menu') {
-        //         item.menu.splice(dishMenu.length - 1, 0, {
-
-        //         })
-        //     }
-        // })
-    },
     updateMenulist (state, dishMenuList) {
         let accessCode = parseInt(Cookies.get('access'))
         let menuList = []
