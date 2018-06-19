@@ -123,6 +123,11 @@ export default {
             pageOrders: [],
             columns: [
                 {
+                    type: 'index',
+                    width: 50,
+                    align: 'center'
+                },
+                {
                     title: '时间',
                     key: 'payDate',
                     width: 150
