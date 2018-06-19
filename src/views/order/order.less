@@ -1,30 +1,27 @@
-.access{
-    &-user-con{
-        height: 200px;
+.dish {
+    &-wrap {
+        margin-bottom: 10px;
     }
-    &-current-user-con{
+    &-img {
+        width: 70px;
+        height: 70px;
+        border-radius: 3px;
+    }
+    &-img-wrap {
         text-align: center;
-        padding-top: 10px;
-        img{
-            display: block;
-            width: 100px;
-            height: 100px;
-            border: 2px solid #dddde2;
-            border-radius: 50%;
-            margin: 0px auto 10px;
+    }
+    &-finished {
+        &-true {
+            color: #19be6b
         }
-        p{
-            display: block;
-            padding: 20px 0 0;
-            b{
-                margin: 0 10px;
-                color: #2d8cf0;
-            }
+        &-false {
+            color: #2d8cf0;
         }
     }
-    &-change-access-con{
-        &-row{
-            height: 200px;
-        }
+    &-urge {
+        color: #ed3f14;
+    }
+    &-quantity {
+        color: #80848f;
     }
 }
