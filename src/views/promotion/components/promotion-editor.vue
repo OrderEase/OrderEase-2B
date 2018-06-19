@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <Modal v-model="syncEditting" width="380">
+    <Modal v-model="syncEditting" :mask-closable="false" width="380">
         <p slot="header">
             <Icon type="edit"></Icon>
             <span>编辑活动</span>

@@ -4,7 +4,7 @@
 </style>
 
 <template>
-    <Modal v-model="syncEditting" width="480" class="dish-editor">
+    <Modal v-model="syncEditting" :mask-closable="false" width="480" class="dish-editor">
         <p slot="header">
             <Icon type="edit"></Icon>
             <span>编辑菜品</span>

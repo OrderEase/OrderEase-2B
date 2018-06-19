@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="syncEditting" width="300">
+    <Modal v-model="syncEditting" :mask-closable="false" width="300">
         <p slot="header">
             <Icon type="edit"></Icon>
             <span>编辑类别</span>
@@ -33,7 +33,6 @@
 
 <script>
 import util from '@/libs/util.js'
-import Menu from '@/api/menu.js'
 
 export default {
     props: {
@@ -90,7 +89,7 @@ export default {
                 }
             })
         }
-    },
+    }
 }
 </script>
 

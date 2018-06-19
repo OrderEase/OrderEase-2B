@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <Modal v-model="editPasswordModal" :closable='false' :mask-closable=false :width="500">
+        <Modal v-model="editPasswordModal" :closable="false" :mask-closable="false" :width="500">
             <h3 slot="header" style="color:#2D8CF0">修改密码</h3>
             <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
                 <FormItem label="原密码" prop="oldPass" :error="oldPassError">
