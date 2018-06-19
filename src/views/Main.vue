@@ -34,7 +34,6 @@
                 <div class="header-avator-con">
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
                     <lock-screen></lock-screen>
-                    <message-tip v-model="mesCount"></message-tip>
                     
                     <div class="user-dropdown-menu-con">
                         <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
@@ -44,7 +43,7 @@
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
-                                    <DropdownItem name="ownSpace">个人中心</DropdownItem>
+                                    <DropdownItem name="editPassword">修改密码</DropdownItem>
                                     <DropdownItem name="loginout" divided>退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
@@ -64,6 +63,25 @@
                 </keep-alive>
             </div>
         </div>
+
+        <Modal v-model="editPasswordModal" :closable='false' :mask-closable=false :width="500">
+            <h3 slot="header" style="color:#2D8CF0">修改密码</h3>
+            <Form ref="editPasswordForm" :model="editPasswordForm" :label-width="100" label-position="right" :rules="passwordValidate">
+                <FormItem label="原密码" prop="oldPass" :error="oldPassError">
+                    <Input v-model="editPasswordForm.oldPass" type="password" placeholder="请输入现在使用的密码" />
+                </FormItem>
+                <FormItem label="新密码" prop="newPass">
+                    <Input v-model="editPasswordForm.newPass" type="password" placeholder="请输入新密码，至少6位字符" />
+                </FormItem>
+                <FormItem label="确认新密码" prop="rePass">
+                    <Input v-model="editPasswordForm.rePass" type="password" placeholder="请再次输入新密码" />
+                </FormItem>
+            </Form>
+            <div slot="footer">
+                <Button type="text" @click="cancelEditPass">取消</Button>
+                <Button type="primary" :loading="savePassLoading" @click="saveEditPass">保存</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
@@ -72,7 +90,6 @@
     import breadcrumbNav from './main-components/breadcrumb-nav.vue'
     import fullScreen from './main-components/fullscreen.vue'
     import lockScreen from './main-components/lockscreen/lockscreen.vue'
-    import messageTip from './main-components/message-tip.vue'
     import Cookies from 'js-cookie'
     import util from '@/libs/util.js'
     import scrollBar from '@/views/my-components/scroll-bar/vue-scroller-bars'
@@ -84,15 +101,44 @@
             breadcrumbNav,
             fullScreen,
             lockScreen,
-            messageTip,
             scrollBar
         },
         data () {
+            const valideRePassword = (rule, value, callback) => {
+                if (value !== this.editPasswordForm.newPass) {
+                    callback(new Error('两次输入密码不一致'))
+                } else {
+                    callback()
+                }
+            }
             return {
                 shrink: false,
                 userName: '',
                 isFullScreen: false,
-                openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+                openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+
+                editPasswordModal: false, // 修改密码模态框显示
+                savePassLoading: false,
+                oldPassError: '',
+                editPasswordForm: {
+                    oldPass: '',
+                    newPass: '',
+                    rePass: ''
+                },
+                passwordValidate: {
+                    oldPass: [
+                        { required: true, message: '请输入原密码', trigger: 'blur' }
+                    ],
+                    newPass: [
+                        { required: true, message: '请输入新密码', trigger: 'blur' },
+                        { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
+                        { max: 32, message: '最多输入32个字符', trigger: 'blur' }
+                    ],
+                    rePass: [
+                        { required: true, message: '请再次输入新密码', trigger: 'blur' },
+                        { validator: valideRePassword, trigger: 'blur' }
+                    ]
+                }
             }
         },
         computed: {
@@ -116,9 +162,6 @@
             },
             menuTheme () {
                 return this.$store.state.app.menuTheme
-            },
-            mesCount () {
-                return this.$store.state.app.messageCount
             }
         },
         methods: {
@@ -131,17 +174,13 @@
                 let messageCount = 3
                 this.messageCount = messageCount.toString()
                 this.checkTag(this.$route.name)
-                this.$store.commit('app/setMessageCount', 3)
             },
             toggleClick () {
                 this.shrink = !this.shrink
             },
             handleClickUserDropdown (name) {
-                if (name === 'ownSpace') {
-                    util.openNewPage(this, 'ownspace_index')
-                    this.$router.push({
-                        name: 'ownspace_index'
-                    })
+                if (name === 'editPassword') {
+                    this.showEditPassword()
                 } else if (name === 'loginout') {
                     // 退出登录
                     this.$store.commit('user/logout', this)
@@ -165,11 +204,6 @@
                 // console.log(val)
             },
             beforePush (name) {
-                // if (name === 'accesstest_index') {
-                //     return false
-                // } else {
-                //     return true
-                // }
                 return true
             },
             fullscreenChange (isFullScreen) {
@@ -177,6 +211,26 @@
             },
             scrollBarResize () {
                 this.$refs.scrollBar.resize()
+            },
+            showEditPassword () {
+                this.editPasswordModal = true
+            },
+            cancelEditPass () {
+                this.editPasswordModal = false
+            },
+            saveEditPass () {
+                this.$refs['editPasswordForm'].validate(async valid => {
+                    if (valid) {
+                        this.savePassLoading = true
+                        await new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                this.savePassLoading = false
+                                this.editPasswordModal = false
+                                this.$Message.success('修改成功')
+                            }, 1000)
+                        })
+                    }
+                })
             }
         },
         watch: {

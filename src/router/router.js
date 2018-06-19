@@ -57,12 +57,6 @@ export const otherRouter = {
             component: () => import('@/views/home/home.vue')
         },
         {
-            path: 'ownspace',
-            title: '个人中心',
-            name: 'ownspace_index',
-            component: () => import('@/views/own-space/own-space.vue')
-        },
-        {
             path: 'order/:order_id',
             title: '订单详情',
             name: 'order-info',
@@ -73,12 +67,7 @@ export const otherRouter = {
             title: '购物详情',
             name: 'shopping',
             component: () => import('@/views/advanced-router/component/shopping-info.vue')
-        },
-        {
-            path: 'message',
-            title: '消息中心',
-            name: 'message_index',
-            component: () => import('@/views/message/message.vue') }
+        }
     ]
 }
 
