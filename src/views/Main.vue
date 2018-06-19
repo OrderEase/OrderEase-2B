@@ -91,7 +91,7 @@
     import fullScreen from './main-components/fullscreen.vue'
     import lockScreen from './main-components/lockscreen/lockscreen.vue'
     import Cookies from 'js-cookie'
-    import util from '@/libs/util.js'
+    import Util from '@/libs/util.js'
     import scrollBar from '@/views/my-components/scroll-bar/vue-scroller-bars'
     
     export default {
@@ -166,7 +166,7 @@
         },
         methods: {
             init () {
-                let pathArr = util.setCurrentPath(this, this.$route.name)
+                let pathArr = Util.setCurrentPath(this, this.$route.name)
                 if (pathArr.length >= 2) {
                     this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
                 }
@@ -178,12 +178,12 @@
             toggleClick () {
                 this.shrink = !this.shrink
             },
-            handleClickUserDropdown (name) {
+            async handleClickUserDropdown (name) {
                 if (name === 'editPassword') {
                     this.showEditPassword()
                 } else if (name === 'loginout') {
                     // 退出登录
-                    this.$store.commit('user/logout', this)
+                    await this.$store.dispatch('user/logout', this)
                     this.$store.commit('app/clearOpenedSubmenu')
                     this.$router.push({
                         name: 'login'
@@ -197,7 +197,7 @@
                     }
                 })
                 if (!openpageHasTag) { //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
-                    util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {})
+                    Util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {})
                 }
             },
             handleSubmenuChange (val) {
@@ -222,13 +222,18 @@
                 this.$refs['editPasswordForm'].validate(async valid => {
                     if (valid) {
                         this.savePassLoading = true
-                        await new Promise((resolve, reject) => {
-                            setTimeout(() => {
-                                this.savePassLoading = false
-                                this.editPasswordModal = false
-                                this.$Message.success('修改成功')
-                            }, 1000)
-                        })
+                        try {
+                            await this.$store.dispatch('user/editPassword', {
+                                oldPassword: this.editPasswordForm.oldPass,
+                                newPassword: this.editPasswordForm.newPass
+                            })
+
+                            this.editPasswordModal = false
+                            this.$Message.success('修改成功')
+                        } catch (err) {
+                            this.$Message.error(err.message)
+                        }
+                        this.savePassLoading = false
                     }
                 })
             }
@@ -236,7 +241,7 @@
         watch: {
             '$route' (to) {
                 this.$store.commit('app/setCurrentPageName', to.name)
-                let pathArr = util.setCurrentPath(this, to.name)
+                let pathArr = Util.setCurrentPath(this, to.name)
                 if (pathArr.length > 2) {
                     this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
                 }
@@ -244,7 +249,7 @@
                 localStorage.currentPageName = to.name
             },
             lang () {
-                util.setCurrentPath(this, this.$route.name) // 在切换语言时用于刷新面包屑
+                Util.setCurrentPath(this, this.$route.name) // 在切换语言时用于刷新面包屑
             },
             openedSubmenuArr () {
                 setTimeout(() => {

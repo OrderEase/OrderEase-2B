@@ -37,3 +37,5 @@ user.editPassword = (oldPassword, newPassword) => {
         }, 1000)
     })
 }
+
+export default user
