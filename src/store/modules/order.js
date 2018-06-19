@@ -4,6 +4,16 @@ const state = {
     ordersList: []
 }
 
+const getters = {
+    unFinishedOrdersList (state) {
+        return state.ordersList.filter(order => order.finished === 0).sort((left, right) => {
+            let leftDate = new Date(left.payDate)
+            let rightDate = new Date(right.payDate)
+            return leftDate - rightDate
+        })
+    }
+}
+
 const actions = {
     async getOrdersList ({ commit }) {
         let ordersList = await Order.getAll()
@@ -27,6 +37,7 @@ const mutations = {
 export default {
     namespaced: true,
     state,
+    getters,
     actions,
     mutations
 }
