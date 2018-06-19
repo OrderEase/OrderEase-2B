@@ -26,7 +26,10 @@
             <i-col span="2" class="dish-item-con">
                 <a @click="requestEdit"><Icon type="edit" size="16"></Icon></a>
                 <a @click="requestDelete"><Icon type="trash-a" size="20"></Icon></a>
-                <p class="dish-item-like"><span class="dish-item-like-num">{{ dish.likes }}</span><Icon type="android-favorite" size="16" color="#ed3f14" class="dish-item-like-icon"/></p>
+                <p class="dish-item-like">
+                    <span class="dish-item-like-num">{{ dish.likes }}</span>
+                    <Icon type="android-favorite-outline" size="16" color="#ed3f14" class="dish-item-like-icon"/>
+                </p>
                 <Icon
                     v-if="isSorting"
                     class="dish-item-con-move"
