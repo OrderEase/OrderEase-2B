@@ -89,8 +89,8 @@
                     </i-col>
                     <i-col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
                         <infor-card
-                            id-name="Collection_count"
-                            :end-val="count.Collection"
+                            id-name="collection_count"
+                            :end-val="count.collection"
                             iconType="upload"
                             color="#ffd572"
                             intro-text="今日数据采集量"
@@ -222,7 +222,7 @@ export default {
             count: {
                 createUser: 496,
                 visit: 3264,
-                Collection: 24389305,
+                collection: 24389305,
                 transfer: 39503498
             },
             cityData: cityData,
