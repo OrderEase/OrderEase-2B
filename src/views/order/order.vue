@@ -79,7 +79,7 @@
                     <p>实付: {{ checkedOrder.due }} 元</p>
                 </i-col>
             </Row>
-            <Row v-for="(content, index) in checkedOrder.dishes" :key="index" class="dish-wrap">
+            <Row v-for="(content, index) in checkedOrder.repackDishes" :key="index" class="dish-wrap">
                 <i-col span="8" class="dish-img-wrap">
                     <img class="dish-img" :src="content.dish.img" :alt="content.dish.name">
                 </i-col>
@@ -88,15 +88,15 @@
                         <h3>{{ content.dish.name }}</h3>
                     </Row>
                     <Row>
-                        <p class="dish-quantity">x {{ content.quantity }}</p>
+                        <p class="dish-quantity">x {{ content.orderItem.quantity }}</p>
                     </Row>
                 </i-col>
                 <i-col span="6" offset="2">
                     <Row>
-                        <p v-if="content.finished === 1" class="dish-finished-true">已完成</p>
-                        <p v-if="content.finished === 0" class="dish-finished-false">未完成</p>
+                        <p v-if="content.orderItem.finished === 1" class="dish-finished-true">已完成</p>
+                        <p v-if="content.orderItem.finished === 0" class="dish-finished-false">未完成</p>
                     </Row>
-                    <Row v-if="content.urge === 1">
+                    <Row v-if="content.orderItem.urge === 1">
                         <p class="dish-urge">已催单</p>
                     </Row>
                 </i-col>

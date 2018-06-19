@@ -1,4 +1,5 @@
 import Order from '@/api/order.js'
+import Util from '@/libs/util.js'
 
 const state = {
     ordersList: []
@@ -29,6 +30,13 @@ const mutations = {
             } else {
                 order.state = '未支付'
             }
+
+            order.repackDishes = order.orderItems.map(item => {
+                return {
+                    dish: order.dishes.find(dish => dish.id === item.dishId),
+                    orderItem: item
+                }
+            })
         })
         state.ordersList = ordersList
     }
