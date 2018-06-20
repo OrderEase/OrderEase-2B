@@ -210,7 +210,11 @@
                 // console.log(isFullScreen)
             },
             scrollBarResize () {
-                this.$refs.scrollBar.resize()
+                try {
+                    this.$refs.scrollBar.resize()
+                } catch (err) {
+                    ;
+                }
             },
             showEditPassword () {
                 this.editPasswordModal = true

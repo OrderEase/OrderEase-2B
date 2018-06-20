@@ -218,8 +218,8 @@ let ordersList = [
                 orderId: '1111',
                 dishId: '3920',
                 quantity: 1,
-                finished: 1,
-                time: '2018-06-03 12:44:33',
+                finished: 0,
+                time: '',
                 urge: 1,
                 like: 0
             },
@@ -229,7 +229,7 @@ let ordersList = [
                 dishId: '3910',
                 quantity: 2,
                 finished: 0,
-                time: '2018-06-03 12:50:33',
+                time: '',
                 urge: 0,
                 like: 1
             }

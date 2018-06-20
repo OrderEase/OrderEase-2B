@@ -8,7 +8,10 @@ const state = {
 const getters = {
     unFinishedOrdersList (state) {
         return state.ordersList.filter(
-            order => order.isPay === 1 && order.finished === 0
+            order => {
+                order._expanded = true
+                return order.isPay === 1 && order.finished === 0
+            }
         ).sort((left, right) => {
             let leftDate = new Date(left.payDate)
             let rightDate = new Date(right.payDate)
