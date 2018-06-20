@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import User from '@/api/user.js'
+import Util from '@/libs/util.js'
 
 const state = {}
 
@@ -8,6 +9,7 @@ const actions = {
         let authority = await User.login(username, password)
         commit('setUser', {
             username,
+            password,
             authority
         })
         commit('app/setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg', { root: true })
@@ -18,12 +20,14 @@ const actions = {
     },
     async editPassword ({ commit }, { oldPassword, newPassword }) {
         await User.editPassword(oldPassword, newPassword)
+        commit('updateCookiesPass', newPassword)
     }
 }
 
 const mutations = {
-    setUser (state, { username, authority }) {
+    setUser (state, { username, password, authority }) {
         Cookies.set('user', username)
+        Cookies.set('pass', Util.encode(password))
         Cookies.set('access', authority)
     },
     removeUser (state, vm) {
@@ -42,6 +46,9 @@ const mutations = {
         if (theme) {
             localStorage.theme = theme
         }
+    },
+    updateCookiesPass (state, password) {
+        Cookies.set('pass', Util.encode(password))
     }
 }
 

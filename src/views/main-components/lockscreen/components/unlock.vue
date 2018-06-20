@@ -27,7 +27,9 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
+import Util from '@/libs/util.js'
+
 export default {
     name: 'Unlock',
     data () {
@@ -36,7 +38,7 @@ export default {
             inputLeft: '400px',
             password: '',
             check: null
-        };
+        }
     },
     props: {
         showUnlock: {
@@ -46,35 +48,37 @@ export default {
     },
     computed: {
         avatorPath () {
-            return localStorage.avatorImgPath;
+            return localStorage.avatorImgPath
         }
     },
     methods: {
-        validator () {
-            return true; // 你可以在这里写密码验证方式，如发起ajax请求将用户输入的密码this.password与数据库用户密码对比
+        async validator () {
+            let encodePass = Util.encode(this.password)
+            let storedPass = Cookies.get('pass')
+            return encodePass === storedPass
         },
         handleClickAvator () {
-            this.avatorLeft = '-180px';
-            this.inputLeft = '0px';
-            this.$refs.inputEle.focus();
+            this.avatorLeft = '-180px'
+            this.inputLeft = '0px'
+            this.$refs.inputEle.focus()
         },
-        handleUnlock () {
-            if (this.validator()) {
-                this.avatorLeft = '0px';
-                this.inputLeft = '400px';
-                this.password = '';
-                Cookies.set('locking', '0');
-                this.$emit('on-unlock');
+        async handleUnlock () {
+            if (await this.validator()) {
+                this.avatorLeft = '0px'
+                this.inputLeft = '400px'
+                this.password = ''
+                Cookies.set('locking', '0')
+                this.$emit('on-unlock')
             } else {
-                this.$Message.error('密码错误,请重新输入。如果忘了密码，清除浏览器缓存重新登录即可，这里没有做后端验证');
+                this.$Message.error('密码错误')
             }
         },
         unlockMousedown () {
-            this.$refs.unlockBtn.className = 'unlock-btn click-unlock-btn';
+            this.$refs.unlockBtn.className = 'unlock-btn click-unlock-btn'
         },
         unlockMouseup () {
-            this.$refs.unlockBtn.className = 'unlock-btn';
+            this.$refs.unlockBtn.className = 'unlock-btn'
         }
     }
-};
+}
 </script>

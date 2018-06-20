@@ -1,5 +1,6 @@
 import axios from 'axios'
 import env from '../../build/env'
+import Crypto from 'crypto'
 
 let util = {
 
@@ -327,6 +328,12 @@ util.formatDate = date => {
     }
 
     return fmt
+}
+
+util.encode = (str) => {
+    let md5 = Crypto.createHash('md5')
+    md5.update(str)
+    return md5.digest('hex')
 }
 
 export default util
