@@ -1,10 +1,15 @@
 <style lang="less">
     @import '../../styles/common.less';
     @import './kitchen.less';
+    @import '../../styles/loading.less';
 </style>
 
 <template>
     <div class="kitchen">
+        <Spin fix v-if="spinShow">
+            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+            <div>加载中...</div>
+        </Spin>
         <Row class="margin-top-20">
             <Table :columns="columns" :data="unFinishedOrdersList"></Table>
         </Row>
@@ -22,6 +27,7 @@ export default {
     },
     data () {
         return {
+            spinShow: false,
             columns: [
                 {
                     type: 'expand',
@@ -90,12 +96,14 @@ export default {
             unFinishedOrdersList: 'order/unFinishedOrdersList'
         })
     },
-    created () {
+    activated () {
+        this.spinShow = true
         this.getOrdersList()
     },
     methods: {
         async getOrdersList () {
             await this.$store.dispatch('order/getOrdersList')
+            this.spinShow = false
         },
         async finishOrderDishes (specialOrder) {
             try {

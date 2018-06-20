@@ -5,6 +5,10 @@
 
 <template>
     <div class="promotion">
+        <Spin fix v-if="spinShow">
+            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+            <div>加载中...</div>
+        </Spin>
         <Row>
             <i-col span="24">
                 <h2 class="status-title margin-bottom-15">
@@ -56,6 +60,7 @@ export default {
     },
     data () {
         return {
+            spinShow: false,
             isEditting: false,
             edittingPromotion: {}
         }
@@ -85,11 +90,13 @@ export default {
         })
     },
     created () {
+        this.spinShow = true
         this.getPromotions()
     },
     methods: {
         async getPromotions () {
             await this.$store.dispatch('promotion/getPromotionsList')
+            this.spinShow = false
         },
         syncEditting (value) {
             this.isEditting = value

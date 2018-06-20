@@ -1,10 +1,15 @@
 <style lang="less">
     @import '../../styles/common.less';
     @import './order.less';
+    @import '../../styles/loading.less';
 </style>
 
 <template>
     <div class="order">
+        <Spin fix v-if="spinShow">
+            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+            <div>加载中...</div>
+        </Spin>
         <Row>
             <i-col span="24">
                 <Card>
@@ -112,6 +117,7 @@ export default {
     name: 'order_index',
     data () {
         return {
+            spinShow: false,
             orderDetailModal: false,
             checkedOrder: {},
             page: 1,
@@ -165,6 +171,7 @@ export default {
         })
     },
     activated () {
+        this.spinShow = true
         this.getOrders()
     },
     methods: {
@@ -172,6 +179,7 @@ export default {
             await this.$store.dispatch('order/getOrdersList')
             this.filtedOrders = this.ordersList
             this.handlePage(1)
+            this.spinShow = false
         },
         search (data, argumentObj) {
             let res = data
