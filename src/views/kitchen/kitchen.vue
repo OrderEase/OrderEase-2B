@@ -96,7 +96,7 @@ export default {
             unFinishedOrdersList: 'order/unFinishedOrdersList'
         })
     },
-    activated () {
+    created () {
         this.spinShow = true
         this.getOrdersList()
     },

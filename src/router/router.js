@@ -55,18 +55,6 @@ export const otherRouter = {
             title: {i18n: 'home'},
             name: 'home_index',
             component: () => import('@/views/home/home.vue')
-        },
-        {
-            path: 'order/:order_id',
-            title: '订单详情',
-            name: 'order-info',
-            component: () => import('@/views/advanced-router/component/order-info.vue')
-        },
-        {
-            path: 'shopping',
-            title: '购物详情',
-            name: 'shopping',
-            component: () => import('@/views/advanced-router/component/shopping-info.vue')
         }
     ]
 }

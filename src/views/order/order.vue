@@ -170,7 +170,7 @@ export default {
             ordersList: state => state.order.ordersList
         })
     },
-    activated () {
+    created () {
         this.spinShow = true
         this.getOrders()
     },
