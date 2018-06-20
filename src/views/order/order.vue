@@ -164,7 +164,7 @@ export default {
             ordersList: state => state.order.ordersList
         })
     },
-    created () {
+    activated () {
         this.getOrders()
     },
     methods: {

@@ -29,6 +29,7 @@
                     type="primary"
                     size="small"
                     class="expand-row-finished-btn"
+                    @click="finishOneItem(item)"
                 >完成</Button>
                 <p v-if="item.orderItem.finished === 1" class="align expand-row-finished-info">已完成</p>
             </i-col>
@@ -40,6 +41,16 @@
 export default {
     props: {
         order: Object
+    },
+    methods: {
+        finishOneItem (item) {
+            this.$emit('finish-order-dishes', {
+                id: this.order.id,
+                finished: this.order.finished,
+                orderItems: this.order.orderItems,
+                repackDishes: [item]
+            })
+        }
     }
 }
 </script>

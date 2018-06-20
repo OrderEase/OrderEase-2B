@@ -767,4 +767,19 @@ order.getAll = () => {
     })
 }
 
+order.update = (editedOrder) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            let order = ordersList.find(order => order.id === editedOrder.id)
+            order.finished = editedOrder.finished
+            editedOrder.orderItems.forEach(item => {
+                let storedItem = order.orderItems.find(value => value.dishId === item.dishId)
+                storedItem.time = item.time
+                storedItem.finished = item.finished
+            })
+            resolve()
+        }, 1000)
+    })
+}
+
 export default order

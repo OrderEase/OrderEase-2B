@@ -7,7 +7,9 @@ const state = {
 
 const getters = {
     unFinishedOrdersList (state) {
-        return state.ordersList.filter(order => order.finished === 0).sort((left, right) => {
+        return state.ordersList.filter(
+            order => order.isPay === 1 && order.finished === 0
+        ).sort((left, right) => {
             let leftDate = new Date(left.payDate)
             let rightDate = new Date(right.payDate)
             return leftDate - rightDate
@@ -19,6 +21,30 @@ const actions = {
     async getOrdersList ({ commit }) {
         let ordersList = await Order.getAll()
         commit('setOrdersList', ordersList)
+    },
+    async finishOrderItems ({ commit }, specialOrder) {
+        let date = Util.formatDate(new Date())
+        let orderItems = specialOrder.repackDishes.map(item => {
+            return {
+                dishId: item.orderItem.dishId,
+                finished: 1,
+                time: date
+            }
+        })
+        let editedOrder = {
+            id: specialOrder.id,
+            finished: 1,
+            orderItems: orderItems
+        }
+
+        let originalUnFinishedOrderItems = specialOrder.orderItems.filter(item => item.finished === 0)
+        originalUnFinishedOrderItems.forEach(item => {
+            if (orderItems.findIndex(value => value.dishId === item.dishId) === -1) {
+                editedOrder.finished = 0
+            }
+        })
+
+        await Order.update(editedOrder)
     }
 }
 

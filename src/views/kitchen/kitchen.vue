@@ -30,6 +30,9 @@ export default {
                         return h(expandRow, {
                             props: {
                                 order: params.row
+                            },
+                            on: {
+                                'finish-order-dishes': this.finishOrderDishes
                             }
                         })
                     }
@@ -64,9 +67,14 @@ export default {
                                 on: {
                                     click: () => {
                                         this.finishOrderDishes(
-                                            params.row.dishes.filter(
-                                                item => item.finished === 0
-                                            )
+                                            {
+                                                id: params.row.id,
+                                                finished: params.row.finished,
+                                                orderItems: params.row.orderItems,
+                                                repackDishes: params.row.repackDishes.filter(
+                                                    item => item.orderItem.finished === 0
+                                                )
+                                            }
                                         )
                                     }
                                 }
@@ -89,8 +97,14 @@ export default {
         async getOrdersList () {
             await this.$store.dispatch('order/getOrdersList')
         },
-        async finishOrderDishes (finishedDishesList) {
-            console.log(finishedDishesList)
+        async finishOrderDishes (specialOrder) {
+            try {
+                await this.$store.dispatch('order/finishOrderItems', specialOrder)
+                await this.$store.dispatch('order/getOrdersList')
+                this.$Message.success('完成 ' + specialOrder.repackDishes.length + ' 道菜')
+            } catch (err) {
+                this.$Message.error(err.message)
+            }
         }
     }
 }
