@@ -1,27 +1,18 @@
-<style scoped>
-    .align {
-        display: inline-block;
-        font-size: 12px;
-        padding: 2px 7px;
-    }
-    .expand-row-finished-info {
-        color: #19be6b;
-        border: 1px solid transparent;
-        border-radius: 3px;
-    }
+<style lang="less" scoped>
+    @import './kitchen.less';
 </style>
 
 <template>
-    <div>
+    <div class="expand-row">
         <Row
             v-for="(item, index) in order.repackDishes"
             :key="index"
             class="margin-bottom-10">
             <i-col span="6" offset="4">
-                <p class="align">{{ item.dish.name }}</p>
+                <p class="expand-row-align">{{ item.dish.name }}</p>
             </i-col>
             <i-col span="6">
-                <p class="align">x {{ item.orderItem.quantity }}</p>
+                <p class="expand-row-align">x {{ item.orderItem.quantity }}</p>
             </i-col>
             <i-col span="4" offset="4">
                 <Button

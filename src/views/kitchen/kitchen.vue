@@ -67,6 +67,9 @@ export default {
                                     type: 'primary',
                                     size: 'small'
                                 },
+                                class: {
+                                    'kitchen-finish-all-btn': true
+                                },
                                 style: {
                                     marginRight: '5px'
                                 },
