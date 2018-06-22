@@ -86,191 +86,204 @@
 </template>
 
 <script>
-    import shrinkableMenu from './main-components/shrinkable-menu/shrinkable-menu.vue'
-    import tagsPageOpened from './main-components/tags-page-opened.vue'
-    import breadcrumbNav from './main-components/breadcrumb-nav.vue'
-    import fullScreen from './main-components/fullscreen.vue'
-    import lockScreen from './main-components/lockscreen/lockscreen.vue'
-    import Cookies from 'js-cookie'
-    import Util from '@/libs/util.js'
-    import scrollBar from '@/views/my-components/scroll-bar/vue-scroller-bars'
+import shrinkableMenu from './main-components/shrinkable-menu/shrinkable-menu.vue'
+import tagsPageOpened from './main-components/tags-page-opened.vue'
+import breadcrumbNav from './main-components/breadcrumb-nav.vue'
+import fullScreen from './main-components/fullscreen.vue'
+import lockScreen from './main-components/lockscreen/lockscreen.vue'
+import Cookies from 'js-cookie'
+import Util from '@/libs/util.js'
+import scrollBar from '@/views/my-components/scroll-bar/vue-scroller-bars'
 
-    export default {
-        components: {
-            shrinkableMenu,
-            tagsPageOpened,
-            breadcrumbNav,
-            fullScreen,
-            lockScreen,
-            scrollBar
-        },
-        data () {
-            const valideRePassword = (rule, value, callback) => {
-                if (value !== this.editPasswordForm.newPass) {
-                    callback(new Error('两次输入密码不一致'))
-                } else {
-                    callback()
-                }
-            }
-            return {
-                shrink: false,
-                userName: '',
-                isFullScreen: false,
-                openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+import Restaurant from '@/api/restaurant.js'
 
-                editPasswordModal: false, // 修改密码模态框显示
-                savePassLoading: false,
-                oldPassError: '',
-                editPasswordForm: {
-                    oldPass: '',
-                    newPass: '',
-                    rePass: ''
-                },
-                passwordValidate: {
-                    oldPass: [
-                        { required: true, message: '请输入原密码', trigger: 'blur' }
-                    ],
-                    newPass: [
-                        { required: true, message: '请输入新密码', trigger: 'blur' },
-                        { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
-                        { max: 32, message: '最多输入32个字符', trigger: 'blur' }
-                    ],
-                    rePass: [
-                        { required: true, message: '请再次输入新密码', trigger: 'blur' },
-                        { validator: valideRePassword, trigger: 'blur' }
-                    ]
-                }
+export default {
+    components: {
+        shrinkableMenu,
+        tagsPageOpened,
+        breadcrumbNav,
+        fullScreen,
+        lockScreen,
+        scrollBar
+    },
+    data () {
+        const valideRePassword = (rule, value, callback) => {
+            if (value !== this.editPasswordForm.newPass) {
+                callback(new Error('两次输入密码不一致'))
+            } else {
+                callback()
             }
-        },
-        computed: {
-            menuList () {
-                return this.$store.state.app.menuList
-            },
-            pageTagsList () {
-                return this.$store.state.app.pageOpenedList // 打开的页面的页面对象
-            },
-            currentPath () {
-                return this.$store.state.app.currentPath // 当前面包屑数组
-            },
-            avatorPath () {
-                return this.$store.state.restaurant.info.img
-            },
-            cachePage () {
-                return this.$store.state.app.cachePage
-            },
-            lang () {
-                return this.$store.state.app.lang
-            },
-            menuTheme () {
-                return this.$store.state.app.menuTheme
-            }
-        },
-        methods: {
-            init () {
-                let pathArr = Util.setCurrentPath(this, this.$route.name)
-                if (pathArr.length >= 2) {
-                    this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
-                }
-                this.userName = Cookies.get('user')
-                this.checkTag(this.$route.name)
-            },
-            toggleClick () {
-                this.shrink = !this.shrink
-            },
-            async handleClickUserDropdown (name) {
-                if (name === 'editPassword') {
-                    this.showEditPassword()
-                } else if (name === 'loginout') {
-                    // 退出登录
-                    await this.$store.dispatch('user/logout', this)
-                    this.$store.commit('app/clearOpenedSubmenu')
-                    this.$router.push({
-                        name: 'login'
-                    })
-                }
-            },
-            checkTag (name) {
-                let openpageHasTag = this.pageTagsList.some(item => {
-                    if (item.name === name) {
-                        return true
-                    }
-                })
-                if (!openpageHasTag) { //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
-                    Util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {})
-                }
-            },
-            handleSubmenuChange (val) {
-                // console.log(val)
-            },
-            beforePush (name) {
-                return true
-            },
-            fullscreenChange (isFullScreen) {
-                // console.log(isFullScreen)
-            },
-            scrollBarResize () {
-                try {
-                    this.$refs.scrollBar.resize()
-                } catch (err) {
-                    ;
-                }
-            },
-            showEditPassword () {
-                this.editPasswordModal = true
-            },
-            cancelEditPass () {
-                this.editPasswordModal = false
-            },
-            saveEditPass () {
-                this.$refs['editPasswordForm'].validate(async valid => {
-                    if (valid) {
-                        this.savePassLoading = true
-                        try {
-                            await this.$store.dispatch('user/editPassword', {
-                                oldPassword: this.editPasswordForm.oldPass,
-                                newPassword: this.editPasswordForm.newPass
-                            })
-
-                            this.editPasswordModal = false
-                            this.$Message.success('修改成功')
-                        } catch (err) {
-                            this.$Message.error(err.message)
-                        }
-                        this.savePassLoading = false
-                    }
-                })
-            }
-        },
-        watch: {
-            '$route' (to) {
-                this.$store.commit('app/setCurrentPageName', to.name)
-                let pathArr = Util.setCurrentPath(this, to.name)
-                if (pathArr.length > 2) {
-                    this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
-                }
-                this.checkTag(to.name)
-                localStorage.currentPageName = to.name
-            },
-            lang () {
-                Util.setCurrentPath(this, this.$route.name) // 在切换语言时用于刷新面包屑
-            },
-            openedSubmenuArr () {
-                setTimeout(() => {
-                    this.scrollBarResize()
-                }, 300)
-            }
-        },
-        mounted () {
-            this.init()
-            window.addEventListener('resize', this.scrollBarResize)
-        },
-        created () {
-            // 显示打开的页面的列表
-            this.$store.dispatch('app/getDishMenuAndUpdateMenuList')
-            this.$store.commit('app/setOpenedList')
-        },
-        dispatch () {
-            window.removeEventListener('resize', this.scrollBarResize)
         }
+        return {
+            shrink: false,
+            userName: '',
+            isFullScreen: false,
+            openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+
+            editPasswordModal: false, // 修改密码模态框显示
+            savePassLoading: false,
+            oldPassError: '',
+            editPasswordForm: {
+                oldPass: '',
+                newPass: '',
+                rePass: ''
+            },
+            passwordValidate: {
+                oldPass: [
+                    { required: true, message: '请输入原密码', trigger: 'blur' }
+                ],
+                newPass: [
+                    { required: true, message: '请输入新密码', trigger: 'blur' },
+                    { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
+                    { max: 32, message: '最多输入32个字符', trigger: 'blur' }
+                ],
+                rePass: [
+                    { required: true, message: '请再次输入新密码', trigger: 'blur' },
+                    { validator: valideRePassword, trigger: 'blur' }
+                ]
+            }
+        }
+    },
+    computed: {
+        menuList () {
+            return this.$store.state.app.menuList
+        },
+        pageTagsList () {
+            return this.$store.state.app.pageOpenedList // 打开的页面的页面对象
+        },
+        currentPath () {
+            return this.$store.state.app.currentPath // 当前面包屑数组
+        },
+        avatorPath () {
+            return this.$store.state.restaurant.info.img
+        },
+        cachePage () {
+            return this.$store.state.app.cachePage
+        },
+        lang () {
+            return this.$store.state.app.lang
+        },
+        menuTheme () {
+            return this.$store.state.app.menuTheme
+        }
+    },
+    async beforeRouteEnter (to, from, next) {
+        let routerNameSet = [null, 'login', 'locking']
+        if (routerNameSet.findIndex(name => name === from.name) === -1) {
+            next()
+        } else {
+            let restrtInfo = await Restaurant.get()
+            next(vm => {
+                vm.$store.commit('restaurant/setInfo', restrtInfo)
+            })
+        }
+    },
+    methods: {
+        init () {
+            let pathArr = Util.setCurrentPath(this, this.$route.name)
+            if (pathArr.length >= 2) {
+                this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
+            }
+            this.userName = Cookies.get('user')
+            this.checkTag(this.$route.name)
+        },
+        toggleClick () {
+            this.shrink = !this.shrink
+        },
+        async handleClickUserDropdown (name) {
+            if (name === 'editPassword') {
+                this.showEditPassword()
+            } else if (name === 'loginout') {
+                // 退出登录
+                await this.$store.dispatch('user/logout', this)
+                this.$store.commit('app/clearOpenedSubmenu')
+                this.$router.push({
+                    name: 'login'
+                })
+            }
+        },
+        checkTag (name) {
+            let openpageHasTag = this.pageTagsList.some(item => {
+                if (item.name === name) {
+                    return true
+                }
+            })
+            if (!openpageHasTag) { //  解决关闭当前标签后再点击回退按钮会退到当前页时没有标签的问题
+                Util.openNewPage(this, name, this.$route.params || {}, this.$route.query || {})
+            }
+        },
+        handleSubmenuChange (val) {
+            // console.log(val)
+        },
+        beforePush (name) {
+            return true
+        },
+        fullscreenChange (isFullScreen) {
+            // console.log(isFullScreen)
+        },
+        scrollBarResize () {
+            try {
+                this.$refs.scrollBar.resize()
+            } catch (err) {
+                ;
+            }
+        },
+        showEditPassword () {
+            this.editPasswordModal = true
+        },
+        cancelEditPass () {
+            this.editPasswordModal = false
+        },
+        saveEditPass () {
+            this.$refs['editPasswordForm'].validate(async valid => {
+                if (valid) {
+                    this.savePassLoading = true
+                    try {
+                        await this.$store.dispatch('user/editPassword', {
+                            oldPassword: this.editPasswordForm.oldPass,
+                            newPassword: this.editPasswordForm.newPass
+                        })
+
+                        this.editPasswordModal = false
+                        this.$Message.success('修改成功')
+                    } catch (err) {
+                        this.$Message.error(err.message)
+                    }
+                    this.savePassLoading = false
+                }
+            })
+        }
+    },
+    watch: {
+        '$route' (to) {
+            this.$store.commit('app/setCurrentPageName', to.name)
+            let pathArr = Util.setCurrentPath(this, to.name)
+            if (pathArr.length > 2) {
+                this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
+            }
+            this.checkTag(to.name)
+            localStorage.currentPageName = to.name
+        },
+        lang () {
+            Util.setCurrentPath(this, this.$route.name) // 在切换语言时用于刷新面包屑
+        },
+        openedSubmenuArr () {
+            setTimeout(() => {
+                this.scrollBarResize()
+            }, 300)
+        }
+    },
+    mounted () {
+        this.init()
+        window.addEventListener('resize', this.scrollBarResize)
+    },
+    created () {
+        // 显示打开的页面的列表
+        this.$store.dispatch('app/getDishMenuAndUpdateMenuList')
+        this.$store.commit('app/setOpenedList')
+    },
+    dispatch () {
+        window.removeEventListener('resize', this.scrollBarResize)
     }
+}
 </script>

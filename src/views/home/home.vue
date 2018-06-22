@@ -257,13 +257,7 @@ export default {
             }
         })
     },
-    created () {
-        this.getInfo()
-    },
     methods: {
-        async getInfo () {
-            await this.$store.dispatch('restaurant/getInfo')
-        },
         editRestrtInfo () {
             this.edittingRestrt = Util.deepCopy(this.$store.state.restaurant.info)
             this.isEditting = true
