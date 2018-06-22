@@ -84,6 +84,7 @@
         </Modal>
     </div>
 </template>
+
 <script>
     import shrinkableMenu from './main-components/shrinkable-menu/shrinkable-menu.vue'
     import tagsPageOpened from './main-components/tags-page-opened.vue'

@@ -53,7 +53,7 @@ import { mapState } from 'vuex'
 import Util from '@/libs/util.js'
 
 export default {
-    name: 'promition_index',
+    name: 'promotion_index',
     components: {
         PromotionGrid,
         PromotionEditor
