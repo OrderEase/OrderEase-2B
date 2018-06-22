@@ -7,9 +7,23 @@ import echarts from 'echarts'
 
 export default {
     name: 'payWayPie',
-    data () {
-        return {
-            //
+    computed: {
+        payWayData () {
+            let colors = ['#9bd598', '#abd5f2', '#ab8df2', '#ffd58f']
+            return this.$store.state.restaurant.analytics.payWay.map((way, idx) => {
+                return {
+                    name: way.name,
+                    value: way.value,
+                    itemStyle: {
+                        normal: {
+                            color: colors[idx]
+                        }
+                    }
+                }
+            })
+        },
+        legendData () {
+            return this.$store.state.restaurant.analytics.payWay.map(way => way.name)
         }
     },
     mounted () {
@@ -23,20 +37,15 @@ export default {
                 legend: {
                     orient: 'vertical',
                     left: 'right',
-                    data: ['微信', '支付宝', '信用卡', '比特币']
+                    data: this.legendData
                 },
                 series: [
                     {
-                        name: '访问来源',
+                        name: '支付方式',
                         type: 'pie',
                         radius: '66%',
                         center: ['50%', '60%'],
-                        data: [
-                            {value: 210, name: '微信', itemStyle: {normal: {color: '#9bd598'}}},
-                            {value: 130, name: '支付宝', itemStyle: {normal: {color: '#abd5f2'}}},
-                            {value: 79, name: '信用卡', itemStyle: {normal: {color: '#ab8df2'}}},
-                            {value: 54, name: '比特币', itemStyle: {normal: {color: '#ffd58f'}}}
-                        ],
+                        data: this.payWayData,
                         itemStyle: {
                             emphasis: {
                                 shadowBlur: 10,

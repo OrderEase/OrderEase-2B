@@ -197,6 +197,7 @@ import TurnoverLine from './components/turnover-line.vue'
 
 import { mapState } from 'vuex'
 import Util from '@/libs/util.js'
+import Analytics from '@/api/analytics.js'
 
 export default {
     name: 'home',
@@ -229,12 +230,6 @@ export default {
                     title: '去买个新的砧板'
                 }
             ],
-            count: {
-                totalUser: 496,
-                newUser: 128,
-                turnover: 43805,
-                dish: 3950
-            },
             showAddNewTodo: false,
             newToDoItemValue: ''
         }
@@ -254,8 +249,24 @@ export default {
                     isOpen = now >= open && now <= close
                 }
                 return isOpen
+            },
+            count (state) {
+                if (state.restaurant.analytics.countCard) {
+                    return state.restaurant.analytics.countCard
+                } else {
+                    return {
+                        totalUser: 0,
+                        newUser: 0,
+                        turnover: 0,
+                        dish: 0
+                    }
+                }
             }
         })
+    },
+    async beforeRouteEnter (to, from, next) {
+        let analytics = await Analytics.get()
+        next(vm => vm.$store.commit('restaurant/setAnalytics', analytics))
     },
     methods: {
         editRestrtInfo () {

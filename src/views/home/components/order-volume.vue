@@ -6,9 +6,22 @@
 import echarts from 'echarts'
 export default {
     name: 'orderVolume',
-    data () {
-        return {
-            //
+    computed: {
+        orderData () {
+            return this.$store.state.restaurant.analytics.orderCount.map(date => {
+                return {
+                    name: date.name,
+                    value: date.value,
+                    itemStyle: {
+                        normal: {
+                            color: '#2d8cf0'
+                        }
+                    }
+                }
+            })
+        },
+        yAxisData () {
+            return this.$store.state.restaurant.analytics.orderCount.map(date => date.name)
         }
     },
     mounted () {
@@ -43,7 +56,7 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    data: this.yAxisData,
                     nameTextStyle: {
                         color: '#c3c3c3'
                     }
@@ -52,15 +65,7 @@ export default {
                     {
                         name: '订单量',
                         type: 'bar',
-                        data: [
-                            {value: 453, name: '周一', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 879, name: '周二', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 235, name: '周三', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 159, name: '周四', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 543, name: '周五', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 130, name: '周六', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 110, name: '周日', itemStyle: {normal: {color: '#2d8cf0'}}}
-                        ]
+                        data: this.orderData
                     }
                 ]
             }

@@ -1,7 +1,8 @@
 import Restaurant from '@/api/restaurant.js'
 
 const state = {
-    info: {}
+    info: {},
+    analytics: {}
 }
 
 const actions = {
@@ -18,6 +19,9 @@ const actions = {
 const mutations = {
     setInfo (state, info) {
         state.info = info
+    },
+    setAnalytics (state, analyticsInfo) {
+        state.analytics = analyticsInfo
     }
 }
 
