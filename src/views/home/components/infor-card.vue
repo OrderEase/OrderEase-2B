@@ -29,12 +29,12 @@
 </template>
 
 <script>
-import countUp from './countUp.vue'
+import CountUp from './count-up.vue'
 
 export default {
     name: 'inforCard',
     components: {
-        countUp
+        CountUp
     },
     props: {
         idName: String,

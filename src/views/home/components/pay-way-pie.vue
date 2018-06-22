@@ -1,12 +1,12 @@
 <template>
-    <div style="width:100%;height:100%;" id="data_source_con"></div>
+    <div style="width:100%;height:100%;" id="pay_way_con"></div>
 </template>
 
 <script>
 import echarts from 'echarts'
 
 export default {
-    name: 'dataSourcePie',
+    name: 'payWayPie',
     data () {
         return {
             //
@@ -14,7 +14,7 @@ export default {
     },
     mounted () {
         this.$nextTick(() => {
-            var dataSourcePie = echarts.init(document.getElementById('data_source_con'))
+            var payWayPie = echarts.init(document.getElementById('pay_way_con'))
             const option = {
                 tooltip: {
                     trigger: 'item',
@@ -23,7 +23,7 @@ export default {
                 legend: {
                     orient: 'vertical',
                     left: 'right',
-                    data: ['ios', 'android', 'pc', 'web', 'others']
+                    data: ['微信', '支付宝', '信用卡', '比特币']
                 },
                 series: [
                     {
@@ -32,11 +32,10 @@ export default {
                         radius: '66%',
                         center: ['50%', '60%'],
                         data: [
-                            {value: 2103456, name: 'ios', itemStyle: {normal: {color: '#9bd598'}}},
-                            {value: 1305923, name: 'android', itemStyle: {normal: {color: '#ffd58f'}}},
-                            {value: 543250, name: 'pc', itemStyle: {normal: {color: '#abd5f2'}}},
-                            {value: 798403, name: 'web', itemStyle: {normal: {color: '#ab8df2'}}},
-                            {value: 302340, name: 'others', itemStyle: {normal: {color: '#e14f60'}}}
+                            {value: 210, name: '微信', itemStyle: {normal: {color: '#9bd598'}}},
+                            {value: 130, name: '支付宝', itemStyle: {normal: {color: '#abd5f2'}}},
+                            {value: 79, name: '信用卡', itemStyle: {normal: {color: '#ab8df2'}}},
+                            {value: 54, name: '比特币', itemStyle: {normal: {color: '#ffd58f'}}}
                         ],
                         itemStyle: {
                             emphasis: {
@@ -48,9 +47,9 @@ export default {
                     }
                 ]
             }
-            dataSourcePie.setOption(option)
+            payWayPie.setOption(option)
             window.addEventListener('resize', function () {
-                dataSourcePie.resize()
+                payWayPie.resize()
             })
         })
     }

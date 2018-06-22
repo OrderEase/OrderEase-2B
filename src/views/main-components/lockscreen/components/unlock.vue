@@ -48,7 +48,7 @@ export default {
     },
     computed: {
         avatorPath () {
-            return localStorage.avatorImgPath
+            return this.$store.state.restaurant.info.img
         }
     },
     methods: {

@@ -85,7 +85,7 @@
                             :end-val="count.totalUser"
                             iconType="android-people"
                             color="#2d8cf0"
-                            intro-text="今日客户数"
+                            intro-text="今日顾客数"
                         ></infor-card>
                     </i-col>
                     <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
@@ -121,16 +121,14 @@
                     <Card :padding="0">
                         <p slot="title" class="card-title">
                             <Icon type="map"></Icon>
-                            今日服务调用地理分布
+                            点赞/销量排行
                         </p>
                         <div class="map-con">
-                            <i-col span="10">
-                                <map-data-table :cityData="cityData" height="281" :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
+                            <i-col span="12">
+                                <like-table height="281" :style-obj="{margin: '12px 0 0 11px'}"></like-table>
                             </i-col>
-                            <i-col span="14" class="map-incon">
-                                <Row type="flex" justify="center" align="middle">
-                                    <home-map :city-data="cityData"></home-map>
-                                </Row>
+                            <i-col span="12">
+                                <sale-table height="281" :style-obj="{margin: '12px 0 0 11px'}"></sale-table>
                             </i-col>
                         </div>
                     </Card>
@@ -142,10 +140,10 @@
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-map"></Icon>
-                        上周每日来访量统计
+                        上周每日订单量统计
                     </p>
                     <div class="data-source-row">
-                        <visite-volume></visite-volume>
+                        <order-volume></order-volume>
                     </div>
                 </Card>
             </i-col>
@@ -153,10 +151,10 @@
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-pulse-strong"></Icon>
-                        数据来源统计
+                        支付方式统计
                     </p>
                     <div class="data-source-row">
-                        <data-source-pie></data-source-pie>
+                        <pay-way-pie></pay-way-pie>
                     </div>
                 </Card>
             </i-col>
@@ -164,10 +162,10 @@
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-wifi"></Icon>
-                        各类用户服务调用变化统计
+                        完成时间统计
                     </p>
                     <div class="data-source-row">
-                        <user-flow></user-flow>
+                        <finish-time></finish-time>
                     </div>
                 </Card>
             </i-col>
@@ -176,10 +174,10 @@
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="ios-shuffle-strong"></Icon>
-                    上周每日服务调用量(万)
+                    营业额
                 </p>
-                <div class="line-chart-con">
-                    <service-requests></service-requests>
+                <div class="line-chart-con" style="height: 250px">
+                    <turnover-line></turnover-line>
                 </div>
             </Card>
         </Row>
@@ -187,33 +185,31 @@
 </template>
 
 <script>
-import cityData from './map-data/get-city-value.js'
-import homeMap from './components/map.vue'
-import dataSourcePie from './components/dataSourcePie.vue'
-import visiteVolume from './components/visiteVolume.vue'
-import serviceRequests from './components/serviceRequests.vue'
-import userFlow from './components/userFlow.vue'
-import countUp from './components/countUp.vue'
-import inforCard from './components/inforCard.vue'
-import mapDataTable from './components/mapDataTable.vue'
-import toDoListItem from './components/toDoListItem.vue'
 import RestrtEditor from './components/restrt-editor.vue'
+import ToDoListItem from './components/todo-list-item.vue'
+import InforCard from './components/infor-card.vue'
+import LikeTable from './components/like-table.vue'
+import SaleTable from './components/sale-table.vue'
+import OrderVolume from './components/order-volume.vue'
+import PayWayPie from './components/pay-way-pie.vue'
+import FinishTime from './components/finish-time.vue'
+import TurnoverLine from './components/turnover-line.vue'
+
 import { mapState } from 'vuex'
 import Util from '@/libs/util.js'
 
 export default {
     name: 'home',
     components: {
-        homeMap,
-        dataSourcePie,
-        visiteVolume,
-        serviceRequests,
-        userFlow,
-        countUp,
-        inforCard,
-        mapDataTable,
-        toDoListItem,
-        RestrtEditor
+        RestrtEditor,
+        ToDoListItem,
+        InforCard,
+        LikeTable,
+        SaleTable,
+        OrderVolume,
+        PayWayPie,
+        FinishTime,
+        TurnoverLine
     },
     data () {
         return {
@@ -239,7 +235,6 @@ export default {
                 turnover: 43805,
                 dish: 3950
             },
-            cityData: cityData,
             showAddNewTodo: false,
             newToDoItemValue: ''
         }
@@ -252,9 +247,13 @@ export default {
                 let now = new Date()
                 let open = new Date()
                 let close = new Date()
-                open.setHours(...state.restaurant.info.open.split(':'))
-                close.setHours(...state.restaurant.info.close.split(':'))
-                return now >= open && now <= close
+                let isOpen = false
+                if (state.restaurant.info.open && state.restaurant.info.close) {
+                    open.setHours(...state.restaurant.info.open.split(':'))
+                    close.setHours(...state.restaurant.info.close.split(':'))
+                    isOpen = now >= open && now <= close
+                }
+                return isOpen
             }
         })
     },

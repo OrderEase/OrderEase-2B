@@ -1,11 +1,11 @@
 <template>
-    <div style="width:100%;height:100%;" id="visite_volume_con"></div>
+    <div style="width:100%;height:100%;" id="order_volume_con"></div>
 </template>
 
 <script>
 import echarts from 'echarts'
 export default {
-    name: 'visiteVolume',
+    name: 'orderVolume',
     data () {
         return {
             //
@@ -13,7 +13,7 @@ export default {
     },
     mounted () {
         this.$nextTick(() => {
-            let visiteVolume = echarts.init(document.getElementById('visite_volume_con'))
+            let orderVolume = echarts.init(document.getElementById('order_volume_con'))
             let xAxisData = []
             let data1 = []
             let data2 = []
@@ -43,32 +43,32 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'],
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
                     nameTextStyle: {
                         color: '#c3c3c3'
                     }
                 },
                 series: [
                     {
-                        name: '访问量',
+                        name: '订单量',
                         type: 'bar',
                         data: [
-                            {value: 453682, name: 'Mon', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 879545, name: 'Tues', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 2354678, name: 'Wed', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 1598403, name: 'Thur', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 543250, name: 'Fri', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 1305923, name: 'Sat', itemStyle: {normal: {color: '#2d8cf0'}}},
-                            {value: 1103456, name: 'Sun', itemStyle: {normal: {color: '#2d8cf0'}}}
+                            {value: 453, name: '周一', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 879, name: '周二', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 235, name: '周三', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 159, name: '周四', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 543, name: '周五', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 130, name: '周六', itemStyle: {normal: {color: '#2d8cf0'}}},
+                            {value: 110, name: '周日', itemStyle: {normal: {color: '#2d8cf0'}}}
                         ]
                     }
                 ]
             }
 
-            visiteVolume.setOption(option)
+            orderVolume.setOption(option)
 
             window.addEventListener('resize', function () {
-                visiteVolume.resize()
+                orderVolume.resize()
             })
         })
     }
