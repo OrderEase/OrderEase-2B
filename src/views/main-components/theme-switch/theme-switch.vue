@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
-import config from '../../../../build/config.js';
+import Cookies from 'js-cookie'
+import config from '../../../../build/config.js'
 export default {
     name: 'themeSwitch',
     data () {
@@ -66,98 +66,98 @@ export default {
                     element: '#e43e31'
                 }
             ]
-        };
+        }
     },
     methods: {
         setTheme (themeFile) {
-            let menuTheme = themeFile.substr(0, 1);
-            let mainTheme = themeFile.substr(-1, 1);
+            let menuTheme = themeFile.substr(0, 1)
+            let mainTheme = themeFile.substr(-1, 1)
             if (menuTheme === 'b') {
                 // 黑色菜单
-                this.$store.commit('app/changeMenuTheme', 'dark');
-                menuTheme = 'dark';
+                this.$store.commit('app/changeMenuTheme', 'dark')
+                menuTheme = 'dark'
             } else {
-                this.$store.commit('app/changeMenuTheme', 'light');
-                menuTheme = 'light';
+                this.$store.commit('app/changeMenuTheme', 'light')
+                menuTheme = 'light'
             }
-            let path = '';
-            let themeLink = document.querySelector('link[name="theme"]');
-            let userName = Cookies.get('user');
+            let path = ''
+            let themeLink = document.querySelector('link[name="theme"]')
+            let userName = Cookies.get('user')
             if (localStorage.theme) {
-                let themeList = JSON.parse(localStorage.theme);
-                let index = 0;
+                let themeList = JSON.parse(localStorage.theme)
+                let index = 0
                 let hasThisUser = themeList.some((item, i) => {
                     if (item.userName === userName) {
-                        index = i;
-                        return true;
+                        index = i
+                        return true
                     } else {
-                        return false;
+                        return false
                     }
-                });
+                })
                 if (hasThisUser) {
-                    themeList[index].mainTheme = mainTheme;
-                    themeList[index].menuTheme = menuTheme;
+                    themeList[index].mainTheme = mainTheme
+                    themeList[index].menuTheme = menuTheme
                 } else {
                     themeList.push({
                         userName: userName,
                         mainTheme: mainTheme,
                         menuTheme: menuTheme
-                    });
+                    })
                 }
-                localStorage.theme = JSON.stringify(themeList);
+                localStorage.theme = JSON.stringify(themeList)
             } else {
                 localStorage.theme = JSON.stringify([{
                     userName: userName,
                     mainTheme: mainTheme,
                     menuTheme: menuTheme
-                }]);
+                }])
             }
-            let stylePath = '';
+            let stylePath = ''
             if (config.env.indexOf('dev') > -1) {
-                stylePath = './src/views/main-components/theme-switch/theme/';
+                stylePath = './src/views/main-components/theme-switch/theme/'
             } else {
-                stylePath = 'dist/';
+                stylePath = 'dist/'
             }
             if (mainTheme !== 'b') {
-                path = stylePath + mainTheme + '.css';
+                path = stylePath + mainTheme + '.css'
             } else {
-                path = '';
+                path = ''
             }
-            themeLink.setAttribute('href', path);
+            themeLink.setAttribute('href', path)
         }
     },
     created () {
-        let path = '';
+        let path = ''
         if (config.env.indexOf('dev') > -1) {
-            path = './src/views/main-components/theme-switch/theme/';
+            path = './src/views/main-components/theme-switch/theme/'
         } else {
-            path = 'dist/';
+            path = 'dist/'
         }
-        let name = Cookies.get('user');
+        let name = Cookies.get('user')
         if (localStorage.theme) {
             let hasThisUser = JSON.parse(localStorage.theme).some(item => {
                 if (item.userName === name) {
-                    this.$store.commit('app/changeMenuTheme', item.menuTheme);
-                    this.$store.commit('app/changeMainTheme', item.mainTheme);
-                    return true;
+                    this.$store.commit('app/changeMenuTheme', item.menuTheme)
+                    this.$store.commit('app/changeMainTheme', item.mainTheme)
+                    return true
                 } else {
-                    return false;
+                    return false
                 }
-            });
+            })
             if (!hasThisUser) {
-                this.$store.commit('app/changeMenuTheme', 'dark');
-                this.$store.commit('app/changeMainTheme', 'b');
+                this.$store.commit('app/changeMenuTheme', 'dark')
+                this.$store.commit('app/changeMainTheme', 'b')
             }
         } else {
-            this.$store.commit('app/changeMenuTheme', 'dark');
-            this.$store.commit('app/changeMainTheme', 'b');
+            this.$store.commit('app/changeMenuTheme', 'dark')
+            this.$store.commit('app/changeMainTheme', 'b')
         }
         // 根据用户设置主题
         if (this.$store.state.app.themeColor !== 'b') {
-            let stylesheetPath = path + this.$store.state.app.themeColor + '.css';
-            let themeLink = document.querySelector('link[name="theme"]');
-            themeLink.setAttribute('href', stylesheetPath);
+            let stylesheetPath = path + this.$store.state.app.themeColor + '.css'
+            let themeLink = document.querySelector('link[name="theme"]')
+            themeLink.setAttribute('href', stylesheetPath)
         }
     }
-};
+}
 </script>

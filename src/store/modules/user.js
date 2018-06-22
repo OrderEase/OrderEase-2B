@@ -12,7 +12,6 @@ const actions = {
             password,
             authority
         })
-        commit('app/setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg', { root: true })
     },
     async logout ({ commit }) {
         await User.logout()

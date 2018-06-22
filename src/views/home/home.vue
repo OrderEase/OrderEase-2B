@@ -7,9 +7,9 @@
         <Row :gutter="10">
             <i-col :md="24" :lg="8">
                 <Row class-name="home-page-row1" :gutter="10">
-                    <i-col :md="12" :lg="24" :style="{marginBottom: '10px'}">
+                    <i-col :md="12" :lg="24" class="margin-bottom-10">
                         <Card>
-                            <Row type="flex" class="user-infor">
+                            <Row type="flex" class="restrt-infor">
                                 <i-col span="8">
                                     <Row class-name="made-child-con-middle" type="flex" align="middle">
                                         <img class="avator-img" :src="avatorPath" />
@@ -17,23 +17,34 @@
                                 </i-col>
                                 <i-col span="16" style="padding-left:6px">
                                     <Row class-name="made-child-con-middle" type="flex" align="middle">
-                                        <div>
-                                            <b class="card-user-infor-name">Admin</b>
-                                            <p>super admin</p>
-                                        </div>
+                                        <i-col span="24">
+                                            <p class="card-restrt-infor-name">{{ restrt.name }}</p>
+                                            <p class="card-restrt-infor-description">{{ restrt.description }}</p>
+                                        </i-col>
                                     </Row>
                                 </i-col>
                             </Row>
                             <div class="line-gray"></div>
                             <Row class="margin-top-8">
-                                <i-col span="8"><p class="notwrap">上次登录时间:</p></i-col>
-                                <i-col span="16" class="padding-left-8">2017.09.12-13:32:20</i-col>
+                                <i-col span="8"><p class="notwrap">营业时间:</p></i-col>
+                                <i-col span="16" class="padding-left-8">{{ restrt.open }}-{{ restrt.close }}</i-col>
                             </Row>
                             <Row class="margin-top-8">
-                                <i-col span="8"><p class="notwrap">上次登录地点:</p></i-col>
-                                <i-col span="16" class="padding-left-8">北京</i-col>
+                                <i-col span="8"><p class="notwrap">当前状态:</p></i-col>
+                                <i-col span="16" class="padding-left-8">
+                                    <p v-if="restrtState" class="card-restrt-infor-state-open">营业中</p>
+                                    <p v-if="!restrtState" class="card-restrt-infor-state-close">已打烊</p>
+                                </i-col>
                             </Row>
+                            <div class="card-restrt-infor-con">
+                                <a @click="editRestrtInfo"><Icon type="compose" size="18"></Icon></a>
+                            </div>
                         </Card>
+                        <restrt-editor
+                            :editting="isEditting"
+                            :restrt="edittingRestrt"
+                            @on-editting-change="syncEditting"
+                        ></restrt-editor>
                     </i-col>
                     <i-col :md="12" :lg="24" :style="{marginBottom: '10px'}">
                         <Card>
@@ -68,41 +79,41 @@
             </i-col>
             <i-col :md="24" :lg="16">
                 <Row :gutter="5">
-                    <i-col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
+                    <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="user_created_count"
-                            :end-val="count.createUser"
-                            iconType="android-person-add"
+                            id-name="total_user_count"
+                            :end-val="count.totalUser"
+                            iconType="android-people"
                             color="#2d8cf0"
-                            intro-text="今日新增用户"
+                            intro-text="今日客户数"
                         ></infor-card>
                     </i-col>
-                    <i-col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
+                    <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="visit_count"
-                            :end-val="count.visit"
-                            iconType="ios-eye"
+                            id-name="new_user_count"
+                            :end-val="count.newUser"
+                            iconType="android-person-add"
                             color="#64d572"
                             :iconSize="50"
-                            intro-text="今日浏览量"
+                            intro-text="今日新客数"
                         ></infor-card>
                     </i-col>
-                    <i-col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
+                    <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="collection_count"
-                            :end-val="count.collection"
-                            iconType="upload"
+                            id-name="turnover_count"
+                            :end-val="count.turnover"
+                            iconType="social-yen"
                             color="#ffd572"
-                            intro-text="今日数据采集量"
+                            intro-text="今日总营业额"
                         ></infor-card>
                     </i-col>
-                    <i-col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
+                    <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="transfer_count"
-                            :end-val="count.transfer"
-                            iconType="shuffle"
+                            id-name="dish_count"
+                            :end-val="count.dish"
+                            iconType="android-cart"
                             color="#f25e43"
-                            intro-text="今日服务调用量"
+                            intro-text="今日售出菜品数"
                         ></infor-card>
                     </i-col>
                 </Row>
@@ -186,6 +197,9 @@ import countUp from './components/countUp.vue'
 import inforCard from './components/inforCard.vue'
 import mapDataTable from './components/mapDataTable.vue'
 import toDoListItem from './components/toDoListItem.vue'
+import RestrtEditor from './components/restrt-editor.vue'
+import { mapState } from 'vuex'
+import Util from '@/libs/util.js'
 
 export default {
     name: 'home',
@@ -198,32 +212,32 @@ export default {
         countUp,
         inforCard,
         mapDataTable,
-        toDoListItem
+        toDoListItem,
+        RestrtEditor
     },
     data () {
         return {
+            isEditting: false,
+            edittingRestrt: {},
             toDoList: [
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '去进货 50 斤大米'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '去进货 100 斤土豆'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '晚上8点去找老王清帐'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件'
-                },
-                {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '去买个新的砧板'
                 }
             ],
             count: {
-                createUser: 496,
-                visit: 3264,
-                collection: 24389305,
-                transfer: 39503498
+                totalUser: 496,
+                newUser: 128,
+                turnover: 43805,
+                dish: 3950
             },
             cityData: cityData,
             showAddNewTodo: false,
@@ -231,11 +245,33 @@ export default {
         }
     },
     computed: {
-        avatorPath () {
-            return localStorage.avatorImgPath
-        }
+        ...mapState({
+            avatorPath: state => state.restaurant.info.img,
+            restrt: state => state.restaurant.info,
+            restrtState (state) {
+                let now = new Date()
+                let open = new Date()
+                let close = new Date()
+                open.setHours(...state.restaurant.info.open.split(':'))
+                close.setHours(...state.restaurant.info.close.split(':'))
+                return now >= open && now <= close
+            }
+        })
+    },
+    created () {
+        this.getInfo()
     },
     methods: {
+        async getInfo () {
+            await this.$store.dispatch('restaurant/getInfo')
+        },
+        editRestrtInfo () {
+            this.edittingRestrt = Util.deepCopy(this.$store.state.restaurant.info)
+            this.isEditting = true
+        },
+        syncEditting (val) {
+            this.isEditting = val
+        },
         addNewToDoItem () {
             this.showAddNewTodo = true
         },

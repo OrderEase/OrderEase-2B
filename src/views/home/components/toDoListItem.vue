@@ -23,15 +23,15 @@ export default {
     data () {
         return {
             todoitem: false
-        };
+        }
     },
     props: {
         content: String
     },
     methods: {
         handleHasDid () {
-            this.todoitem = !this.todoitem;
+            this.todoitem = !this.todoitem
         }
     }
-};
+}
 </script>

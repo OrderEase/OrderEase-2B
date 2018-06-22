@@ -38,7 +38,7 @@
     </div>
 </template>
 <script>
-import splitPane from './split-pane';
+import splitPane from './split-pane'
 export default {
     name: 'split-pane-page',
     components: {
@@ -51,18 +51,18 @@ export default {
             triggerOffsetMin: 40,
             atMax: false,
             atMin: false
-        };
+        }
     },
     methods: {
         handleMousedown (e) {
-            this.$refs.pane.handleMousedown(e);
+            this.$refs.pane.handleMousedown(e)
         },
         handleMoving (e) {
-            this.atMax = e.atMax;
-            this.atMin = e.atMin;
+            this.atMax = e.atMax
+            this.atMin = e.atMin
         }
     }
-};
+}
 </script>
 <style lang="less" scoped>
 .split-pane-con{

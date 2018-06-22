@@ -47,4 +47,4 @@ export default {
         poptip: 'international poptip',
         showPoptipText: 'Click to show poptip'
     }
-};
+}

@@ -22,4 +22,4 @@ export default [
     {name: '梅州', value: 23},
     {name: '文登', value: 78},
     {name: '上海', value: 218}
-];
+]

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import echarts from 'echarts';
+import echarts from 'echarts'
 
 const option = {
     tooltip: {
@@ -63,19 +63,19 @@ const option = {
             }
         }
     ]
-};
+}
 
 export default {
     name: 'userFlow',
     mounted () {
-        let userFlow = echarts.init(document.getElementById('user_flow'));
-        option.series[0].data[0].value = (Math.random() * 1000).toFixed(2) - 0;
-        option.series[1].data[0].value = (Math.random() * 1000).toFixed(2) - 0;
-        userFlow.setOption(option);
+        let userFlow = echarts.init(document.getElementById('user_flow'))
+        option.series[0].data[0].value = (Math.random() * 1000).toFixed(2) - 0
+        option.series[1].data[0].value = (Math.random() * 1000).toFixed(2) - 0
+        userFlow.setOption(option)
 
         window.addEventListener('resize', function () {
-            userFlow.resize();
-        });
+            userFlow.resize()
+        })
     }
-};
+}
 </script>

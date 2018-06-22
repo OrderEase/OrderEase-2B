@@ -3,24 +3,24 @@
 </template>
 
 <script>
-import echarts from 'echarts';
+import echarts from 'echarts'
 export default {
     name: 'visiteVolume',
     data () {
         return {
             //
-        };
+        }
     },
     mounted () {
         this.$nextTick(() => {
-            let visiteVolume = echarts.init(document.getElementById('visite_volume_con'));
-            let xAxisData = [];
-            let data1 = [];
-            let data2 = [];
+            let visiteVolume = echarts.init(document.getElementById('visite_volume_con'))
+            let xAxisData = []
+            let data1 = []
+            let data2 = []
             for (let i = 0; i < 20; i++) {
-                xAxisData.push('类目' + i);
-                data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-                data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
+                xAxisData.push('类目' + i)
+                data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5)
+                data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5)
             }
 
             const option = {
@@ -63,14 +63,14 @@ export default {
                         ]
                     }
                 ]
-            };
+            }
 
-            visiteVolume.setOption(option);
+            visiteVolume.setOption(option)
 
             window.addEventListener('resize', function () {
-                visiteVolume.resize();
-            });
-        });
+                visiteVolume.resize()
+            })
+        })
     }
-};
+}
 </script>

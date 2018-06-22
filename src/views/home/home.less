@@ -1,4 +1,4 @@
-.user-infor{
+.restrt-infor {
     height: 135px;
 }
 .avator-img{
@@ -7,9 +7,29 @@
     max-width: 100px;
     height: auto;
 }
-.card-user-infor-name{
-    font-size: 2em;
-    color: #2d8cf0;
+.card-restrt-infor {
+    &-name{
+        font-weight: 600;
+        font-size: 2em;
+        color: #2d8cf0;
+    }
+    &-description {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        word-break: keep-all;
+    }
+    &-con {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+    }
+    &-state-open {
+        color: #19be6b;
+    }
+    &-state-close {
+        color: #ed3f14;
+    }
 }
 .card-title{
     color: #abafbd;

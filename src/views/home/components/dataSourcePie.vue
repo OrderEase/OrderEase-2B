@@ -3,18 +3,18 @@
 </template>
 
 <script>
-import echarts from 'echarts';
+import echarts from 'echarts'
 
 export default {
     name: 'dataSourcePie',
     data () {
         return {
             //
-        };
+        }
     },
     mounted () {
         this.$nextTick(() => {
-            var dataSourcePie = echarts.init(document.getElementById('data_source_con'));
+            var dataSourcePie = echarts.init(document.getElementById('data_source_con'))
             const option = {
                 tooltip: {
                     trigger: 'item',
@@ -47,12 +47,12 @@ export default {
                         }
                     }
                 ]
-            };
-            dataSourcePie.setOption(option);
+            }
+            dataSourcePie.setOption(option)
             window.addEventListener('resize', function () {
-                dataSourcePie.resize();
-            });
-        });
+                dataSourcePie.resize()
+            })
+        })
     }
-};
+}
 </script>

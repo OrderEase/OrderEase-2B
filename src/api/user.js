@@ -13,7 +13,7 @@ user.login = (username, password) => {
             } else {
                 reject(new Error('用户名或密码错误'))
             }
-        }, 1000)
+        }, 0)
     })
 }
 
@@ -21,7 +21,7 @@ user.logout = () => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve()
-        }, 1000)
+        }, 100)
     })
 }
 

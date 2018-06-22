@@ -93,7 +93,7 @@
     import Cookies from 'js-cookie'
     import Util from '@/libs/util.js'
     import scrollBar from '@/views/my-components/scroll-bar/vue-scroller-bars'
-    
+
     export default {
         components: {
             shrinkableMenu,
@@ -152,7 +152,7 @@
                 return this.$store.state.app.currentPath // 当前面包屑数组
             },
             avatorPath () {
-                return localStorage.avatorImgPath
+                return this.$store.state.restaurant.info.img
             },
             cachePage () {
                 return this.$store.state.app.cachePage
@@ -171,8 +171,6 @@
                     this.$store.commit('app/addOpenSubmenu', pathArr[1].name)
                 }
                 this.userName = Cookies.get('user')
-                let messageCount = 3
-                this.messageCount = messageCount.toString()
                 this.checkTag(this.$route.name)
             },
             toggleClick () {

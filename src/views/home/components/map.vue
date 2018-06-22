@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import echarts from 'echarts';
-import geoData from '../map-data/get-geography-value.js';
+import echarts from 'echarts'
+import geoData from '../map-data/get-geography-value.js'
 export default {
     name: 'homeMap',
     props: {
@@ -12,23 +12,23 @@ export default {
     },
     mounted () {
         var convertData = function (data) {
-            let res = [];
-            let len = data.length;
+            let res = []
+            let len = data.length
             for (var i = 0; i < len; i++) {
-                var geoCoord = geoData[data[i].name];
+                var geoCoord = geoData[data[i].name]
                 if (geoCoord) {
                     res.push({
                         name: data[i].name,
                         value: geoCoord.concat(data[i].value)
-                    });
+                    })
                 }
             }
-            return res;
-        };
+            return res
+        }
 
-        var map = echarts.init(document.getElementById('home_page_map'));
-        const chinaJson = require('../map-data/china.json');
-        echarts.registerMap('china', chinaJson);
+        var map = echarts.init(document.getElementById('home_page_map'))
+        const chinaJson = require('../map-data/china.json')
+        echarts.registerMap('china', chinaJson)
         map.setOption({
             backgroundColor: '#FFF',
             geo: {
@@ -60,7 +60,7 @@ export default {
                 coordinateSystem: 'geo',
                 data: convertData(this.cityData),
                 symbolSize: function (val) {
-                    return val[2] / 10;
+                    return val[2] / 10
                 },
                 label: {
                     normal: {
@@ -79,12 +79,12 @@ export default {
                 }
             }]
 
-        });
+        })
         window.addEventListener('resize', function () {
-            map.resize();
-        });
+            map.resize()
+        })
     }
-};
+}
 </script>
 
 

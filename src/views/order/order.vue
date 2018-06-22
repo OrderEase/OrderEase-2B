@@ -1,7 +1,7 @@
 <style lang="less">
     @import '../../styles/common.less';
-    @import './order.less';
     @import '../../styles/loading.less';
+    @import './order.less';
 </style>
 
 <template>

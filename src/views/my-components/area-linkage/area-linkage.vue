@@ -182,8 +182,8 @@
 </template>
 
 <script>
-import alSelector from './components/al-selector.vue';
-import alCascader from './components/al-cascader.vue';
+import alSelector from './components/al-selector.vue'
+import alCascader from './components/al-cascader.vue'
 
 // import Vue from 'vue';
 // import iviewArea from 'iview-area';
@@ -199,29 +199,29 @@ export default {
             res1: [],
             resDefault: ['河北省', '张家口市', '怀来县', '沙城镇'],
             showRes: []
-        };
+        }
     },
     methods: {
         renderFormat (label) {
-            return label.join(' => ');
+            return label.join(' => ')
         },
         setAreaOne () {
-            this.resDefault = ['北京市', '市辖区', '东城区', '东华门街道'];
+            this.resDefault = ['北京市', '市辖区', '东城区', '东华门街道']
         },
         setAreaTwo () {
-            this.resDefault = ['山西省', '太原市', '小店区', '北营街道'];
+            this.resDefault = ['山西省', '太原市', '小店区', '北营街道']
         },
         setAreaThree () {
-            this.resDefault = ['130000', '130700', '130730', '130730100000'];
+            this.resDefault = ['130000', '130700', '130730', '130730100000']
         }
     },
     watch: {
         res1 (val) {
-            this.showRes = val;
+            this.showRes = val
         },
         resDefault (val) {
-            this.showRes = val;
+            this.showRes = val
         }
     }
-};
+}
 </script>

@@ -45,7 +45,7 @@ export default {
             option: {
                 showCropedImage: false,
                 cropedImg: ''
-            },
+            }
         }
     },
     methods: {
@@ -65,7 +65,7 @@ export default {
         }
     },
     mounted () {
-        let img = document.getElementById('cropimg');
+        let img = document.getElementById('cropimg')
         this.cropper = new Cropper(img, {
             dragMode: 'move',
             preview: '#preview',

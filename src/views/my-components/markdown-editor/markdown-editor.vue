@@ -19,15 +19,15 @@
 </template>
 
 <script>
-import SimpleMDE from 'simplemde';
-import './simplemde.min.css';
+import SimpleMDE from 'simplemde'
+import './simplemde.min.css'
 export default {
     name: 'markdown-editor',
     mounted () {
         new SimpleMDE({
             element: document.getElementById('iview_admin_markdown_editor'),
             toolbar: ['bold', 'italic', 'strikethrough', 'heading', 'heading-smaller', 'heading-bigger', 'heading-1', 'heading-2', 'heading-3', '|', 'code', 'quote', 'unordered-list', 'clean-block', '|', 'link', 'image', 'table', 'horizontal-rule', '|', 'preview', 'guide']
-        });
+        })
     }
-};
+}
 </script>

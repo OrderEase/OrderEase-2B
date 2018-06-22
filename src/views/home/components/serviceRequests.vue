@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import echarts from 'echarts';
+import echarts from 'echarts'
 export default {
     name: 'serviceRequests',
     mounted () {
@@ -89,13 +89,13 @@ export default {
                     data: [820, 645, 546, 745, 872, 624, 258]
                 }
             ]
-        };
-        const serviceRequestCharts = echarts.init(document.getElementById('service_request_con'));
-        serviceRequestCharts.setOption(option);
+        }
+        const serviceRequestCharts = echarts.init(document.getElementById('service_request_con'))
+        serviceRequestCharts.setOption(option)
 
         window.addEventListener('resize', function () {
-            serviceRequestCharts.resize();
-        });
+            serviceRequestCharts.resize()
+        })
     }
-};
+}
 </script>

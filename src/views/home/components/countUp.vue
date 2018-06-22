@@ -6,27 +6,27 @@
 </template>
 
 <script>
-import CountUp from 'countup';
+import CountUp from 'countup'
 
 function transformValue (val) {
-    let endVal = 0;
-    let unit = '';
+    let endVal = 0
+    let unit = ''
     if (val < 1000) {
-        endVal = val;
+        endVal = val
     } else if (val >= 1000 && val < 1000000) {
-        endVal = parseInt(val / 1000);
-        unit = 'K+';
+        endVal = parseInt(val / 1000)
+        unit = 'K+'
     } else if (val >= 1000000 && val < 10000000000) {
-        endVal = parseInt(val / 1000000);
-        unit = 'M+';
+        endVal = parseInt(val / 1000000)
+        unit = 'M+'
     } else {
-        endVal = parseInt(val / 1000000000);
-        unit = 'B+';
+        endVal = parseInt(val / 1000000000)
+        unit = 'B+'
     }
     return {
         val: endVal,
         unit: unit
-    };
+    }
 }
 
 export default {
@@ -34,7 +34,7 @@ export default {
         return {
             unit: '',
             demo: {}
-        };
+        }
     },
     name: 'countUp',
     props: {
@@ -68,7 +68,7 @@ export default {
                     useGrouping: true,
                     separator: ',',
                     decimal: '.'
-                };
+                }
             }
         },
         color: String,
@@ -85,24 +85,24 @@ export default {
     mounted () {
         this.$nextTick(() => {
             setTimeout(() => {
-                let res = transformValue(this.endVal);
-                let endVal = res.val;
-                this.unit = res.unit;
-                let demo = {};
-                this.demo = demo = new CountUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
+                let res = transformValue(this.endVal)
+                let endVal = res.val
+                this.unit = res.unit
+                let demo = {}
+                this.demo = demo = new CountUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options)
                 if (!demo.error) {
-                    demo.start();
+                    demo.start()
                 }
-            }, this.delay);
-        });
+            }, this.delay)
+        })
     },
     watch: {
         endVal (val) {
-            let res = transformValue(val);
-            let endVal = res.val;
-            this.unit = res.unit;
-            this.demo.update(endVal);
+            let res = transformValue(val)
+            let endVal = res.val
+            this.unit = res.unit
+            this.demo.update(endVal)
         }
     }
-};
+}
 </script>

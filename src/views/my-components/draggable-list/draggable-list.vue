@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import Sortable from 'sortablejs';
+import Sortable from 'sortablejs'
 export default {
     name: 'draggable-list',
     data () {
@@ -155,15 +155,15 @@ export default {
                 {name: '连年有鱼'}
             ],
             affordList: []
-        };
+        }
     },
     mounted () {
         document.body.ondrop = function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-        };
-        let vm = this;
-        let todoList = document.getElementById('todoList');
+            event.preventDefault()
+            event.stopPropagation()
+        }
+        let vm = this
+        let todoList = document.getElementById('todoList')
         Sortable.create(todoList, {
             group: {
                 name: 'list',
@@ -173,10 +173,10 @@ export default {
             ghostClass: 'placeholder-style',
             fallbackClass: 'iview-admin-cloned-item',
             onRemove (event) {
-                vm.doArray.splice(event.newIndex, 0, vm.todoArray[event.item.getAttribute('data-index')]);
+                vm.doArray.splice(event.newIndex, 0, vm.todoArray[event.item.getAttribute('data-index')])
             }
-        });
-        let doList = document.getElementById('doList');
+        })
+        let doList = document.getElementById('doList')
         Sortable.create(doList, {
             group: {
                 name: 'list',
@@ -187,10 +187,10 @@ export default {
             animation: 120,
             fallbackClass: 'iview-admin-cloned-item',
             onRemove (event) {
-                vm.doArray.splice(event.oldIndex, 1);
+                vm.doArray.splice(event.oldIndex, 1)
             }
-        });
-        let shoppingList = document.getElementById('shoppingList');
+        })
+        let shoppingList = document.getElementById('shoppingList')
         Sortable.create(shoppingList, {
             group: {
                 name: 'list',
@@ -200,10 +200,10 @@ export default {
             ghostClass: 'placeholder-style',
             fallbackClass: 'iview-admin-cloned-item',
             onRemove (event) {
-                vm.affordList.splice(event.newIndex, 0, vm.shoppingList[event.item.getAttribute('data-index')]);
+                vm.affordList.splice(event.newIndex, 0, vm.shoppingList[event.item.getAttribute('data-index')])
             }
-        });
-        let affordList = document.getElementById('affordList');
+        })
+        let affordList = document.getElementById('affordList')
         Sortable.create(affordList, {
             group: {
                 name: 'list',
@@ -214,9 +214,9 @@ export default {
             animation: 120,
             fallbackClass: 'iview-admin-cloned-item',
             onRemove (event) {
-                vm.affordList.splice(event.oldIndex, 1);
+                vm.affordList.splice(event.oldIndex, 1)
             }
-        });
+        })
     }
-};
+}
 </script>

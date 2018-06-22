@@ -1,3 +1,3 @@
-import scrollBar from './scroll-bar.vue';
+import scrollBar from './scroll-bar.vue'
 
-export default scrollBar;
+export default scrollBar

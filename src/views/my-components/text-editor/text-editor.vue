@@ -15,19 +15,19 @@
 </template>
 
 <script>
-import tinymce from 'tinymce';
+import tinymce from 'tinymce'
 export default {
     name: 'text-editor',
     data () {
         return {
             spinShow: true
-        };
+        }
     },
     methods: {
         init () {
             this.$nextTick(() => {
-                let vm = this;
-                let height = document.body.offsetHeight - 300;
+                let vm = this
+                let height = document.body.offsetHeight - 300
                 tinymce.init({
                     selector: '#tinymceEditer',
                     branding: false,
@@ -50,26 +50,26 @@ export default {
                     },
                     setup: function (editor) {
                         editor.on('init', function (e) {
-                            vm.spinShow = false;
+                            vm.spinShow = false
                             if (localStorage.editorContent) {
-                                tinymce.get('tinymceEditer').setContent(localStorage.editorContent);
+                                tinymce.get('tinymceEditer').setContent(localStorage.editorContent)
                             }
-                        });
+                        })
                         editor.on('keydown', function (e) {
-                            localStorage.editorContent = tinymce.get('tinymceEditer').getContent();
-                        });
+                            localStorage.editorContent = tinymce.get('tinymceEditer').getContent()
+                        })
                     }
-                });
-            });
+                })
+            })
         }
     },
     mounted () {
-        this.init();
+        this.init()
     },
     destroyed () {
-        tinymce.get('tinymceEditer').destroy();
+        tinymce.get('tinymceEditer').destroy()
     }
-};
+}
 </script>
 
 <style>

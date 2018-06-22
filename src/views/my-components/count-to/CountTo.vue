@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import CountUp from 'countup';
+import CountUp from 'countup'
 export default {
     name: 'CountTo',
     data () {
@@ -15,7 +15,7 @@ export default {
             counter: {},
             unitText: '',
             countId: 'count' + parseInt(Math.random() * 1000000)
-        };
+        }
     },
     props: {
         mainClass: String,
@@ -27,7 +27,7 @@ export default {
                     fontSize: '16px',
                     fontWeight: 500,
                     color: 'gray'
-                };
+                }
             }
         },
         countStyle: Object,
@@ -78,72 +78,72 @@ export default {
         unit: {
             type: Array,
             default: () => {
-                return [[3, 'K+'], [6, 'M+'], [9, 'B+']];
+                return [[3, 'K+'], [6, 'M+'], [9, 'B+']]
             }
         }
     },
     methods: {
         transformValue (val) {
-            let endVal = 0;
-            let unit = '';
-            let len = this.unit.length;
+            let endVal = 0
+            let unit = ''
+            let len = this.unit.length
             if (val < Math.pow(10, this.unit[0][0])) {
-                endVal = val;
+                endVal = val
             } else {
                 for (let i = 1; i < len; i++) {
                     if (val >= Math.pow(10, this.unit[i - 1][0]) && val < Math.pow(10, this.unit[i][0])) {
-                        endVal = parseInt(val / Math.pow(10, this.unit[i - 1][0]));
-                        unit = this.unit[i - 1][1];
+                        endVal = parseInt(val / Math.pow(10, this.unit[i - 1][0]))
+                        unit = this.unit[i - 1][1]
                     }
                 }
             }
             if (val > Math.pow(10, this.unit[len - 1][0])) {
-                endVal = parseInt(val / Math.pow(10, this.unit[len - 1][0]));
-                unit = this.unit[len - 1][1];
+                endVal = parseInt(val / Math.pow(10, this.unit[len - 1][0]))
+                unit = this.unit[len - 1][1]
             }
             return {
                 val: endVal,
                 unit: unit
-            };
+            }
         }
     },
     mounted () {
         this.$nextTick(() => {
             setTimeout(() => {
-                let endVal = 0;
-                let res = {};
+                let endVal = 0
+                let res = {}
                 if (this.simplify) {
-                    res = this.transformValue(this.endVal);
-                    endVal = res.val;
-                    this.unitText = res.unit;
+                    res = this.transformValue(this.endVal)
+                    endVal = res.val
+                    this.unitText = res.unit
                 } else {
-                    endVal = this.endVal;
+                    endVal = this.endVal
                 }
-                let counter = {};
+                let counter = {}
                 this.counter = counter = new CountUp(this.countId, this.startVal, endVal, this.decimals, this.duration, {
                     useEasing: !this.uneasing,
                     useGrouping: !this.ungroup,
                     separator: this.separator,
                     decimal: this.decimal
-                });
+                })
                 if (!counter.error) {
-                    counter.start();
+                    counter.start()
                 }
-            }, this.delay);
-        });
+            }, this.delay)
+        })
     },
     watch: {
         endVal (val) {
-            let endVal = 0;
+            let endVal = 0
             if (this.simplify) {
-                let res = this.transformValue(this.endVal);
-                endVal = res.val;
-                this.unitText = res.unit;
+                let res = this.transformValue(this.endVal)
+                endVal = res.val
+                this.unitText = res.unit
             } else {
-                endVal = this.endVal;
+                endVal = this.endVal
             }
-            this.counter.update(endVal);
+            this.counter.update(endVal)
         }
     }
-};
+}
 </script>

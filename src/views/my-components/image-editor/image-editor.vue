@@ -159,8 +159,8 @@
 </template>
 
 <script>
-import Cropper from 'cropperjs';
-import './cropper.min.css';
+import Cropper from 'cropperjs'
+import './cropper.min.css'
 export default {
     name: 'image-editor',
     data () {
@@ -185,90 +185,90 @@ export default {
                 showCropedImage: false,
                 cropedImg: ''
             }
-        };
+        }
     },
     methods: {
         handleChange1 (e) {
-            let file = e.target.files[0];
-            let reader = new FileReader();
+            let file = e.target.files[0]
+            let reader = new FileReader()
             reader.onload = () => {
-                this.cropper1.replace(reader.result);
-                reader.onload = null;
-            };
-            reader.readAsDataURL(file);
+                this.cropper1.replace(reader.result)
+                reader.onload = null
+            }
+            reader.readAsDataURL(file)
         },
         handlecrop1 () {
-            let file = this.cropper1.getCroppedCanvas().toDataURL();
-            this.option1.cropedImg = file;
-            this.option1.showCropedImage = true;
+            let file = this.cropper1.getCroppedCanvas().toDataURL()
+            this.option1.cropedImg = file
+            this.option1.showCropedImage = true
         },
         handlerotatel () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.rotate(-30);
+                this.cropper3.rotate(-30)
             }
         },
         handlerotater () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.rotate(90);
+                this.cropper3.rotate(90)
             }
         },
         handlezooml () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.zoom(0.1);
+                this.cropper3.zoom(0.1)
             }
         },
         handlezooms () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.zoom(-0.1);
+                this.cropper3.zoom(-0.1)
             }
         },
         handlescalex () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.scaleX(-this.cropper3.getData().scaleX);
+                this.cropper3.scaleX(-this.cropper3.getData().scaleX)
             }
         },
         handlescaley () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.scaleY(-this.cropper3.getData().scaleY);
+                this.cropper3.scaleY(-this.cropper3.getData().scaleY)
             }
         },
         handleChange3 (e) {
-            let file = e.target.files[0];
-            let reader = new FileReader();
+            let file = e.target.files[0]
+            let reader = new FileReader()
             reader.onload = () => {
-                this.cropper3.replace(reader.result, true); // 这里必须设置true这个参数，否则旋转会有bug
-                reader.onload = null;
-            };
-            reader.readAsDataURL(file);
+                this.cropper3.replace(reader.result, true) // 这里必须设置true这个参数，否则旋转会有bug
+                reader.onload = null
+            }
+            reader.readAsDataURL(file)
         },
         handlemovel () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.move(-10, 0);
+                this.cropper3.move(-10, 0)
             }
         },
         handlemover () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.move(10, 0);
+                this.cropper3.move(10, 0)
             }
         },
         handlemoveu () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.move(0, -10);
+                this.cropper3.move(0, -10)
             }
         },
         handlemoved () {
             if (document.getElementById('fileinput3').files[0]) {
-                this.cropper3.move(0, 10);
+                this.cropper3.move(0, 10)
             }
         },
         handlecrop3 () {
-            let file = this.cropper3.getCroppedCanvas().toDataURL();
-            this.option3.cropedImg = file;
-            this.option3.showCropedImage = true;
+            let file = this.cropper3.getCroppedCanvas().toDataURL()
+            this.option3.cropedImg = file
+            this.option3.showCropedImage = true
         }
     },
     mounted () {
-        let img1 = document.getElementById('cropimg1');
+        let img1 = document.getElementById('cropimg1')
         this.cropper1 = new Cropper(img1, {
             dragMode: 'move',
             preview: '#preview1',
@@ -277,9 +277,9 @@ export default {
             highlight: false,
             cropBoxMovable: false,
             toggleDragModeOnDblclick: false
-        });
+        })
 
-        let img2 = document.getElementById('cropimg2');
+        let img2 = document.getElementById('cropimg2')
         this.cropper2 = new Cropper(img2, {
             dragMode: 'move',
             restore: false,
@@ -287,18 +287,18 @@ export default {
             highlight: false,
             cropBoxMovable: false,
             toggleDragModeOnDblclick: false
-        });
+        })
         img2.addEventListener('crop', (e) => {
-            this.cropdata2.x = parseInt(e.detail.x);
-            this.cropdata2.y = parseInt(e.detail.y);
-            this.cropdata2.w = parseInt(e.detail.width);
-            this.cropdata2.h = parseInt(e.detail.height);
-            this.cropdata2.deg = parseInt(e.detail.rotate);
-            this.cropdata2.scaleX = parseInt(e.detail.scaleX);
-            this.cropdata2.scaleY = parseInt(e.detail.scaleY);
-        });
+            this.cropdata2.x = parseInt(e.detail.x)
+            this.cropdata2.y = parseInt(e.detail.y)
+            this.cropdata2.w = parseInt(e.detail.width)
+            this.cropdata2.h = parseInt(e.detail.height)
+            this.cropdata2.deg = parseInt(e.detail.rotate)
+            this.cropdata2.scaleX = parseInt(e.detail.scaleX)
+            this.cropdata2.scaleY = parseInt(e.detail.scaleY)
+        })
 
-        let img3 = document.getElementById('cropimg3');
+        let img3 = document.getElementById('cropimg3')
         this.cropper3 = new Cropper(img3, {
             dragMode: 'move',
             preview: '#preview3',
@@ -307,9 +307,9 @@ export default {
             highlight: false,
             cropBoxMovable: false,
             toggleDragModeOnDblclick: false
-        });
+        })
     }
-};
+}
 </script>
 
 <style>

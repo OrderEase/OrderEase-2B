@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import countUp from './countUp.vue';
+import countUp from './countUp.vue'
 
 export default {
     name: 'inforCard',
@@ -55,6 +55,6 @@ export default {
             default: 40
         }
     }
-};
+}
 </script>
 
