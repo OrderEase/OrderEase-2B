@@ -92,7 +92,7 @@
                     
                     <a class="category-edit"
                         @click.stop="editCategory(category)">
-                        <Icon type="edit" size="16"></Icon>
+                        <Icon type="compose" size="18"></Icon>
                     </a>
 
                     <a class="category-delete"

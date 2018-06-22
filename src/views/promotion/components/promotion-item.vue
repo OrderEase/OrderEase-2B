@@ -20,8 +20,8 @@
                 </Row>
             </i-col>
             <i-col span="2">
-                <a @click="requestEdit"><Icon type="edit" size="16"></Icon></a>
-                <a @click="requestDelete"><Icon type="trash-a" size="20"></Icon></a>
+                <a @click="requestEdit"><Icon type="compose" size="18"></Icon></a>
+                <a @click="requestDelete"><Icon type="trash-a" size="18"></Icon></a>
             </i-col>
         </Row>
     </Card>
