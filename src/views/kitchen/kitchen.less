@@ -22,12 +22,6 @@
         font-size: 12px;
         padding: 2px 7px;
     }
-    &-finished-info {
-        color: #19be6b;
-        border: 1px solid #19be6b;
-        border-radius: 3px;
-        cursor: not-allowed;
-    }
     &-finished-btn {
         color: #2d8cf0;
         background-color: inherit;
@@ -42,6 +36,14 @@
         color: #fff;
         background-color: #2b85e4;
         border-color: #2b85e4;
+    }
+    &-finished-btn[disabled],
+    &-finished-btn[disabled]:active,
+    &-finished-btn[disabled]:focus,
+    &-finished-btn[disabled]:hover {
+        color: #bbbec4;
+        background-color: #f7f7f7;
+        border-color: #dddee1;
     }
     &-dish-img {
         height: 50px;

@@ -24,13 +24,12 @@
             </i-col>
             <i-col span="1" offset="10" class="expand-row-col-align">
                 <Button
-                    v-if="item.orderItem.finished === 0"
                     type="primary"
                     size="small"
                     class="expand-row-finished-btn"
+                    :disabled="item.orderItem.finished === 1"
                     @click="finishOneItem(item)"
                 >完成</Button>
-                <p v-if="item.orderItem.finished === 1" class="expand-row-align expand-row-finished-info">结束</p>
             </i-col>
         </Row>
     </div>
