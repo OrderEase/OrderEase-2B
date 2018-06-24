@@ -35,23 +35,14 @@
                 ></DatePicker>
             </FormItem>
             <FormItem label="活动类型">
-                <RadioGroup
-                    v-model="edittingPromotion.mode"
-                    @on-change="updateRules">
-                    <Radio :label="1" :disabled="saveLoading">满减</Radio>
-                    <Radio :label="2" :disabled="saveLoading">满折</Radio>
-                </RadioGroup>
-            </FormItem>
-            <FormItem label="活动终止">
                 <Row>
                     <i-col span="20">
-                        <i-switch
-                            v-model="edittingPromotion.isend"
-                            size="large"
-                            :disabled="saveLoading">
-                            <span slot="open">是</span>
-                            <span slot="close">否</span>
-                        </i-switch>
+                        <RadioGroup
+                            v-model="edittingPromotion.mode"
+                            @on-change="updateRules">
+                            <Radio :label="1" :disabled="saveLoading">满减</Radio>
+                            <Radio :label="2" :disabled="saveLoading">满折</Radio>
+                        </RadioGroup>
                     </i-col>
                     <i-col span="4">
                         <Button
@@ -209,7 +200,6 @@ export default {
         promotion (val) {
             this.deletedRules = []
             this.edittingPromotion = val
-            this.edittingPromotion.isend = this.edittingPromotion.isend === 1
             this.edittingPromotion.dateTimeRange = [val.begin, val.end]
             this.$set(this.edittingPromotion, 'mode', this.edittingPromotion.rules[0].mode)
         },
@@ -247,7 +237,6 @@ export default {
                     try {
                         let editedPromotion = Util.deepCopy(this.edittingPromotion)
 
-                        editedPromotion.isend = editedPromotion.isend === true ? 1 : 0
                         delete editedPromotion.dateTimeRange
                         delete editedPromotion.mode
 
@@ -263,7 +252,7 @@ export default {
                         this.$Message.success('保存成功')
                         this.syncEditting = false
                     } catch (err) {
-                        this.$Message.success('保存失败')
+                        this.$Message.error('保存失败')
                     }
                 }
                 this.saveLoading = false

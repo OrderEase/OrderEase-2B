@@ -10,11 +10,11 @@
             <div>加载中...</div>
         </Spin>
         <Row>
-            <i-col span="24">
-                <h2 class="status-title margin-bottom-15">
+            <Card dis-hover>
+                <p slot="title">
                     <Icon type="checkmark" color="green"></Icon>
                     进行中
-                </h2>
+                </p>
                 <promotion-grid
                     :promotions-list="validPromotionsList"
                     :show-create-item="true"
@@ -22,21 +22,21 @@
                     @request-add="addPromotion"
                     @request-delete="deletePromotion"
                 ></promotion-grid>
-            </i-col>
+            </Card>
         </Row>
         <Row class="margin-top-10">
-            <i-col span="24">
-                <h2 class="status-title margin-bottom-15">
+            <Card dis-hover>
+                <p slot="title">
                     <Icon type="close" color="red"></Icon>
-                    已失效
-                </h2>
+                    已过期
+                </p>
                 <promotion-grid
                     :promotions-list="invalidPromotionsList"
                     :show-create-item="false"
                     @request-edit="editPromotion"
                     @request-delete="deletePromotion"
                 ></promotion-grid>
-            </i-col>
+            </Card>
         </Row>
         <promotion-editor
             :editting="isEditting"
@@ -74,7 +74,7 @@ export default {
                     let begin = new Date(promotion.begin)
                     let end = new Date(promotion.end)
 
-                    return promotion.isend === 0 && now >= begin && now <= end
+                    return now >= begin && now <= end
                 })
             },
             invalidPromotionsList (state) {
@@ -84,7 +84,7 @@ export default {
                     let begin = new Date(promotion.begin)
                     let end = new Date(promotion.end)
 
-                    return promotion.isend === 1 || now < begin || now > end
+                    return now < begin || now > end
                 })
             }
         })
