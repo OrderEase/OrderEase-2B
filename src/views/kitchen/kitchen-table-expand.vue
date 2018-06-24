@@ -7,14 +7,22 @@
         <Row
             v-for="(item, index) in order.repackDishes"
             :key="index"
-            class="margin-bottom-10">
-            <i-col span="6" offset="4">
+            class="margin-bottom-10"
+        >
+            <i-col span="2" offset="2">
+                <img :src="item.dish.img" alt="" class="expand-row-dish-img">
+            </i-col>
+            <i-col span="2" offset="1" class="expand-row-col-align">
                 <p class="expand-row-align">{{ item.dish.name }}</p>
             </i-col>
-            <i-col span="6">
+            <i-col span="2" offset="1" class="expand-row-col-align">
                 <p class="expand-row-align">x {{ item.orderItem.quantity }}</p>
             </i-col>
-            <i-col span="4" offset="4">
+            <i-col span="2" offset="1" class="expand-row-col-align">
+                <p v-if="item.orderItem.urge === 1" class="expand-row-align expand-row-dish-urge">已催单</p>
+                <p v-if="item.orderItem.urge === 0" class="expand-row-align">等待中</p>
+            </i-col>
+            <i-col span="1" offset="10" class="expand-row-col-align">
                 <Button
                     v-if="item.orderItem.finished === 0"
                     type="primary"
@@ -22,7 +30,7 @@
                     class="expand-row-finished-btn"
                     @click="finishOneItem(item)"
                 >完成</Button>
-                <p v-if="item.orderItem.finished === 1" class="align expand-row-finished-info">已完成</p>
+                <p v-if="item.orderItem.finished === 1" class="expand-row-align expand-row-finished-info">结束</p>
             </i-col>
         </Row>
     </div>

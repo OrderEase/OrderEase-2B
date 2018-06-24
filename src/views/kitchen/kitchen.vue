@@ -45,15 +45,18 @@ export default {
                 },
                 {
                     title: '订单号',
-                    key: 'id'
+                    key: 'id',
+                    width: 600
                 },
                 {
                     title: '支付时间',
-                    key: 'payDate'
+                    key: 'payDate',
+                    width: 200
                 },
                 {
                     title: '桌号',
-                    key: 'tableId'
+                    key: 'tableId',
+                    width: 60
                 },
                 {
                     title: '操作',
