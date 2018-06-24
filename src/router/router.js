@@ -71,13 +71,13 @@ export const appRouter = [
             {
                 path: 'add',
                 icon: 'plus',
-                name: 'menu-add',
+                name: 'menu_add',
                 title: '添加菜单',
                 component: () => import('@/views/menu/menu-editor.vue')
             },
             {
                 path: ':id',
-                name: 'menu-editor',
+                name: 'menu_editor',
                 title: '编辑菜单',
                 component: () => import('@/views/menu/menu-editor.vue')
             }

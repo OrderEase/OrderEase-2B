@@ -144,6 +144,8 @@ export default {
     },
     data () {
         return {
+            lastMenuTag: null,
+
             menuCollapse: [],
             saving: false,
 
@@ -178,10 +180,18 @@ export default {
         })
     },
     watch: {
-        '$route': 'setEdittingMenu'
+        '$route': 'routeChanged'
     },
     created () {
-        this.setEdittingMenu()
+        this.routeChanged()
+    },
+    beforeRouteLeave (to, from , next) {
+        if (this.isSorting) {
+            this.$Message.info('请先保存排序')
+            next(false)
+        } else {
+            next()
+        }
     },
     methods: {
         inputChanged (value) {
@@ -199,6 +209,28 @@ export default {
         },
         categoryStartDrag () {
             this.menuCollapse = []
+        },
+        routeChanged () {
+            if (this.isSorting) {
+                if (this.$route.params.id !== this.lastMenuTag) {
+                    this.$Message.info('请先保存排序')
+                }
+                if (this.lastMenuTag === 'add') {
+                    this.$router.push({
+                        name: 'menu_add',
+                        replace: true
+                    })
+                } else {
+                    this.$router.push({
+                        name: 'menu_editor',
+                        params: { id: this.lastMenuTag },
+                        replace: true
+                    })
+                }
+            }
+
+            this.lastMenuTag = this.$route.params.id || 'add'
+            this.setEdittingMenu()
         },
         setEdittingMenu () {
             this.menuCollapse = []

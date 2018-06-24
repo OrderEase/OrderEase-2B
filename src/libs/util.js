@@ -279,7 +279,7 @@ util.routerAddDishMenuList = function (router, dishMenuList) {
                 item.children.splice(item.children.length - 1, 0, {
                     title: dishMenu.name,
                     id: dishMenu.id,
-                    name: 'menu-editor-' + dishMenu.id
+                    name: 'menu_editor_' + dishMenu.id
                 })
             })
         }
@@ -289,11 +289,11 @@ util.routerAddDishMenuList = function (router, dishMenuList) {
 }
 
 util.isDishMenu = name => {
-    return /menu-editor-(\d+)/.test(name)
+    return /menu_editor_(\d+)/.test(name)
 }
 
 util.getDishMenuIDFromName = name => {
-    let match = /(menu-editor)-(\d+)/.exec(name)
+    let match = /(menu_editor)_(\d+)/.exec(name)
     return {
         routerName: match[1],
         id: match[2]
