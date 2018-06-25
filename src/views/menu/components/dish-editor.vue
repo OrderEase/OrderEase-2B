@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import util from '@/libs/util.js'
+import Util from '@/libs/util.js'
 
 export default {
     props: {
@@ -139,7 +139,7 @@ export default {
             this.$emit('on-editting-change', val)
         },
         dish (val) {
-            this.edittingDish = util.deepCopy(val)
+            this.edittingDish = val
             this.edittingDish.avaliable = this.edittingDish.avaliable === 1
         }
     },
@@ -149,7 +149,7 @@ export default {
                 if (valid) {
                     this.saveLoading = true
                     try {
-                        let editedDish = util.deepCopy(this.edittingDish)
+                        let editedDish = Util.deepCopy(this.edittingDish)
                         editedDish.avaliable = editedDish.avaliable ? 1 : 0
 
                         if (editedDish.id) {

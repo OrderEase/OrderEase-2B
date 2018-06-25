@@ -134,6 +134,8 @@ import CategoryEditor from './components/category-editor.vue'
 import DishEditor from './components/dish-editor.vue'
 import { mapState } from 'vuex'
 
+import Util from '@/libs/util.js'
+
 export default {
     name: 'menu_editor',
     components: {
@@ -348,7 +350,7 @@ export default {
         },
         editDish ({ dish, category }) {
             this.isEdittingDish = true
-            this.edittingDish = dish
+            this.edittingDish = Util.deepCopy(dish)
             this.edittingDishCategory = category
         },
         deleteDish ({ dish, category }) {
