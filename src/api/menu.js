@@ -261,7 +261,7 @@ menu.getCategory = (menuId, categoryId) => {
             let menu = menuList.find(menu => menu.id === menuId)
             let category = menu.content.find(category => category.id === categoryId)
 
-            resolve(category)
+            resolve(deepCopy(category))
         }, 1000)
     })
 }

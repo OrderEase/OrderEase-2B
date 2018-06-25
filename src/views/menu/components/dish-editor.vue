@@ -63,7 +63,7 @@
                 </Row>
             </FormItem>
             <FormItem label="上架">
-                <i-switch v-model="edittingDish.avaliable" size="large">
+                <i-switch v-model="edittingDish.avaliable" size="large" :disabled="saveLoading">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
