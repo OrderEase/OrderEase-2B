@@ -9,7 +9,7 @@ export default {
     name: 'turnoverLine',
     computed: {
         color: () => ['#7e6b9e', '#b4ade0', '#cccce4', '#92a2da', '#607dd1'],
-        series (state) {
+        series () {
             return this.$store.state.restaurant.analytics.turnover.data.map((type, idx) => {
                 return {
                     name: type.name,
@@ -25,11 +25,25 @@ export default {
             })
         },
         xAxisData () {
-            return this.$store.state.restaurant.analytics.turnover.xAxis
+            if (this.$store.state.restaurant.analytics.turnover) {
+                return this.$store.state.restaurant.analytics.turnover.xAxis
+            } else {
+                return []
+            }
         }
     },
     mounted () {
         this.$nextTick(() => {
+            this.drawLine()
+        })
+    },
+    watch: {
+        xAxisData (val) {
+            this.drawLine()
+        }
+    },
+    methods: {
+        drawLine () {
             const option = {
                 color: this.color,
                 tooltip: {
@@ -62,13 +76,13 @@ export default {
                 ],
                 series: this.series
             }
-            const serviceRequestCharts = echarts.init(document.getElementById('turnover_line_con'))
+            let serviceRequestCharts = echarts.init(document.getElementById('turnover_line_con'))
             serviceRequestCharts.setOption(option)
     
-            window.addEventListener('resize', function () {
+            window.addEventListener('resize', () => {
                 serviceRequestCharts.resize()
             })
-        })
+        }
     }
 }
 </script>

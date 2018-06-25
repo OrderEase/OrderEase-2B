@@ -1,6 +1,8 @@
 <template>
     <div>
-        <p :class="className" :style="{textAlign: 'center', color: color, fontSize: countSize, fontWeight: countWeight}"><span v-cloak :id="idName">{{ startVal }}</span><span>{{ unit }}</span></p>
+        <Tooltip :content="endVal">
+            <p :class="className" :style="{textAlign: 'center', color: color, fontSize: countSize, fontWeight: countWeight}"><span v-cloak :id="idName">{{ startVal }}</span><span>{{ unit }}</span></p>
+        </Tooltip>
         <slot name="intro"></slot>
     </div>
 </template>

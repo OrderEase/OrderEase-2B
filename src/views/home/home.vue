@@ -176,6 +176,10 @@
                     <Icon type="ios-shuffle-strong"></Icon>
                     营业额
                 </p>
+                <p slot="extra">
+                    <a :disabled="disableSevenTurnover" @click="showRecentSevenDaysTurnover">近7天</a> /
+                    <a :disabled="!disableSevenTurnover" @click="showRecentThirtyDaysTurnover">近30天</a>
+                </p>
                 <div class="line-chart-con" style="height: 250px">
                     <turnover-line></turnover-line>
                 </div>
@@ -231,7 +235,8 @@ export default {
                 }
             ],
             showAddNewTodo: false,
-            newToDoItemValue: ''
+            newToDoItemValue: '',
+            disableSevenTurnover: true
         }
     },
     computed: {
@@ -295,6 +300,22 @@ export default {
         cancelAdd () {
             this.showAddNewTodo = false
             this.newToDoItemValue = ''
+        },
+        async showRecentSevenDaysTurnover () {
+            try {
+                await this.$store.dispatch('restaurant/getSevenDaysTurnover')
+                this.disableSevenTurnover = true
+            } catch (err) {
+                this.$Message.error('获取数据失败')
+            }
+        },
+        async showRecentThirtyDaysTurnover () {
+            try {
+                await this.$store.dispatch('restaurant/getThirtyDaysTurnover')
+                this.disableSevenTurnover = false
+            } catch (err) {
+                this.$Message.error('获取数据失败')
+            }
         }
     }
 }

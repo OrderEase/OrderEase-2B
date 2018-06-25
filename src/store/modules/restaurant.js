@@ -1,4 +1,5 @@
 import Restaurant from '@/api/restaurant.js'
+import Analytics from '@/api/analytics.js'
 
 const state = {
     info: {},
@@ -13,6 +14,14 @@ const actions = {
     async update ({ dispatch }, editedInfo) {
         await Restaurant.update(editedInfo)
         await dispatch('getInfo')
+    },
+    async getSevenDaysTurnover ({ commit }) {
+        let turnover = await Analytics.get({ field: 'turnover', days: 7 })
+        commit('setTurnover', turnover)
+    },
+    async getThirtyDaysTurnover ({ commit }) {
+        let turnover = await Analytics.get({ field: 'turnover', days: 30 })
+        commit('setTurnover', turnover)
     }
 }
 
@@ -22,6 +31,9 @@ const mutations = {
     },
     setAnalytics (state, analyticsInfo) {
         state.analytics = analyticsInfo
+    },
+    setTurnover (state, turnover) {
+        state.analytics.turnover = turnover
     }
 }
 
