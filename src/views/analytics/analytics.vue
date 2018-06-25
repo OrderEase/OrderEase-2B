@@ -81,28 +81,36 @@ export default {
                     width: 150
                 },
                 {
-                    title: '订单数',
-                    key: 'order'
-                },
-                {
-                    title: '菜品数',
-                    key: 'dish'
-                },
-                {
-                    title: '平均订单完成时间',
-                    key: 'avgOrder'
-                },
-                {
-                    title: '平均菜品完成时间',
-                    key: 'avgDish'
-                },
-                {
                     title: '优惠营业额',
-                    key: 'due'
+                    key: 'due',
+                    sortable: true
                 },
                 {
                     title: '总营业额',
-                    key: 'total'
+                    key: 'total',
+                    sortable: true
+                },
+                {
+                    title: '订单数',
+                    key: 'order',
+                    sortable: true
+                },
+                {
+                    title: '菜品数',
+                    key: 'dish',
+                    sortable: true
+                },
+                {
+                    title: '平均订单完成时间',
+                    key: 'avgOrder',
+                    sortable: true,
+                    width: 150
+                },
+                {
+                    title: '平均菜品完成时间',
+                    key: 'avgDish',
+                    sortable: true,
+                    width: 150
                 }
             ]
         }

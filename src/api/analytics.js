@@ -130,7 +130,7 @@ let summaryData = [
         dish: 321,
         avgOrder: 31,
         avgDish: 15,
-        due: 1240,
+        due: 12,
         total: 1500
     },
     {
@@ -139,7 +139,7 @@ let summaryData = [
         dish: 321,
         avgOrder: 31,
         avgDish: 15,
-        due: 1240,
+        due: 12511,
         total: 1500
     },
     {
