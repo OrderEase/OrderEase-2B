@@ -1,13 +1,13 @@
 <template>
     <Row :gutter="24">
-        <i-col span="8" class="margin-bottom-10" v-for="(promotion, index) in promotionsList" :key="index">
+        <i-col :sm="12" :md="8" class="margin-bottom-10" v-for="(promotion, index) in promotionsList" :key="index">
             <promotion-item
                 :promotion="promotion"
                 @request-edit="requestEdit"
                 @request-delete="requestDelete"
             ></promotion-item>
         </i-col>
-        <i-col span="8" class="margin-bottom-10" v-if="showCreateItem">
+        <i-col :sm="12" :md="8" class="margin-bottom-10" v-if="showCreateItem">
             <create-promotion-item @on-click="requestAdd"></create-promotion-item>
         </i-col>
     </Row>
