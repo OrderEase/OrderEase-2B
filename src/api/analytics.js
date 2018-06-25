@@ -123,6 +123,126 @@ let analyticsInfo = {
     turnover: turnoverSevenDays
 }
 
+let summaryData = [
+    {
+        date: '2018-06-17',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-18',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-19',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-20',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-21',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-22',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-23',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-24',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-25',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-26',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-27',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-28',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    },
+    {
+        date: '2018-06-29',
+        order: 123,
+        dish: 321,
+        avgOrder: 31,
+        avgDish: 15,
+        due: 1240,
+        total: 1500
+    }
+]
+
 let analytics = {}
 
 analytics.get = (params) => {
@@ -132,6 +252,8 @@ analytics.get = (params) => {
                 resolve(JSON.parse(JSON.stringify(turnoverSevenDays)))
             } else if (params && params.field === 'turnover' && params.days === 30) {
                 resolve(JSON.parse(JSON.stringify(turnoverThirtyDays)))
+            } else if (params && params.field === 'summary') {
+                resolve(JSON.parse(JSON.stringify(summaryData)))
             } else {
                 resolve(JSON.parse(JSON.stringify(analyticsInfo)))
             }

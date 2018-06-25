@@ -129,6 +129,21 @@ export const appRouter = [
         ]
     },
     {
+        path: '/analytics',
+        icon: 'ios-analytics',
+        name: 'analytics',
+        title: '营业数据',
+        component: Main,
+        children: [
+            {
+                path: 'index',
+                title: '营业数据',
+                name: 'analytics_index',
+                component: () => import('@/views/analytics/analytics.vue')
+            }
+        ]
+    },
+    {
         path: '/component',
         icon: 'social-buffer',
         name: 'component',

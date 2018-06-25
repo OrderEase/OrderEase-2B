@@ -3,7 +3,8 @@ import Analytics from '@/api/analytics.js'
 
 const state = {
     info: {},
-    analytics: {}
+    analytics: {},
+    summary: []
 }
 
 const actions = {
@@ -22,6 +23,10 @@ const actions = {
     async getThirtyDaysTurnover ({ commit }) {
         let turnover = await Analytics.get({ field: 'turnover', days: 30 })
         commit('setTurnover', turnover)
+    },
+    async getSummary ({ commit }) {
+        let summary = await Analytics.get({ field: 'summary' })
+        commit('setSummary', summary)
     }
 }
 
@@ -34,6 +39,9 @@ const mutations = {
     },
     setTurnover (state, turnover) {
         state.analytics.turnover = turnover
+    },
+    setSummary (state, summary) {
+        state.summary = summary
     }
 }
 
