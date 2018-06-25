@@ -11,6 +11,19 @@
         </p>
         <div class="dish-editor-img-wrapper">
             <img :src="edittingDish.img" alt="" class="dish-editor-img">
+            <Upload
+                ref="upload"
+                :show-upload-list="false"
+                :max-size="2048"
+                :format="['jpg','jpeg','png']"
+                :on-format-error="handleFormatError"
+                :on-exceeded-size="handleMaxSize"
+                :on-success="handleSuccess"
+                type="drag"
+                action="http://127.0.0.1:5000/uploads/dishes"
+                class="dish-editor-img-cover">
+                <Icon type="camera" size="20" color="white"></Icon>
+            </Upload>
         </div>
         <Form
             ref="dishForm"
@@ -18,13 +31,6 @@
             :model="edittingDish"
             :label-width="80"
             class="margin-top-30">
-            <FormItem label="图片" prop="img">
-                <Input
-                    v-model="edittingDish.img"
-                    placeholder="输入..."
-                    :disabled="saveLoading"
-                />
-            </FormItem>
             <FormItem label="名称" prop="name">
                 <Input
                     v-model="edittingDish.name"
@@ -101,14 +107,6 @@ export default {
             saveLoading: false,
 
             ruleValidate: {
-                img: [
-                    {
-                        type: 'string',
-                        required: true,
-                        message: '图片不能为空',
-                        trigger: 'blur'
-                    }
-                ],
                 name: [
                     {
                         type: 'string',
@@ -175,6 +173,25 @@ export default {
                     }
                 }
             })
+        },
+        handleFormatError (file) {
+            this.$Notice.warning({
+                title: '格式错误',
+                desc: '文件格式不支持，请选择 jpg 或 png 格式图片'
+            });
+        },
+        handleMaxSize (file) {
+            this.$Notice.warning({
+                title: '图片大小超过限制',
+                desc: '图片过大，请不要上传超过 2M 的图片'
+            });
+        },
+        handleSuccess (res, file) {
+            this.$Notice.success({
+                title: '图片上传成功',
+                desc: file.name + '上传成功'
+            })
+            this.edittingDish.img = res.url
         }
     }
 }
