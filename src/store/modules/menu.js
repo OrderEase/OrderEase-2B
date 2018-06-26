@@ -80,6 +80,11 @@ const actions = {
 
         let categoryIndex = state.edittingMenu.content.findIndex(category => category.id === categoryId)
         state.edittingMenu.content.splice(categoryIndex, 1)
+
+        let menu = state.menuList.find(menu => menu.id === state.edittingMenu.id)
+        categoryIndex = menu.content.findIndex(category => category.id === categoryId)
+        menu.content.splice(categoryIndex, 1)
+
     },
     async createDish ({ state }, { categoryId, dish }) {
         let dishId = await Menu.createDish(state.edittingMenu.id, categoryId, dish)

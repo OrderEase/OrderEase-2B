@@ -58,14 +58,18 @@ export default {
     },
     computed: {
         mode () {
-            return this.promotion.rules[0].mode === 1 ? '满减' : '满折'
+            if (this.promotion.rules.length > 0) {
+                return this.promotion.rules[0].mode === 1 ? '满减' : '满折'
+            } else {
+                return '未知'
+            }
         },
         isrun: {
             get () {
-                return this.promotion.isend === 1 ? false : true
+                return this.promotion.isend === 0
             },
             set (val) {
-                this.promotion.isend = val === true ? 0 : 1
+                this.promotion.isend = val ? 0 : 1
             }
         },
         overtime () {

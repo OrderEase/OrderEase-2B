@@ -19,8 +19,9 @@
                 :on-format-error="handleFormatError"
                 :on-exceeded-size="handleMaxSize"
                 :on-success="handleSuccess"
+                :action="imgUploadsURL"
+                :with-credentials="true"
                 type="drag"
-                action="http://127.0.0.1:5000/uploads/restrts"
                 class="restrt-editor-img-cover">
                 <Icon type="camera" size="20" color="white"></Icon>
             </Upload>
@@ -74,7 +75,8 @@
 </template>
 
 <script>
-import util from '@/libs/util.js'
+import Util from '@/libs/util.js'
+import { baseURL } from '@/api/config.js'
 
 export default {
     props: {
@@ -117,6 +119,11 @@ export default {
             }
         }
     },
+    computed: {
+        imgUploadsURL () {
+            return baseURL + '/photos/restrt'
+        }
+    },
     watch: {
         editting (val) {
             this.syncEditting = val
@@ -125,7 +132,7 @@ export default {
             this.$emit('on-editting-change', val)
         },
         restrt (val) {
-            this.edittingRestrt = util.deepCopy(val)
+            this.edittingRestrt = Util.deepCopy(val)
             this.$set(this.edittingRestrt, 'timeRange', [this.edittingRestrt.open, this.edittingRestrt.close])
         }
     },
@@ -139,7 +146,8 @@ export default {
                 if (valid) {
                     this.saveLoading = true
                     try {
-                        let editedRestrt = util.deepCopy(this.edittingRestrt)
+                        let editedRestrt = Util.deepCopy(this.edittingRestrt)
+                        delete editedRestrt.timeRange
                         await this.$store.dispatch('restaurant/update', editedRestrt)
 
                         this.saveLoading = false

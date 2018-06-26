@@ -201,7 +201,11 @@ export default {
             this.deletedRules = []
             this.edittingPromotion = val
             this.edittingPromotion.dateTimeRange = [val.begin, val.end]
-            this.$set(this.edittingPromotion, 'mode', this.edittingPromotion.rules[0].mode)
+            if (this.edittingPromotion.rules.length > 0) {
+                this.$set(this.edittingPromotion, 'mode', this.edittingPromotion.rules[0].mode)
+            } else {
+                this.$set(this.edittingPromotion, 'mode', 1)
+            }
         },
         editting (val) {
             this.syncEditting = val

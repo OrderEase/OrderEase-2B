@@ -42,7 +42,7 @@ export default {
     },
     computed: {
         activeName () {
-            if (this.$route.name === 'menu_editor' && this.$route.params.id) {
+            if (this.$route.name === 'menu_editor' && this.$route.params.id !== undefined) {
                 return this.$route.name + '_' + this.$route.params.id
             } else {
                 return this.$route.name

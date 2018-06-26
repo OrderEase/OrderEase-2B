@@ -172,10 +172,14 @@ export default {
         if (routerNameSet.findIndex(name => name === from.name) === -1) {
             next()
         } else {
-            let restrtInfo = await Restaurant.get()
-            next(vm => {
-                vm.$store.commit('restaurant/setInfo', restrtInfo)
-            })
+            try {
+                let restrtInfo = await Restaurant.get()
+                next(vm => {
+                    vm.$store.commit('restaurant/setInfo', restrtInfo)
+                })
+            } catch (err) {
+                next()
+            }
         }
     },
     methods: {

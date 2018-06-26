@@ -37,7 +37,7 @@ const mutations = {
         state.tagsList.push(...list)
     },
     updateMenulist (state, dishMenuList) {
-        let accessCode = parseInt(Cookies.get('access'))
+        let accessCode = Cookies.get('access')
         let menuList = []
 
         let routerWithdishMenu = Util.routerAddDishMenuList(

@@ -38,29 +38,29 @@
                         <i-col span="8" class="menu-editor-con">
                             <Button
                                 type="info"
-                                :disabled="saving || !menuItem.id || menuItem.used === 1 || isSorting"
+                                :disabled="saving || !isEmptyMenu || menuItem.used === 1 || isSorting"
                                 @click="changeMenu"
                             >使用</Button>
                             <Button
                                 type="primary"
-                                :disabled="saving || !menuItem.id || isSorting"
+                                :disabled="saving || !isEmptyMenu || isSorting"
                                 @click="createCategory"
                             >添加类别</Button>
                             <Button
                                 v-if="!isSorting"
                                 type="warning"
-                                :disabled="saving || !menuItem.id"
+                                :disabled="saving || !isEmptyMenu"
                                 @click="requestSort"
                             >排序</Button>
                             <Button
                                 v-if="isSorting"
                                 type="success"
-                                :disabled="saving || !menuItem.id"
+                                :disabled="saving || !isEmptyMenu"
                                 @click="completeSort"
                             >完成</Button>
                             <Button
                                 type="error"
-                                :disabled="saving || !menuItem.id || isSorting"
+                                :disabled="saving || !isEmptyMenu || isSorting"
                                 @click="deleteMenu"
                             >删除菜单</Button>
                         </i-col>
@@ -178,7 +178,8 @@ export default {
                 }
             },
             isSorting: state => state.menu.isSorting,
-            menuItem: state => state.menu.edittingMenu
+            menuItem: state => state.menu.edittingMenu,
+            isEmptyMenu: state => state.menu.edittingMenu.id !== undefined
         })
     },
     watch: {
@@ -187,7 +188,7 @@ export default {
     created () {
         this.routeChanged()
     },
-    beforeRouteLeave (to, from , next) {
+    beforeRouteLeave (to, from, next) {
         if (this.isSorting) {
             this.$Message.info('请先保存排序')
             next(false)
@@ -225,7 +226,7 @@ export default {
                 } else {
                     this.$router.push({
                         name: 'menu_editor',
-                        params: { id: this.lastMenuTag },
+                        params: { id: Number(this.lastMenuTag) },
                         replace: true
                     })
                 }
@@ -236,8 +237,8 @@ export default {
         },
         setEdittingMenu () {
             this.menuCollapse = []
-            if (this.$route.params.id) {
-                this.$store.commit('menu/editMenuById', this.$route.params.id)
+            if (this.$route.params.id !== undefined) {
+                this.$store.commit('menu/editMenuById', Number(this.$route.params.id))
             } else {
                 this.$store.commit('menu/editEmptyMenu')
             }
@@ -247,7 +248,7 @@ export default {
                 if (valid) {
                     try {
                         this.saving = true
-                        if (this.$route.params.id) {
+                        if (this.$route.params.id !== undefined) {
                             await this.$store.dispatch('menu/updateMenu')
                         } else {
                             let menuId = await this.$store.dispatch('menu/createMenu')

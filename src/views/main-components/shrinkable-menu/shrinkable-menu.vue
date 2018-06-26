@@ -25,7 +25,8 @@
 <script>
 import sidebarMenu from './components/sidebarMenu.vue'
 import sidebarMenuShrink from './components/sidebarMenuShrink.vue'
-import util from '@/libs/util'
+import Util from '@/libs/util'
+
 export default {
     name: 'shrinkableMenu',
     components: {
@@ -45,7 +46,7 @@ export default {
             type: String,
             default: 'dark',
             validator (val) {
-                return util.oneOf(val, ['dark', 'light'])
+                return Util.oneOf(val, ['dark', 'light'])
             }
         },
         beforePush: {
@@ -73,8 +74,8 @@ export default {
                 }
             }
 
-            if (util.isDishMenu(name)) {
-                let { routerName, id } = util.getDishMenuIDFromName(name)
+            if (Util.isDishMenu(name)) {
+                let { routerName, id } = Util.getDishMenuIDFromName(name)
                 if (willpush) {
                     this.$router.push({
                         name: routerName,

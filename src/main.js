@@ -1,15 +1,20 @@
 import Vue from 'vue'
 import iView from 'iview'
-import {router} from './router/index'
-import {appRouter} from './router/router'
+import { router } from './router/index'
+import { appRouter } from './router/router'
 import store from './store'
 import App from './app.vue'
+import VueI18n from 'vue-i18n'
+import axios from 'axios'
 import '@/locale'
 import 'iview/dist/styles/iview.css'
-import VueI18n from 'vue-i18n'
+import { baseURL } from '@/api/config.js'
 
 Vue.use(VueI18n)
 Vue.use(iView)
+
+axios.defaults.baseURL = baseURL
+axios.defaults.withCredentials = true
 
 new Vue({
     el: '#app',

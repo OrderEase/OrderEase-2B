@@ -19,8 +19,9 @@
                 :on-format-error="handleFormatError"
                 :on-exceeded-size="handleMaxSize"
                 :on-success="handleSuccess"
+                :action="imgUploadsURL"
+                :with-credentials="true"
                 type="drag"
-                action="http://127.0.0.1:5000/uploads/dishes"
                 class="dish-editor-img-cover">
                 <Icon type="camera" size="20" color="white"></Icon>
             </Upload>
@@ -93,6 +94,7 @@
 
 <script>
 import Util from '@/libs/util.js'
+import { baseURL } from '@/api/config.js'
 
 export default {
     props: {
@@ -129,6 +131,11 @@ export default {
                     }
                 ]
             }
+        }
+    },
+    computed: {
+        imgUploadsURL () {
+            return baseURL + '/photos/dish'
         }
     },
     watch: {

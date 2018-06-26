@@ -1,40 +1,48 @@
-let userInfo = {
-    username: 'admin',
-    password: 'password'
-}
+import axios from 'axios'
 
 let user = {}
 
 user.login = (username, password) => {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (userInfo.username === username && userInfo.password === password) {
-                resolve()
-            } else {
-                reject(new Error('用户名或密码错误'))
-            }
-        }, 0)
+        axios.post('/busers/session', { username, password })
+            .then(response => {
+                resolve(response.data.authority)
+            })
+            .catch(error => {
+                if (error.response) {
+                    reject(new Error(error.response.data.message))
+                } else {
+                    reject(error)
+                }
+            })
     })
 }
 
 user.logout = () => {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve()
-        }, 100)
+        axios.put('/busers/session')
+            .then(response => {
+                resolve()
+            })
+            .catch(error => {
+                reject(error)
+            })
     })
 }
 
 user.editPassword = (oldPassword, newPassword) => {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (oldPassword === userInfo.password) {
-                userInfo.password = newPassword
+        axios.put('/busers/password', { oldPassword, newPassword })
+            .then(response => {
                 resolve()
-            } else {
-                reject(new Error('原密码错误'))
-            }
-        }, 1000)
+            })
+            .catch(error => {
+                if (error.response) {
+                    reject(new Error(error.response.data.message))
+                } else {
+                    reject(error)
+                }
+            })
     })
 }
 

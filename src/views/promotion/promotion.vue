@@ -28,7 +28,7 @@
             <Card dis-hover>
                 <p slot="title">
                     <Icon type="close" color="red"></Icon>
-                    已过期
+                    已过期 / 未开始
                 </p>
                 <promotion-grid
                     :promotions-list="invalidPromotionsList"
@@ -107,8 +107,7 @@ export default {
                 theme: '',
                 begin: '',
                 end: '',
-                isend: false,
-                mode: 1,
+                isend: 0,
                 rules: [
                     {
                         mode: 1,

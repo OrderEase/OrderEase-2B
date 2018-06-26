@@ -66,6 +66,7 @@ export const appRouter = [
         icon: 'coffee',
         name: 'menu',
         title: '菜单管理',
+        access: 'manager',
         component: Main,
         children: [
             {
@@ -73,12 +74,14 @@ export const appRouter = [
                 icon: 'plus',
                 name: 'menu_add',
                 title: '添加菜单',
+                access: 'manager',
                 component: () => import('@/views/menu/menu-editor.vue')
             },
             {
                 path: ':id',
                 name: 'menu_editor',
                 title: '编辑菜单',
+                access: 'manager',
                 component: () => import('@/views/menu/menu-editor.vue')
             }
         ]
@@ -88,6 +91,7 @@ export const appRouter = [
         icon: 'android-list',
         name: 'order',
         title: '订单管理',
+        access: 'manager',
         component: Main,
         children: [
             {
@@ -103,11 +107,13 @@ export const appRouter = [
         icon: 'fireball',
         name: 'promotion',
         title: '活动管理',
+        access: 'manager',
         component: Main,
         children: [
             {
                 path: 'index',
                 title: '活动管理',
+                access: 'manager',
                 name: 'promotion_index',
                 component: () => import('@/views/promotion/promotion.vue')
             }
@@ -133,6 +139,7 @@ export const appRouter = [
         icon: 'ios-analytics',
         name: 'analytics',
         title: '营业数据',
+        access: 'manager',
         component: Main,
         children: [
             {

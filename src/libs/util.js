@@ -296,7 +296,7 @@ util.getDishMenuIDFromName = name => {
     let match = /(menu_editor)_(\d+)/.exec(name)
     return {
         routerName: match[1],
-        id: match[2]
+        id: Number(match[2])
     }
 }
 
