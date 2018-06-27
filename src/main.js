@@ -8,12 +8,11 @@ import VueI18n from 'vue-i18n'
 import axios from 'axios'
 import '@/locale'
 import 'iview/dist/styles/iview.css'
-import { baseURL } from '@/api/config.js'
 
 Vue.use(VueI18n)
 Vue.use(iView)
 
-axios.defaults.baseURL = baseURL
+axios.defaults.baseURL = process.env.BASE_URL
 axios.defaults.withCredentials = true
 
 new Vue({
@@ -29,8 +28,6 @@ new Vue({
         // 显示打开的页面的列表
         this.$store.commit('app/setOpenedList')
         this.$store.commit('app/initCachepage')
-        // 权限菜单过滤相关
-        this.$store.dispatch('app/getDishMenuAndUpdateMenuList')
     },
     created () {
         let tagsList = []

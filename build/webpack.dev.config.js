@@ -4,22 +4,20 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const merge = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.base.config.js')
-const fs = require('fs')
 const packageJson = require('../package.json')
-
-fs.open('./build/env.js', 'w', function (err, fd) {
-    const buf = 'export default "development";'
-    fs.write(fd, buf, 0, buf.length, 0, function (err, written, buffer) {})
-})
+const config = require('../config')
 
 module.exports = merge(webpackBaseConfig, {
     devtool: '#source-map',
     output: {
-        publicPath: '/dist/',
+        publicPath: config.dev.assetsPublicPath,
         filename: '[name].js',
         chunkFilename: '[name].chunk.js'
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': require('../config/dev.env')
+        }),
         new ExtractTextPlugin({
             filename: '[name].css',
             allChunks: true

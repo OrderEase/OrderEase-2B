@@ -195,7 +195,15 @@ const mutations = {
 
 const actions = {
     async getDishMenuAndUpdateMenuList ({ dispatch, commit, rootState }) {
-        await dispatch('menu/getMenuList', {}, { root: true })
+        try {
+            await dispatch('menu/getMenuList', {}, { root: true })
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                ;
+            } else {
+                throw error
+            }
+        }
         commit('updateMenulist', rootState.menu.menuList)
     }
 }

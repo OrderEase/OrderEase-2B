@@ -76,7 +76,6 @@
 
 <script>
 import Util from '@/libs/util.js'
-import { baseURL } from '@/api/config.js'
 
 export default {
     props: {
@@ -121,7 +120,7 @@ export default {
     },
     computed: {
         imgUploadsURL () {
-            return baseURL + '/photos/restrt'
+            return process.env.BASE_URL + '/photos/restrt'
         }
     },
     watch: {
