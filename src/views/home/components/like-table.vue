@@ -1,6 +1,6 @@
 <template>
     <div :style="styleObj">
-        <Table :height="height" :columns="columns" :data="likeRank"></Table>
+        <Table :height="height" :columns="columns" :data="rankLikes"></Table>
     </div>
 </template>
 
@@ -27,8 +27,8 @@ export default {
         }
     },
     computed: {
-        likeRank () {
-            return this.$store.state.restaurant.analytics.likeRank
+        rankLikes () {
+            return this.$store.state.restaurant.analytics.rankLikes
         }
     }
 }

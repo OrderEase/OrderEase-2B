@@ -8,7 +8,7 @@ export default {
     name: 'orderVolume',
     computed: {
         orderData () {
-            return this.$store.state.restaurant.analytics.orderCount.map(date => {
+            return this.$store.state.restaurant.analytics.countOrders.map(date => {
                 return {
                     name: date.name,
                     value: date.value,
@@ -21,7 +21,7 @@ export default {
             })
         },
         yAxisData () {
-            return this.$store.state.restaurant.analytics.orderCount.map(date => date.name)
+            return this.$store.state.restaurant.analytics.countOrders.map(date => date.name)
         }
     },
     mounted () {

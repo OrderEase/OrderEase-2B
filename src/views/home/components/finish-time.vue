@@ -10,8 +10,8 @@ export default {
     name: 'finishTime',
     computed: {
         ...mapState({
-            order: state => state.restaurant.analytics.finishTime.order,
-            dish: state => state.restaurant.analytics.finishTime.dish
+            order: state => state.restaurant.analytics.countFinishTime.order,
+            dish: state => state.restaurant.analytics.countFinishTime.dish
         })
     },
     mounted () {

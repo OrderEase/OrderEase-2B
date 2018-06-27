@@ -203,6 +203,27 @@ import { mapState } from 'vuex'
 import Util from '@/libs/util.js'
 import Analytics from '@/api/analytics.js'
 
+const getAnalyticsData = async () => {
+    let countCard = await Analytics.getCountCard()
+    let countOrders = await Analytics.getCountOrders()
+    let countPayWay = await Analytics.getCountPayWay()
+    let countFinishTime = await Analytics.getCountFinishTime()
+    let rankLikes = await Analytics.getRankLikes()
+    let rankSales = await Analytics.getRankSales()
+    let recentSevenDaysTurnovers = await Analytics.getTurnover(7)
+    let recentThirtyDaysTurnovers = await Analytics.getTurnover(30)
+
+    return {
+        countCard: countCard,
+        countOrders: countOrders,
+        countPayWay: countPayWay,
+        countFinishTime: countFinishTime,
+        rankLikes: rankLikes,
+        rankSales: rankSales,
+        turnover: recentSevenDaysTurnovers
+    }
+}
+
 export default {
     name: 'home',
     components: {
@@ -270,7 +291,7 @@ export default {
         })
     },
     async beforeRouteEnter (to, from, next) {
-        let analytics = await Analytics.get()
+        let analytics = await getAnalyticsData()
         next(vm => vm.$store.commit('restaurant/setAnalytics', analytics))
     },
     methods: {

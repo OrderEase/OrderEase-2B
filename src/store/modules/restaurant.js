@@ -17,15 +17,15 @@ const actions = {
         await dispatch('getInfo')
     },
     async getSevenDaysTurnover ({ commit }) {
-        let turnover = await Analytics.get({ field: 'turnover', days: 7 })
+        let turnover = await Analytics.getTurnover(7)
         commit('setTurnover', turnover)
     },
     async getThirtyDaysTurnover ({ commit }) {
-        let turnover = await Analytics.get({ field: 'turnover', days: 30 })
+        let turnover = await Analytics.getTurnover(30)
         commit('setTurnover', turnover)
     },
     async getSummary ({ commit }) {
-        let summary = await Analytics.get({ field: 'summary' })
+        let summary = await Analytics.getSummary()
         commit('setSummary', summary)
     }
 }

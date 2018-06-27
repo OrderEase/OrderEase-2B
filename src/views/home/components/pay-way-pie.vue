@@ -10,7 +10,7 @@ export default {
     computed: {
         payWayData () {
             let colors = ['#9bd598', '#abd5f2', '#ab8df2', '#ffd58f']
-            return this.$store.state.restaurant.analytics.payWay.map((way, idx) => {
+            return this.$store.state.restaurant.analytics.countPayWay.map((way, idx) => {
                 return {
                     name: way.name,
                     value: way.value,
@@ -23,7 +23,7 @@ export default {
             })
         },
         legendData () {
-            return this.$store.state.restaurant.analytics.payWay.map(way => way.name)
+            return this.$store.state.restaurant.analytics.countPayWay.map(way => way.name)
         }
     },
     mounted () {
