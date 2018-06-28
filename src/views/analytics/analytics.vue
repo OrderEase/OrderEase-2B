@@ -82,33 +82,33 @@ export default {
                 },
                 {
                     title: '优惠营业额',
-                    key: 'due',
+                    key: 'dayDue',
                     sortable: true
                 },
                 {
                     title: '总营业额',
-                    key: 'total',
+                    key: 'dayTotal',
                     sortable: true
                 },
                 {
                     title: '订单数',
-                    key: 'order',
+                    key: 'dayOrder',
                     sortable: true
                 },
                 {
                     title: '菜品数',
-                    key: 'dish',
+                    key: 'dayDish',
                     sortable: true
                 },
                 {
                     title: '平均订单完成时间',
-                    key: 'avgOrder',
+                    key: 'dayAvgOrderFinishTime',
                     sortable: true,
                     width: 150
                 },
                 {
                     title: '平均菜品完成时间',
-                    key: 'avgDish',
+                    key: 'dayAvgDishFinishTime',
                     sortable: true,
                     width: 150
                 }

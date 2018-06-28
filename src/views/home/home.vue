@@ -81,8 +81,8 @@
                 <Row :gutter="5">
                     <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="total_user_count"
-                            :end-val="count.totalUser"
+                            id-name="today_user_count"
+                            :end-val="countCard.todayUser"
                             iconType="android-people"
                             color="#2d8cf0"
                             intro-text="今日顾客数"
@@ -90,8 +90,8 @@
                     </i-col>
                     <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="new_user_count"
-                            :end-val="count.newUser"
+                            id-name="today_newuser_count"
+                            :end-val="countCard.todayNewUser"
                             iconType="android-person-add"
                             color="#64d572"
                             :iconSize="50"
@@ -100,8 +100,8 @@
                     </i-col>
                     <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="turnover_count"
-                            :end-val="count.turnover"
+                            id-name="today_turnover_count"
+                            :end-val="countCard.todayTurnover"
                             iconType="social-yen"
                             color="#ffd572"
                             intro-text="今日总营业额"
@@ -109,8 +109,8 @@
                     </i-col>
                     <i-col :xs="24" :sm="12" :md="6" class="margin-bottom-10">
                         <infor-card
-                            id-name="dish_count"
-                            :end-val="count.dish"
+                            id-name="today_dish_count"
+                            :end-val="countCard.todayDish"
                             iconType="android-cart"
                             color="#f25e43"
                             intro-text="今日售出菜品数"
@@ -275,15 +275,15 @@ export default {
                 }
                 return isOpen
             },
-            count (state) {
+            countCard (state) {
                 if (state.restaurant.analytics.countCard) {
                     return state.restaurant.analytics.countCard
                 } else {
                     return {
-                        totalUser: 0,
-                        newUser: 0,
-                        turnover: 0,
-                        dish: 0
+                        todayUser: 0,
+                        todayNewUser: 0,
+                        todayTurnover: 0,
+                        todayDish: 0
                     }
                 }
             }
