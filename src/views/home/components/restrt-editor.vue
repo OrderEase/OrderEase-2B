@@ -163,13 +163,13 @@ export default {
             this.$Notice.warning({
                 title: '格式错误',
                 desc: '文件格式不支持，请选择 jpg 或 png 格式图片'
-            });
+            })
         },
         handleMaxSize (file) {
             this.$Notice.warning({
                 title: '图片大小超过限制',
                 desc: '图片过大，请不要上传超过 2M 的图片'
-            });
+            })
         },
         handleSuccess (res, file) {
             this.$Notice.success({

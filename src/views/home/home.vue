@@ -140,7 +140,7 @@
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-map"></Icon>
-                        上周每日订单量统计
+                        周平均订单量统计
                     </p>
                     <div class="data-source-row">
                         <order-volume></order-volume>
@@ -211,7 +211,6 @@ const getAnalyticsData = async () => {
     let rankLikes = await Analytics.getRankLikes()
     let rankSales = await Analytics.getRankSales()
     let recentSevenDaysTurnovers = await Analytics.getTurnover(7)
-    let recentThirtyDaysTurnovers = await Analytics.getTurnover(30)
 
     return {
         countCard: countCard,

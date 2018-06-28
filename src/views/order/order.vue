@@ -143,8 +143,8 @@ export default {
                     key: 'id'
                 },
                 {
-                    title: '客户',
-                    key: 'userId'
+                    title: '顾客',
+                    key: 'username'
                 },
                 {
                     title: '桌号',

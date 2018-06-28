@@ -18,7 +18,7 @@
 
 <script>
 import expandRow from './kitchen-table-expand.vue'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
     name: 'kitchen_index',
@@ -81,8 +81,6 @@ export default {
                                         this.finishOrderDishes(
                                             {
                                                 id: params.row.id,
-                                                finished: params.row.finished,
-                                                orderItems: params.row.orderItems,
                                                 repackDishes: params.row.repackDishes.filter(
                                                     item => item.orderItem.finished === 0
                                                 )
@@ -98,8 +96,8 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            unFinishedOrdersList: 'order/unFinishedOrdersList'
+        ...mapState({
+            unFinishedOrdersList: state => state.order.unFinishedOrdersList
         })
     },
     created () {
@@ -108,13 +106,13 @@ export default {
     },
     methods: {
         async getOrdersList () {
-            await this.$store.dispatch('order/getOrdersList')
+            await this.$store.dispatch('order/getUnFinishedOrdersList')
             this.spinShow = false
         },
         async finishOrderDishes (specialOrder) {
             try {
                 await this.$store.dispatch('order/finishOrderItems', specialOrder)
-                await this.$store.dispatch('order/getOrdersList')
+                await this.$store.dispatch('order/getUnFinishedOrdersList')
                 this.$Message.success('完成 ' + specialOrder.repackDishes.length + ' 道菜')
             } catch (err) {
                 this.$Message.error(err.message)

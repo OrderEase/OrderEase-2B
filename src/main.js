@@ -6,6 +6,7 @@ import store from './store'
 import App from './app.vue'
 import VueI18n from 'vue-i18n'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import '@/locale'
 import 'iview/dist/styles/iview.css'
 
@@ -14,6 +15,20 @@ Vue.use(iView)
 
 axios.defaults.baseURL = process.env.BASE_URL
 axios.defaults.withCredentials = true
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response.status === 401) {
+            Cookies.set('user', '')
+            // Cookies.set('redirect', router.currentRoute.fullPath)
+            router.replace({
+                path: '/login'
+            })
+        }
+
+        return Promise.reject(error)
+    }
+)
 
 new Vue({
     el: '#app',

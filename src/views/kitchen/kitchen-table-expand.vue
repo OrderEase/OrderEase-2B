@@ -44,8 +44,6 @@ export default {
         finishOneItem (item) {
             this.$emit('finish-order-dishes', {
                 id: this.order.id,
-                finished: this.order.finished,
-                orderItems: this.order.orderItems,
                 repackDishes: [item]
             })
         }

@@ -134,7 +134,6 @@ export default {
                 ],
                 newPass: [
                     { required: true, message: '请输入新密码', trigger: 'blur' },
-                    { min: 6, message: '请至少输入6个字符', trigger: 'blur' },
                     { max: 32, message: '最多输入32个字符', trigger: 'blur' }
                 ],
                 rePass: [

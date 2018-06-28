@@ -6,7 +6,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const merge = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.base.config.js')
 const path = require('path')
-const packageJson = require('../package.json')
 const config = require('../config')
 
 module.exports = merge(webpackBaseConfig, {
@@ -44,7 +43,7 @@ module.exports = merge(webpackBaseConfig, {
         }),
         new CopyWebpackPlugin([
             {
-                from: 'td_icon.ico'
+                from: 'favicon.ico'
             },
             {
                 from: 'src/styles/fonts',
@@ -59,8 +58,8 @@ module.exports = merge(webpackBaseConfig, {
             ]
         }),
         new HtmlWebpackPlugin({
-            title: 'OrderEase' + packageJson.version,
-            favicon: './td_icon.ico',
+            title: 'OrderEase',
+            favicon: './favicon.ico',
             filename: '../index.html',
             template: '!!ejs-loader!./src/template/index.ejs',
             inject: false

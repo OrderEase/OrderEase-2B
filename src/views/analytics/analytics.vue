@@ -119,7 +119,7 @@ export default {
         ...mapState({
             summaryData (state) {
                 return state.restaurant.summary
-            } 
+            }
         })
     },
     created () {
@@ -140,7 +140,7 @@ export default {
                 let begin = new Date(dateRange[0])
                 let end = new Date(dateRange[1])
                 end.setDate(end.getDate() + 1)
-    
+
                 this.filtedData = this.summaryData.filter(item => {
                     let date = new Date(item.date)
                     return date >= begin && date <= end
@@ -159,7 +159,7 @@ export default {
                 filename: '营业数据概览',
                 original: false
             })
-        }      
+        }
     }
 }
 </script>

@@ -4,7 +4,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const merge = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.base.config.js')
-const packageJson = require('../package.json')
 const config = require('../config')
 
 module.exports = merge(webpackBaseConfig, {
@@ -27,7 +26,7 @@ module.exports = merge(webpackBaseConfig, {
             minChunks: Infinity
         }),
         new HtmlWebpackPlugin({
-            title: 'iView admin v' + packageJson.version,
+            title: 'OrderEase',
             filename: '../index.html',
             inject: false
         }),

@@ -78,7 +78,7 @@ export default {
             }
             let serviceRequestCharts = echarts.init(document.getElementById('turnover_line_con'))
             serviceRequestCharts.setOption(option)
-    
+
             window.addEventListener('resize', () => {
                 serviceRequestCharts.resize()
             })

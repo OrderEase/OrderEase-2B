@@ -86,7 +86,7 @@
                 <Panel
                     v-for="(category, index) in menuItem.content"
                     :key="index"
-                    :name="category.name">
+                    :name="String(category.id)">
 
                     {{ category.name }}
                     
