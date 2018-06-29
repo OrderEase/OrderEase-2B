@@ -33,13 +33,16 @@ router.beforeEach((to, from, next) => {
         } else if (Cookies.get('user') && to.name === 'login') { // 判断是否已经登录且前往的是登录页
             Util.title()
             next({
-                name: 'home_index'
+                name: Cookies.get('access') === 'manager' ? 'home_index' : 'kitchen_index'
             })
         } else {
             const curRouterObj = Util.getRouterObjByName([otherRouter, ...appRouter], to.name)
             if (curRouterObj && curRouterObj.access !== undefined) { // 需要判断权限的路由
                 if (curRouterObj.access === Cookies.get('access')) {
                     Util.toDefaultPage([otherRouter, ...appRouter], to.name, router, next) // 如果在地址栏输入的是一级菜单则默认打开其第一个二级菜单的页面
+                } else if (to.name === 'home_index') {
+                    next(false)
+                    iView.LoadingBar.finish()
                 } else {
                     next({
                         replace: true,

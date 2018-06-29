@@ -52,8 +52,9 @@ export const otherRouter = {
     children: [
         {
             path: 'home',
-            title: {i18n: 'home'},
+            title: { i18n: 'home' },
             name: 'home_index',
+            access: 'manager',
             component: () => import('@/views/home/home.vue')
         }
     ]

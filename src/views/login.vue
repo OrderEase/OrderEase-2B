@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
+
 export default {
     data () {
         return {
@@ -72,7 +74,7 @@ export default {
                         })
 
                         this.$router.push({
-                            name: 'home_index'
+                            name: Cookies.get('access') === 'manager' ? 'home_index' : 'kitchen_index'
                         })
                     } catch (err) {
                         this.$Message.error(err.message)
