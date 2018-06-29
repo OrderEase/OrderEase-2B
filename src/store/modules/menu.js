@@ -35,7 +35,7 @@ const actions = {
 
         await dispatch('app/getDishMenuAndUpdateMenuList', null, { root: true })
     },
-    async changeMenu ({ state, dispatch }) {
+    async changeMenu ({ state }) {
         let promises = []
 
         state.menuList.forEach(menu => {
@@ -53,37 +53,26 @@ const actions = {
         await Menu.delete(state.edittingMenu.id)
         await dispatch('app/getDishMenuAndUpdateMenuList', null, { root: true })
 
-        let index = state.menuList.findIndex(menu => menu.id === state.edittingMenu.id)
-        state.menuList.splice(index, 0)
         state.edittingMenu = {}
     },
     async createCategory ({ state }, category) {
-        try {
-            let categoryId = await Menu.createCategory(state.edittingMenu.id, category)
-            let newCategory = await Menu.getCategory(state.edittingMenu.id, categoryId)
+        let categoryId = await Menu.createCategory(state.edittingMenu.id, category)
+        let newCategory = await Menu.getCategory(state.edittingMenu.id, categoryId)
 
-            state.edittingMenu.content.push(newCategory)
-        } catch (err) {
-            state.edittingMenu.content.pop()
-            throw err
-        }
+        state.edittingMenu.content.push(newCategory)
     },
     async updateCategory ({ state }, category) {
         await Menu.updateCategory(state.edittingMenu.id, category)
         let updatedCategory = await Menu.getCategory(state.edittingMenu.id, category.id)
 
         let categoryIndex = state.edittingMenu.content.findIndex(value => value.id === category.id)
-        Object.assign(state.edittingMenu.content[categoryIndex], updatedCategory)
+        state.edittingMenu.content[categoryIndex] = updatedCategory
     },
     async deleteCategory ({ state }, categoryId) {
         await Menu.deleteCategory(state.edittingMenu.id, categoryId)
 
         let categoryIndex = state.edittingMenu.content.findIndex(category => category.id === categoryId)
         state.edittingMenu.content.splice(categoryIndex, 1)
-
-        let menu = state.menuList.find(menu => menu.id === state.edittingMenu.id)
-        categoryIndex = menu.content.findIndex(category => category.id === categoryId)
-        menu.content.splice(categoryIndex, 1)
     },
     async createDish ({ state }, { categoryId, dish }) {
         let dishId = await Menu.createDish(state.edittingMenu.id, categoryId, dish)
@@ -94,10 +83,11 @@ const actions = {
     },
     async updateDish ({ state }, { categoryId, dish }) {
         await Menu.updateDish(state.edittingMenu.id, categoryId, dish)
+        let updatedDish = await Menu.getDish(state.edittingMenu.id, categoryId, dish.id)
 
         let category = state.edittingMenu.content.find(category => category.id === categoryId)
         let dishIndex = category.dishes.findIndex(value => value.id === dish.id)
-        Object.assign(category.dishes[dishIndex], dish)
+        category.dishes[dishIndex] = updatedDish
     },
     async deleteDish ({ state }, { categoryId, dishId }) {
         await Menu.deleteDish(state.edittingMenu.id, categoryId, dishId)
