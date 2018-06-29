@@ -10,7 +10,7 @@
             <span>编辑店铺</span>
         </p>
         <div class="restrt-editor-img-wrapper">
-            <img :src="edittingRestrt.img" alt="" class="restrt-editor-img">
+            <img v-show="edittingRestrt.img" :src="edittingRestrt.img" alt="" class="restrt-editor-img">
             <Upload
                 ref="upload"
                 :show-upload-list="false"

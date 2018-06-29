@@ -99,12 +99,16 @@ export default {
                     ]
                 }
 
-                let finishTime = echarts.init(document.getElementById('finish_time'))
-                finishTime.setOption(option)
+                try {
+                    let finishTime = echarts.init(document.getElementById('finish_time'))
+                    finishTime.setOption(option)
 
-                window.addEventListener('resize', function () {
-                    finishTime.resize()
-                })
+                    window.addEventListener('resize', function () {
+                        finishTime.resize()
+                    })
+                } catch (error) {
+                    ;
+                }
             })
         }
     }

@@ -58,7 +58,6 @@ export default {
         },
         drawGraph () {
             this.$nextTick(() => {
-                let orderVolume = echarts.init(document.getElementById('order_volume_con'))
                 let xAxisData = []
                 let data1 = []
                 let data2 = []
@@ -102,11 +101,16 @@ export default {
                     ]
                 }
 
-                orderVolume.setOption(option)
+                try {
+                    let orderVolume = echarts.init(document.getElementById('order_volume_con'))
+                    orderVolume.setOption(option)
 
-                window.addEventListener('resize', function () {
-                    orderVolume.resize()
-                })
+                    window.addEventListener('resize', function () {
+                        orderVolume.resize()
+                    })
+                } catch (error) {
+                    ;
+                }
             })
         }
     }

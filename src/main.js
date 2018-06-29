@@ -15,7 +15,7 @@ Vue.use(iView)
 
 axios.defaults.baseURL = process.env.BASE_URL
 axios.defaults.withCredentials = true
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 15000
 axios.interceptors.response.use(
     response => response,
     error => {

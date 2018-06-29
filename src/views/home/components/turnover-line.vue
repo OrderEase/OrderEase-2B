@@ -101,12 +101,17 @@ export default {
                 ],
                 series: this.series
             }
-            let serviceRequestCharts = echarts.init(document.getElementById('turnover_line_con'))
-            serviceRequestCharts.setOption(option)
 
-            window.addEventListener('resize', () => {
-                serviceRequestCharts.resize()
-            })
+            try {
+                let serviceRequestCharts = echarts.init(document.getElementById('turnover_line_con'))
+                serviceRequestCharts.setOption(option)
+
+                window.addEventListener('resize', () => {
+                    serviceRequestCharts.resize()
+                })
+            } catch (error) {
+                ;
+            }
         }
     }
 }

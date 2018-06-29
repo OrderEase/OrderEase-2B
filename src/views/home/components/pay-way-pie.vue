@@ -59,7 +59,6 @@ export default {
         },
         drawGraph () {
             this.$nextTick(() => {
-                var payWayPie = echarts.init(document.getElementById('pay_way_con'))
                 const option = {
                     tooltip: {
                         trigger: 'item',
@@ -87,10 +86,15 @@ export default {
                         }
                     ]
                 }
-                payWayPie.setOption(option)
-                window.addEventListener('resize', function () {
-                    payWayPie.resize()
-                })
+                try {
+                    var payWayPie = echarts.init(document.getElementById('pay_way_con'))
+                    payWayPie.setOption(option)
+                    window.addEventListener('resize', function () {
+                        payWayPie.resize()
+                    })
+                } catch (error) {
+                    ;
+                }
             })
         }
     }
