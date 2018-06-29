@@ -181,7 +181,9 @@
                     <a :disabled="!disableSevenTurnover" @click="showRecentThirtyDaysTurnover">近30天</a>
                 </p>
                 <div class="line-chart-con" style="height: 250px">
-                    <turnover-line></turnover-line>
+                    <turnover-line
+                        :days="turnoverDays"
+                    ></turnover-line>
                 </div>
             </Card>
         </Row>
@@ -203,26 +205,6 @@ import { mapState } from 'vuex'
 import Util from '@/libs/util.js'
 import Analytics from '@/api/analytics.js'
 
-const getAnalyticsData = async () => {
-    let countCard = await Analytics.getCountCard()
-    let countOrders = await Analytics.getCountOrders()
-    let countPayWay = await Analytics.getCountPayWay()
-    let countFinishTime = await Analytics.getCountFinishTime()
-    let rankLikes = await Analytics.getRankLikes()
-    let rankSales = await Analytics.getRankSales()
-    let recentSevenDaysTurnovers = await Analytics.getTurnover(7)
-
-    return {
-        countCard: countCard,
-        countOrders: countOrders,
-        countPayWay: countPayWay,
-        countFinishTime: countFinishTime,
-        rankLikes: rankLikes,
-        rankSales: rankSales,
-        turnover: recentSevenDaysTurnovers
-    }
-}
-
 export default {
     name: 'home',
     components: {
@@ -238,6 +220,15 @@ export default {
     },
     data () {
         return {
+            countCard: {
+                todayUser: 0,
+                todayNewUser: 0,
+                todayTurnover: 0,
+                todayDish: 0
+            },
+            turnoverDays: 7,
+            disableSevenTurnover: true,
+
             isEditting: false,
             edittingRestrt: {},
             toDoList: [
@@ -256,7 +247,6 @@ export default {
             ],
             showAddNewTodo: false,
             newToDoItemValue: '',
-            disableSevenTurnover: true
         }
     },
     computed: {
@@ -274,26 +264,16 @@ export default {
                     isOpen = now >= open && now <= close
                 }
                 return isOpen
-            },
-            countCard (state) {
-                if (state.restaurant.analytics.countCard) {
-                    return state.restaurant.analytics.countCard
-                } else {
-                    return {
-                        todayUser: 0,
-                        todayNewUser: 0,
-                        todayTurnover: 0,
-                        todayDish: 0
-                    }
-                }
             }
         })
     },
-    async beforeRouteEnter (to, from, next) {
-        let analytics = await getAnalyticsData()
-        next(vm => vm.$store.commit('restaurant/setAnalytics', analytics))
+    created () {
+        this.initCountCard()
     },
     methods: {
+        async initCountCard () {
+            this.countCard = await Analytics.getCountCard()
+        },
         editRestrtInfo () {
             this.edittingRestrt = Util.deepCopy(this.$store.state.restaurant.info)
             this.isEditting = true
@@ -321,21 +301,13 @@ export default {
             this.showAddNewTodo = false
             this.newToDoItemValue = ''
         },
-        async showRecentSevenDaysTurnover () {
-            try {
-                await this.$store.dispatch('restaurant/getSevenDaysTurnover')
-                this.disableSevenTurnover = true
-            } catch (err) {
-                this.$Message.error('获取数据失败')
-            }
+        showRecentSevenDaysTurnover () {
+            this.turnoverDays = 7
+            this.disableSevenTurnover = true
         },
-        async showRecentThirtyDaysTurnover () {
-            try {
-                await this.$store.dispatch('restaurant/getThirtyDaysTurnover')
-                this.disableSevenTurnover = false
-            } catch (err) {
-                this.$Message.error('获取数据失败')
-            }
+        showRecentThirtyDaysTurnover () {
+            this.turnoverDays = 30
+            this.disableSevenTurnover = false
         }
     }
 }

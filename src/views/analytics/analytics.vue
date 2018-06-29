@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import Analytics from '@/api/analytics'
 
 export default {
     name: 'analytics_index',
@@ -69,6 +69,8 @@ export default {
             dateRange: [],
             filtedData: [],
             pageData: [],
+
+            summaryData: [],
             columns: [
                 {
                     type: 'index',
@@ -115,20 +117,13 @@ export default {
             ]
         }
     },
-    computed: {
-        ...mapState({
-            summaryData (state) {
-                return state.restaurant.summary
-            }
-        })
-    },
     created () {
         this.spinShow = true
         this.getSummary()
     },
     methods: {
         async getSummary () {
-            await this.$store.dispatch('restaurant/getSummary')
+            this.summaryData = await Analytics.getSummary()
             this.filtedData = this.summaryData
             this.handlePage(1)
             this.spinShow = false

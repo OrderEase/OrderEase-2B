@@ -1,16 +1,37 @@
+<style lang="less">
+    @import '../../../styles/loading.less';
+</style>
+
 <template>
-    <div style="width:100%;height:100%;" id="turnover_line_con"></div>
+    <div style="width:100%;height:100%;">
+        <Spin fix v-if="spinShow">
+            <Icon type="load-c" size=18 class="demo-spin-icon-load"></Icon>
+            <div>{{ spinText }}</div>
+        </Spin>
+        <div style="width:100%;height:100%;" id="turnover_line_con"></div>
+    </div>
 </template>
 
 <script>
 import echarts from 'echarts'
+import Analytics from '@/api/analytics'
 
 export default {
     name: 'turnoverLine',
+    props: {
+        days: Number
+    },
+    data () {
+        return {
+            spinText: '加载中...',
+            spinShow: true,
+            turnover: {}
+        }
+    },
     computed: {
         color: () => ['#7e6b9e', '#b4ade0', '#cccce4', '#92a2da', '#607dd1'],
         series () {
-            return this.$store.state.restaurant.analytics.turnover.data.map((type, idx) => {
+            return this.turnover.data.map((type, idx) => {
                 return {
                     name: type.name,
                     type: 'line',
@@ -25,24 +46,28 @@ export default {
             })
         },
         xAxisData () {
-            if (this.$store.state.restaurant.analytics.turnover) {
-                return this.$store.state.restaurant.analytics.turnover.xAxis
-            } else {
-                return []
-            }
+            return this.turnover.xAxis
         }
     },
-    mounted () {
-        this.$nextTick(() => {
-            this.drawLine()
-        })
+    created () {
+        this.init(7)
     },
     watch: {
-        xAxisData (val) {
-            this.drawLine()
+        days (val) {
+            this.init(val)
         }
     },
     methods: {
+        async init (days) {
+            try {
+                this.spinShow = true
+                this.turnover = await Analytics.getTurnover(days)
+                this.spinShow = false
+                this.drawLine()
+            } catch (error) {
+                this.spinText = '加载失败，请检查网络'
+            }
+        },
         drawLine () {
             const option = {
                 color: this.color,

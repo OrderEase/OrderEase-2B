@@ -1,10 +1,7 @@
 import Restaurant from '@/api/restaurant.js'
-import Analytics from '@/api/analytics.js'
 
 const state = {
-    info: {},
-    analytics: {},
-    summary: []
+    info: {}
 }
 
 const actions = {
@@ -15,33 +12,12 @@ const actions = {
     async update ({ dispatch }, editedInfo) {
         await Restaurant.update(editedInfo)
         await dispatch('getInfo')
-    },
-    async getSevenDaysTurnover ({ commit }) {
-        let turnover = await Analytics.getTurnover(7)
-        commit('setTurnover', turnover)
-    },
-    async getThirtyDaysTurnover ({ commit }) {
-        let turnover = await Analytics.getTurnover(30)
-        commit('setTurnover', turnover)
-    },
-    async getSummary ({ commit }) {
-        let summary = await Analytics.getSummary()
-        commit('setSummary', summary)
     }
 }
 
 const mutations = {
     setInfo (state, info) {
         state.info = info
-    },
-    setAnalytics (state, analyticsInfo) {
-        state.analytics = analyticsInfo
-    },
-    setTurnover (state, turnover) {
-        state.analytics.turnover = turnover
-    },
-    setSummary (state, summary) {
-        state.summary = summary
     }
 }
 
