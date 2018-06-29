@@ -1,0 +1,103 @@
+<style lang="less">
+    @import '../../styles/common.less';
+</style>
+
+<template>
+    <div class="qrcode">
+        <Row>
+            <i-col span="24">
+                <Card>
+                    <Row type="flex" justify="space-between">
+                        <i-col span="8">
+                            <Row>
+                                <i-col span="18">
+                                    <Input
+                                        v-model="tableId"
+                                        placeholder="请输入桌号..."
+                                    />
+                                </i-col>
+                                <i-col span="4" offset="1">
+                                    <Button
+                                        type="primary"
+                                        @click="generateQRCode"
+                                    >生成二维码</Button>
+                                </i-col>
+                            </Row>
+                        </i-col>
+                        <i-col span="8" style="text-align: right;">
+                            <Button type="primary" @click="downloadAll">批量下载</Button>
+                        </i-col>
+                    </Row>
+                </Card>
+            </i-col>
+        </Row>
+        <Row :gutter="6" class="margin-top-20">
+            <i-col
+                v-for="(item, index) in tableItems"
+                :key="index"
+                :md="4"
+                :sm="6"
+                class="margin-bottom-10">
+                <Card>
+                    <div>
+                        <span>桌号: {{ item.id }}</span>
+                        <a :href="item.data" :download="'qrcode_' + item.id" style="float: right;">
+                            <Icon type="ios-download-outline" size="16"></Icon>
+                        </a>
+                    </div>
+                    <qr-code :text="generateURL(item.id)" @success="data => item.data = data"></qr-code>
+                </Card>
+            </i-col>
+        </Row>
+    </div>
+</template>
+
+<script>
+import QrCode from './components/qr-code.vue';
+
+const downloadFile = (fileName, content) => {
+    let aLink = document.createElement("a")
+    aLink.download = fileName
+    aLink.href = content
+
+    aLink.click()
+}
+
+export default {
+    components: {
+        QrCode
+    },
+    data () {
+        return {
+            tableItems: [],
+            tableId: '',
+        };
+    },
+    methods: {
+        generateQRCode () {
+            if (this.tableId !== '') {
+                let idExists = this.tableItems.some(item => item.id === this.tableId)
+                
+                if (idExists) {
+                    this.$Message.info('桌号已存在，请重新输入新的桌号')
+                } else {
+                    this.tableItems.push({
+                        id: this.tableId,
+                        data: ''
+                    })
+                }
+            } else {
+                this.$Message.info('桌号为空，请输入桌号')
+            }
+        },
+        generateURL (id) {
+            return process.env.CUSTOMER_BASE_URL + '?table=' + id
+        },
+        downloadAll () {
+            this.tableItems.forEach(item => {
+                downloadFile('qrcode_' + item.id, item.data)
+            })
+        }
+    }
+};
+</script>

@@ -15,12 +15,13 @@ Vue.use(iView)
 
 axios.defaults.baseURL = process.env.BASE_URL
 axios.defaults.withCredentials = true
+axios.defaults.timeout = 10000
 axios.interceptors.response.use(
     response => response,
     error => {
-        if (error.response.status === 401) {
+        if (error.response && error.response.status === 401) {
             Cookies.set('user', '')
-            // Cookies.set('redirect', router.currentRoute.fullPath)
+
             router.replace({
                 path: '/login'
             })

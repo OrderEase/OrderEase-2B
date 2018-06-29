@@ -150,6 +150,22 @@ export const appRouter = [
                 component: () => import('@/views/analytics/analytics.vue')
             }
         ]
+    },
+    {
+        path: '/qrcode',
+        icon: 'qr-scanner',
+        name: 'qrcode',
+        title: '二维码',
+        access: 'manager',
+        component: Main,
+        children: [
+            {
+                path: 'index',
+                title: '二维码',
+                name: 'qrcode_index',
+                component: () => import('@/views/qrcode/qrcode.vue')
+            }
+        ]
     }
 ]
 
