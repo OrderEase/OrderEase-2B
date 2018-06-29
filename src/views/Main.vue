@@ -1,6 +1,7 @@
 <style lang="less">
     @import "./main.less";
 </style>
+
 <template>
     <div class="main" :class="{'main-hide-text': shrink}">
         <div class="sidebar-menu-con" :style="{width: shrink?'60px':'200px', overflow: shrink ? 'visible' : 'auto'}">
@@ -43,7 +44,7 @@
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
-                                    <DropdownItem name="editPassword">修改密码</DropdownItem>
+                                    <DropdownItem v-show="canEditPassword" name="editPassword">修改密码</DropdownItem>
                                     <DropdownItem name="loginout" divided>退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
@@ -144,6 +145,9 @@ export default {
         }
     },
     computed: {
+        canEditPassword () {
+            return Cookies.get('access') === 'manager'
+        },
         menuList () {
             return this.$store.state.app.menuList
         },
