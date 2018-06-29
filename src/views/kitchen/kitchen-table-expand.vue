@@ -10,7 +10,9 @@
             class="margin-bottom-10"
         >
             <i-col span="2" offset="2">
-                <img :src="item.dish.img" alt="" class="expand-row-dish-img">
+                <div class="expand-row-dish-img-wrapper">
+                    <img v-show="item.dish.img !== ''" :src="item.dish.img" alt="" class="expand-row-dish-img">
+                </div>
             </i-col>
             <i-col span="2" offset="1" class="expand-row-col-align">
                 <p class="expand-row-align">{{ item.dish.name }}</p>

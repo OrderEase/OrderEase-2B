@@ -54,7 +54,7 @@
             width="400">
             <Row type="flex" justify="space-between">
                 <i-col span="17">
-                    <p>客户: {{ checkedOrder.userId }}</p>
+                    <p>客户: {{ checkedOrder.username }}</p>
                 </i-col>
                 <i-col span="7">
                     <p>桌号: {{ checkedOrder.tableId }}</p>
@@ -85,8 +85,10 @@
                 </i-col>
             </Row>
             <Row v-for="(content, index) in checkedOrder.repackDishes" :key="index" class="dish-wrap">
-                <i-col span="8" class="dish-img-wrap">
-                    <img class="dish-img" :src="content.dish.img" :alt="content.dish.name">
+                <i-col span="8">
+                    <div class="dish-img-wrapper">
+                        <img v-show="content.dish.img !== ''" class="dish-img" :src="content.dish.img" :alt="content.dish.name">
+                    </div>
                 </i-col>
                 <i-col span="8">
                     <Row>

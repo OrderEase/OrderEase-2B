@@ -7,7 +7,9 @@
     <Card class="height-150px dish-item">
         <Row>
             <i-col span="10">
-                <img class="dish-img" :src="dish.img" :alt="dish.name">
+                <div class="dish-img-wrapper">
+                    <img v-show="dish.img !== ''" class="dish-img" :src="dish.img" :alt="dish.name">
+                </div>
             </i-col>
             <i-col span="12">
                 <Row>
