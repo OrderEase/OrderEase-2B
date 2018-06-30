@@ -185,19 +185,19 @@ export default {
         },
         search (data, argumentObj) {
             let res = data
-            let dataClone = data
+
             for (let argu in argumentObj) {
                 if (argumentObj[argu].length > 0) {
-                    res = dataClone.filter(d => {
-                        return d[argu].indexOf(argumentObj[argu]) > -1
+                    res = res.filter(d => {
+                        return d[argu].toString().indexOf(argumentObj[argu]) > -1
                     })
-                    dataClone = res
                 }
             }
+
             return res
         },
         handleSearch () {
-            this.filtedOrders = this.search(this.ordersList, {id: this.searchId})
+            this.filtedOrders = this.search(this.ordersList, { id: this.searchId })
             this.page = 1
             this.handlePage(1)
         },
