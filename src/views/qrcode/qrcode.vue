@@ -70,6 +70,9 @@ export default {
             tableId: ''
         }
     },
+    created () {
+        this.tableItems = this.getQRCodeItems()
+    },
     methods: {
         async generateQRCode () {
             if (this.tableId !== '') {
@@ -101,7 +104,15 @@ export default {
             })
         },
         saveQRCodeItem (item) {
-            this.tableItems.push(item)
+            let itemsList = this.getQRCodeItems()
+            itemsList.push(item)
+            this.tableItems = itemsList
+
+            localStorage.setItem('qrcodeItemsList', JSON.stringify(itemsList))
+        },
+        getQRCodeItems () {
+            let itemsList = localStorage.getItem('qrcodeItemsList')
+            return itemsList ? JSON.parse(itemsList) : []
         }
     }
 }
