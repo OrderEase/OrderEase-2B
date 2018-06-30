@@ -45,7 +45,7 @@
                             <Icon type="ios-download-outline" size="16"></Icon>
                         </a>
                     </div>
-                    <qr-code :text="generateURL(item.id)" @success="data => item.data = data"></qr-code>
+                    <img :src="item.data" alt="" style="height: 100%; width: 100%">
                 </Card>
             </i-col>
         </Row>
@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import QrCode from './components/qr-code.vue';
+import QRCode from 'qrcode'
 
 const downloadFile = (fileName, content) => {
-    let aLink = document.createElement("a")
+    let aLink = document.createElement('a')
     aLink.download = fileName
     aLink.href = content
 
@@ -64,27 +64,29 @@ const downloadFile = (fileName, content) => {
 }
 
 export default {
-    components: {
-        QrCode
-    },
     data () {
         return {
             tableItems: [],
-            tableId: '',
-        };
+            tableId: ''
+        }
     },
     methods: {
-        generateQRCode () {
+        async generateQRCode () {
             if (this.tableId !== '') {
                 let idExists = this.tableItems.some(item => item.id === this.tableId)
-                
+
                 if (idExists) {
                     this.$Message.info('桌号已存在，请重新输入新的桌号')
                 } else {
-                    this.tableItems.push({
-                        id: this.tableId,
-                        data: ''
-                    })
+                    try {
+                        let url = this.generateURL(this.tableId)
+                        this.saveQRCodeItem({
+                            id: this.tableId,
+                            data: await QRCode.toDataURL(url)
+                        })
+                    } catch (err) {
+                        this.$Message.error('生成二维码失败')
+                    }
                 }
             } else {
                 this.$Message.info('桌号为空，请输入桌号')
@@ -97,7 +99,10 @@ export default {
             this.tableItems.forEach(item => {
                 downloadFile('qrcode_' + item.id, item.data)
             })
+        },
+        saveQRCodeItem (item) {
+            this.tableItems.push(item)
         }
     }
-};
+}
 </script>

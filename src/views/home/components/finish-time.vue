@@ -15,7 +15,6 @@
 <script>
 import echarts from 'echarts'
 import Analytics from '@/api/analytics'
-import { mapState } from 'vuex'
 
 export default {
     name: 'finishTime',

@@ -4,7 +4,6 @@
 
 <script>
 import QRCode from 'qrcode'
-import logo from '@/images/logo-min.jpg'
 
 export default {
     props: {
@@ -22,13 +21,13 @@ export default {
     data () {
         return {
             src: ''
-        }  
+        }
     },
     computed: {
         style () {
             return {
                 height: this.height === undefined ? '100%' : this.height + 'px',
-                width: this.width  === undefined ? '100%' : this.width + 'px'
+                width: this.width === undefined ? '100%' : this.width + 'px'
             }
         }
     },
@@ -46,8 +45,7 @@ export default {
                 this.src = await QRCode.toDataURL(text)
                 this.$emit('success', this.src)
             } catch (err) {
-                this.src = ''
-                this.$emit('failure')
+                this.$emit('failure', text)
             }
         }
     }

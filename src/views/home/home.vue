@@ -246,7 +246,7 @@ export default {
                 }
             ],
             showAddNewTodo: false,
-            newToDoItemValue: '',
+            newToDoItemValue: ''
         }
     },
     computed: {
