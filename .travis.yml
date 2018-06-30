@@ -1,5 +1,19 @@
 language: node_js
-node_js:
-  - "6"
+node_js: stable
+
+install: npm install
+
 script:
   - npm run test
+  - npm run build
+
+deploy:
+  provider: pages
+  local-dir: dist/
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  on:
+    branch: master
+
+notifications:
+  email: false

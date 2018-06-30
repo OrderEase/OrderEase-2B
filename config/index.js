@@ -8,6 +8,6 @@ module.exports = {
 
     build: {
         // Paths
-        assetsPublicPath: '/dist/'
+        assetsPublicPath: 'https://orderease.github.io/OrderEase-2B/dist/'
     }
 }
