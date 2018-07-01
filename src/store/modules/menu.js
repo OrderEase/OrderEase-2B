@@ -66,7 +66,7 @@ const actions = {
         let updatedCategory = await Menu.getCategory(state.edittingMenu.id, category.id)
 
         let categoryIndex = state.edittingMenu.content.findIndex(value => value.id === category.id)
-        state.edittingMenu.content[categoryIndex] = updatedCategory
+        Object.assign(state.edittingMenu.content[categoryIndex], updatedCategory)
     },
     async deleteCategory ({ state }, categoryId) {
         await Menu.deleteCategory(state.edittingMenu.id, categoryId)
@@ -84,10 +84,9 @@ const actions = {
     async updateDish ({ state }, { categoryId, dish }) {
         await Menu.updateDish(state.edittingMenu.id, categoryId, dish)
         let updatedDish = await Menu.getDish(state.edittingMenu.id, categoryId, dish.id)
-
         let category = state.edittingMenu.content.find(category => category.id === categoryId)
         let dishIndex = category.dishes.findIndex(value => value.id === dish.id)
-        category.dishes[dishIndex] = updatedDish
+        Object.assign(category.dishes[dishIndex], updatedDish)
     },
     async deleteDish ({ state }, { categoryId, dishId }) {
         await Menu.deleteDish(state.edittingMenu.id, categoryId, dishId)

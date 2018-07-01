@@ -1,13 +1,8 @@
-import Vue from 'vue'
 import Util from '@/libs/util.js'
 import Promotion from '@/api/promotion.js'
 
 const state = {
     promotionsList: []
-}
-
-const getters = {
-
 }
 
 const actions = {
@@ -69,8 +64,7 @@ const mutations = {
     },
     updatePromotion (state, promotion) {
         let idx = state.promotionsList.findIndex(value => value.id === promotion.id)
-        state.promotionsList[idx] = promotion
-        Vue.set(state.promotionsList, idx, promotion)
+        Object.assign(state.promotionsList[idx], promotion)
     },
     removePromotion (state, promotion) {
         let idx = state.promotionsList.findIndex(value => value.id === promotion.id)
@@ -81,7 +75,6 @@ const mutations = {
 export default {
     namespaced: true,
     state,
-    getters,
     actions,
     mutations
 }
