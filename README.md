@@ -10,7 +10,7 @@ Front end of OrderEase to Business.
 
 ### Login
 
-![login](assets/menu.gif)
+![login](assets/login.gif)
 
 ### Menu
 
