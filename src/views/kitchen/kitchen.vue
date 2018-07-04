@@ -45,24 +45,25 @@ export default {
                 },
                 {
                     title: '订单号',
-                    key: 'id',
-                    width: 600
+                    key: 'id'
                 },
                 {
                     title: '支付时间',
                     key: 'payDate',
+                    align: 'center',
                     width: 200
                 },
                 {
                     title: '桌号',
                     key: 'tableId',
-                    width: 60
+                    align: 'center',
+                    width: 100
                 },
                 {
                     title: '操作',
                     key: 'action',
-                    width: 150,
                     align: 'center',
+                    width: 150,
                     render: (h, params) => {
                         return h('div', [
                             h('Button', {
