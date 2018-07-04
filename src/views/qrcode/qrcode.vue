@@ -96,7 +96,7 @@ export default {
             }
         },
         generateURL (id) {
-            return process.env.CUSTOMER_BASE_URL + '?table=' + id
+            return process.env.CUSTOMER_BASE_URL + '?tableId=' + id
         },
         downloadAll () {
             this.tableItems.forEach(item => {
