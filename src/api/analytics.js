@@ -4,7 +4,7 @@ let analytics = {}
 
 analytics.getCountCard = () => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/count/card')
+        axios.get('/analytics/count/card')
             .then(response => {
                 resolve(response.data)
             })
@@ -20,7 +20,7 @@ analytics.getCountCard = () => {
 
 analytics.getCountOrders = () => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/count/orders')
+        axios.get('/analytics/count/orders')
             .then(response => {
                 resolve(response.data)
             })
@@ -36,7 +36,7 @@ analytics.getCountOrders = () => {
 
 analytics.getCountPayWay = () => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/count/payway')
+        axios.get('/analytics/count/payway')
             .then(response => {
                 resolve(response.data)
             })
@@ -52,7 +52,7 @@ analytics.getCountPayWay = () => {
 
 analytics.getCountFinishTime = () => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/count/finishtime')
+        axios.get('/analytics/count/finishtime')
             .then(response => {
                 resolve(response.data)
             })
@@ -68,7 +68,7 @@ analytics.getCountFinishTime = () => {
 
 analytics.getRankLikes = () => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/rank/likes')
+        axios.get('/analytics/rank/likes')
             .then(response => {
                 resolve(response.data)
             })
@@ -84,7 +84,7 @@ analytics.getRankLikes = () => {
 
 analytics.getRankSales = () => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/rank/sales')
+        axios.get('/analytics/rank/sales')
             .then(response => {
                 resolve(response.data)
             })
@@ -100,7 +100,7 @@ analytics.getRankSales = () => {
 
 analytics.getTurnover = (days) => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/turnover?days=' + days)
+        axios.get('/analytics/turnover?days=' + days)
             .then(response => {
                 resolve(response.data)
             })
@@ -116,7 +116,7 @@ analytics.getTurnover = (days) => {
 
 analytics.getSummary = () => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.BASE_URL + '/analytics/summary')
+        axios.get('/analytics/summary')
             .then(response => {
                 resolve(response.data)
             })
