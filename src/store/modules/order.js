@@ -17,15 +17,14 @@ const actions = {
     },
     async finishOrderItems ({ commit }, specialOrder) {
         let date = Util.formatDate(new Date())
-        let promises = specialOrder.repackDishes.map(item => {
-            return Order.finishOrderItem(specialOrder.id, {
+
+        for (let item of specialOrder.repackDishes) {
+            await Order.finishOrderItem(specialOrder.id, {
                 orderItemId: item.orderItem.id,
                 finished: 1,
                 time: date
             })
-        })
-
-        await Promise.all(promises)
+        }
     }
 }
 
